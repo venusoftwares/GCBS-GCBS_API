@@ -4,15 +4,14 @@ namespace GCBS_INTERNAL.Models
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
     using System.ComponentModel.DataAnnotations.Schema;
-    using System.Data.Entity.Spatial;
-
-    public partial class ServiceTypes
+    using System.Data.Entity.Spatial;    
+    public partial class ServicesMaster
     {
+              
         public int Id { get; set; }
 
         [StringLength(200)]
-        public string ServiceType { get; set; }
-
+        public string Service { get; set; }   
         public bool Visible { get; set; }
 
         public DateTime? CreatedOn { get; set; }
