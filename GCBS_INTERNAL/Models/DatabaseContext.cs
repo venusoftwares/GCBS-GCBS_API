@@ -14,7 +14,8 @@ namespace GCBS_INTERNAL.Models
 
         public virtual DbSet<ServiceTypes> ServiceTypes { get; set; }
         public virtual DbSet<ServicesMaster> ServicesMasters { get; set; }
-
+        public virtual DbSet<MarginMaster> MarginMaster { get; set; }
+        public virtual DbSet<PriceMaster> PriceMaster { get; set; }
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
            
