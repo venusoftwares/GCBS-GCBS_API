@@ -1,0 +1,11 @@
+﻿################################################################################
+# This .gitignore file was automatically created by Microsoft(R) Visual Studio.
+################################################################################
+
+/GCBS_INTERNAL/bin
+/GCBS_INTERNAL/obj/Debug
+/GCBS_INTERNAL/packages
+/GCBS_INTERNAL/.vs/GCBS_INTERNAL/config
+/GCBS_INTERNAL/.vs/GCBS_INTERNAL/v16
+/.vs/GCBS-GCBS_API/v16
+/.vs
