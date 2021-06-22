@@ -254,6 +254,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Algoritum\Algorithum.cs" />
+    <Compile Include="App_Start\AuthorizationHeaderParameterOperationFilter.cs" />
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
