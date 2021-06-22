@@ -263,22 +263,54 @@
     <Compile Include="Areas\HelpPage\SampleGeneration\SampleDirection.cs" />
     <Compile Include="Areas\HelpPage\SampleGeneration\TextSample.cs" />
     <Compile Include="Areas\HelpPage\XmlDocumentationProvider.cs" />
+    <Compile Include="Controllers\API\BookingDetailsController.cs" />
+    <Compile Include="Controllers\API\ContactEnquiryViewsController.cs" />
+    <Compile Include="Controllers\API\EmailSettingsController.cs" />
+    <Compile Include="Controllers\API\HotelMastersController.cs" />
+    <Compile Include="Controllers\API\InAppNotificationsController.cs" />
+    <Compile Include="Controllers\API\LocationMastersController.cs" />
     <Compile Include="Controllers\API\MarginMastersController.cs" />
+    <Compile Include="Controllers\API\PartnerRatingsController.cs" />
+    <Compile Include="Controllers\API\PartnerTypesController.cs" />
+    <Compile Include="Controllers\API\PaymentDetailsController.cs" />
+    <Compile Include="Controllers\API\PaymentGatewaysController.cs" />
+    <Compile Include="Controllers\API\PayoutDetailsController.cs" />
     <Compile Include="Controllers\API\PriceMastersController.cs" />
     <Compile Include="Controllers\API\RoleMastersController.cs" />
+    <Compile Include="Controllers\API\RolePermissionMastersController.cs" />
     <Compile Include="Controllers\API\ServicesMastersController.cs" />
+    <Compile Include="Controllers\API\SiteSettingsController.cs" />
+    <Compile Include="Controllers\API\SmsSettingsController.cs" />
+    <Compile Include="Controllers\API\SupportEnquiryViewsController.cs" />
+    <Compile Include="Controllers\API\UserManagementsController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ValuesController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\BookingDetails.cs" />
+    <Compile Include="Models\ContactEnquiryView.cs" />
     <Compile Include="Models\DatabaseContext.cs" />
+    <Compile Include="Models\EmailSettings.cs" />
+    <Compile Include="Models\HotelMaster.cs" />
+    <Compile Include="Models\InAppNotification.cs" />
+    <Compile Include="Models\LocationMaster.cs" />
     <Compile Include="Models\MarginMaster.cs" />
+    <Compile Include="Models\PartnerRating.cs" />
+    <Compile Include="Models\PartnerType.cs" />
+    <Compile Include="Models\PaymentDetails.cs" />
+    <Compile Include="Models\PaymentGateway.cs" />
+    <Compile Include="Models\PayoutDetails.cs" />
     <Compile Include="Models\PriceMaster.cs" />
     <Compile Include="Models\RoleMaster.cs" />
+    <Compile Include="Models\RolePermissionMaster.cs" />
     <Compile Include="Models\ServicesMaster.cs" />
     <Compile Include="Models\ServiceTypes.cs" />
     <Compile Include="Controllers\API\ServiceTypesController.cs" />
+    <Compile Include="Models\SiteSettings.cs" />
+    <Compile Include="Models\SmsSettings.cs" />
+    <Compile Include="Models\SupportEnquiryView.cs" />
+    <Compile Include="Models\UserManagement.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
