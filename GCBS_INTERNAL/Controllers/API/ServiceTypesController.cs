@@ -12,6 +12,7 @@ using System.Web.Http.Description;
 
 namespace GCBS_INTERNAL.Models
 {
+    [Authorize]
     public class ServiceTypesController : ApiController
     {
         private DatabaseContext db = new DatabaseContext();

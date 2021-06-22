@@ -13,6 +13,7 @@ using GCBS_INTERNAL.Models;
 
 namespace GCBS_INTERNAL.Controllers.API
 {
+    [Authorize]
     public class UserManagementsController : ApiController
     {
         private DatabaseContext db = new DatabaseContext();
@@ -67,7 +68,6 @@ namespace GCBS_INTERNAL.Controllers.API
                     throw;
                 }
             }
-
             return StatusCode(HttpStatusCode.NoContent);
         }
 

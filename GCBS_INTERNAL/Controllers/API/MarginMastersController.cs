@@ -13,6 +13,7 @@ using GCBS_INTERNAL.Models;
 
 namespace GCBS_INTERNAL.Controllers.API
 {
+    [Authorize]
     public class MarginMastersController : ApiController
     {
         private DatabaseContext db = new DatabaseContext();
