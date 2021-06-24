@@ -12,13 +12,13 @@ using System.Web.Http.Description;
 
 namespace GCBS_INTERNAL.Controllers.API.Auth
 {
-    public class UserLoginController : ApiController
+    public class AdminLoginController : ApiController
     {
         public DatabaseContext db = new DatabaseContext();
         private readonly GetAccessToken getAccessToken = new GetAccessToken();
 
-        [ResponseType(typeof(AdminLogin))]
-        public async Task<IHttpActionResult> UserLogin(AdminLogin adminLogin)
+        [ResponseType(typeof(AdminResponse))]
+        public async Task<IHttpActionResult> AdminLogin(AdminLogin adminLogin)
         {
             if (!ModelState.IsValid)
             {
@@ -33,7 +33,7 @@ namespace GCBS_INTERNAL.Controllers.API.Auth
                 }
                 else
                 {
-                    return Ok(await getAccessToken.GetToken(result));
+                    return Ok(new AdminResponse { AccessToken = await getAccessToken.GetToken(result) });
                 }
             }
             catch(Exception ex)

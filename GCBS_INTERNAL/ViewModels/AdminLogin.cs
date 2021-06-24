@@ -10,4 +10,8 @@ namespace GCBS_INTERNAL.ViewModels
         public string Email { get; set; }
         public string Password { get; set; }
     }
+    public class AdminResponse
+    {
+        public string AccessToken { get; set; }
+    }
 }

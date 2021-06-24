@@ -312,7 +312,7 @@
     <Compile Include="Areas\HelpPage\SampleGeneration\SampleDirection.cs" />
     <Compile Include="Areas\HelpPage\SampleGeneration\TextSample.cs" />
     <Compile Include="Areas\HelpPage\XmlDocumentationProvider.cs" />
-    <Compile Include="Controllers\API\Auth\UserLoginController.cs" />
+    <Compile Include="Controllers\API\Auth\AdminLoginController.cs" />
     <Compile Include="Controllers\API\BookingDetailsController.cs" />
     <Compile Include="Controllers\API\ContactEnquiryViewsController.cs" />
     <Compile Include="Controllers\API\EmailSettingsController.cs" />
