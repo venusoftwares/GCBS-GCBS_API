@@ -18,7 +18,7 @@ namespace GCBS_INTERNAL.Controllers.API
     public class BookingDetailsController : BaseApiController
     {
         private DatabaseContext db = new DatabaseContext();
-
+        private BookingDetails oldbookingDetails = new BookingDetails();
         // GET: api/BookingDetails
         public IQueryable<BookingDetails> GetBookingDetails()
         {
@@ -51,11 +51,16 @@ namespace GCBS_INTERNAL.Controllers.API
             {
                 return BadRequest();
             }
+            using(var co =new DatabaseContext())
+            {
+                oldbookingDetails = await co.BookingDetails.FindAsync(id);
+                co.Dispose();
+            }
            // BookingDetails oldbookingDetails = await db.BookingDetails.FindAsync(id);
             bookingDetails.UpdatedBy = userDetails.Id;
             bookingDetails.UpdatedOn = DateTime.Now;
-           // bookingDetails.CreatedOn = oldbookingDetails.CreatedOn;
-           // bookingDetails.CreatedBy = oldbookingDetails.CreatedBy;
+            bookingDetails.CreatedOn = oldbookingDetails.CreatedOn;
+            bookingDetails.CreatedBy = oldbookingDetails.CreatedBy;
             db.Entry(bookingDetails).State = EntityState.Modified;
 
             try
