@@ -16,6 +16,8 @@ namespace GCBS_INTERNAL.Models
 
         [Column(TypeName = "numeric")]
         public decimal? DurationMinutes { get; set; }
+        [Column(TypeName = "numeric")]
+        public decimal? Price { get; set; }
 
         [Column(TypeName = "numeric")]
         public decimal? PremiumPrice { get; set; }
