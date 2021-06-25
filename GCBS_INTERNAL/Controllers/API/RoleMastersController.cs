@@ -24,85 +24,28 @@ namespace GCBS_INTERNAL.Controllers.API
             return db.RoleMaster;
         }
 
-        // GET: api/RoleMasters/5
-        [ResponseType(typeof(RoleMaster))]
-        public async Task<IHttpActionResult> GetRoleMaster(int id)
-        {
-            RoleMaster roleMaster = await db.RoleMaster.FindAsync(id);
-            if (roleMaster == null)
-            {
-                return NotFound();
-            }
 
-            return Ok(roleMaster);
-        }
-
-        // PUT: api/RoleMasters/5
+        // PUT: api/PriceMasters/5
         [ResponseType(typeof(void))]
-        public async Task<IHttpActionResult> PutRoleMaster(int id, RoleMaster roleMaster)
+        public async Task<IHttpActionResult> PutRoleMaster(RoleMasterVisible roleMasterVisible)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            if (id != roleMaster.Id)
+            if (roleMasterVisible == null)
             {
                 return BadRequest();
             }
-
+            RoleMaster roleMaster = await db.RoleMaster.FindAsync(roleMasterVisible.Id);
+            roleMaster.Status= roleMasterVisible.Status;
             db.Entry(roleMaster).State = EntityState.Modified;
-
-            try
-            {
-                await db.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!RoleMasterExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
+            await db.SaveChangesAsync();
             return StatusCode(HttpStatusCode.NoContent);
         }
 
-        // POST: api/RoleMasters
-        [ResponseType(typeof(RoleMaster))]
-        public async Task<IHttpActionResult> PostRoleMaster(RoleMaster roleMaster)
-        {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-
-            db.RoleMaster.Add(roleMaster);
-            await db.SaveChangesAsync();
-
-            return CreatedAtRoute("DefaultApi", new { id = roleMaster.Id }, roleMaster);
-        }
-
-        // DELETE: api/RoleMasters/5
-        [ResponseType(typeof(RoleMaster))]
-        public async Task<IHttpActionResult> DeleteRoleMaster(int id)
-        {
-            RoleMaster roleMaster = await db.RoleMaster.FindAsync(id);
-            if (roleMaster == null)
-            {
-                return NotFound();
-            }
-
-            db.RoleMaster.Remove(roleMaster);
-            await db.SaveChangesAsync();
-
-            return Ok(roleMaster);
-        }
-
+        
         protected override void Dispose(bool disposing)
         {
             if (disposing)

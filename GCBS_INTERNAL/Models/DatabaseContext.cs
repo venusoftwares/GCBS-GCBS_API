@@ -17,7 +17,7 @@ namespace GCBS_INTERNAL.Models
         public virtual DbSet<MarginMaster> MarginMaster { get; set; }
         public virtual DbSet<PriceMaster> PriceMaster { get; set; }
         public virtual DbSet<RoleMaster> RoleMaster { get; set; }
-        public virtual DbSet<BookingDetails> BookingDetails { get; set; }
+        public virtual DbSet<BookingDetail> BookingDetails { get; set; }
         public virtual DbSet<ContactEnquiryView> ContactEnquiryView { get; set; }
         public virtual DbSet<HotelMaster> HotelMaster { get; set; }
         public virtual DbSet<InAppNotification> InAppNotification { get; set; }

@@ -29,4 +29,12 @@ namespace GCBS_INTERNAL.Models
 
         public int? UpdatedBy { get; set; }
     }
+    public class RoleMasterVisible
+    {
+        [Required]
+        public int Id { get; set; }
+        [Required]
+        public bool Status { get; set; }
+    }
+
 }
