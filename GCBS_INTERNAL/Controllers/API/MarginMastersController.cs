@@ -14,7 +14,7 @@ using GCBS_INTERNAL.Models;
 namespace GCBS_INTERNAL.Controllers.API
 {
     [Authorize]
-    public class MarginMastersController : ApiController
+    public class MarginMastersController : BaseApiController
     {
         private DatabaseContext db = new DatabaseContext();
 
@@ -69,6 +69,29 @@ namespace GCBS_INTERNAL.Controllers.API
                 }
             }
 
+            return StatusCode(HttpStatusCode.NoContent);
+        }
+
+
+        // PUT: api/PriceMasters/5
+        [ResponseType(typeof(void))]
+        public async Task<IHttpActionResult> PutMarginMaster(MarginMasterVisible marginMasterVisible)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            if (marginMasterVisible == null)
+            {
+                return BadRequest();
+            }
+            MarginMaster marginMaster = await db.MarginMaster.FindAsync(marginMasterVisible.Id);
+            marginMaster.Status = marginMasterVisible.Status;
+            marginMaster.UpdatedBy = userDetails.Id;
+            marginMaster.UpdatedOn = DateTime.Now;
+            db.Entry(marginMasterVisible).State = EntityState.Modified;
+            await db.SaveChangesAsync();
             return StatusCode(HttpStatusCode.NoContent);
         }
 

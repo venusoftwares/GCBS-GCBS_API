@@ -14,7 +14,7 @@ using GCBS_INTERNAL.Models;
 namespace GCBS_INTERNAL.Controllers.API
 {
     [Authorize]
-    public class HotelMastersController : ApiController
+    public class HotelMastersController : BaseApiController
     {
         private DatabaseContext db = new DatabaseContext();
 
@@ -71,6 +71,29 @@ namespace GCBS_INTERNAL.Controllers.API
 
             return StatusCode(HttpStatusCode.NoContent);
         }
+            
+        // PUT: api/PriceMasters
+        [ResponseType(typeof(void))]
+        public async Task<IHttpActionResult> PutHotelMaster(HotelMasterVisible hotelMasterVisible)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            if (hotelMasterVisible == null)
+            {
+                return BadRequest();
+            }
+            HotelMaster hotelMaster = await db.HotelMaster.FindAsync(hotelMasterVisible.Id);
+            hotelMaster.Status = hotelMasterVisible.Status;
+            hotelMaster.UpdatedBy = userDetails.Id;
+            hotelMaster.UpdatedOn = DateTime.Now;
+            db.Entry(hotelMaster).State = EntityState.Modified;
+            await db.SaveChangesAsync();
+            return StatusCode(HttpStatusCode.NoContent);
+        }
+
 
         // POST: api/HotelMasters
         [ResponseType(typeof(HotelMaster))]

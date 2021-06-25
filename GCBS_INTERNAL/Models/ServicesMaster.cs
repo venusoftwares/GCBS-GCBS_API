@@ -23,4 +23,9 @@ namespace GCBS_INTERNAL.Models
 
         public int? UpdatedBy { get; set; }
     }
+    public class ServiceMasterVisible
+    {
+        public int Id { get; set; }
+        public bool Visible { get; set; }
+    }
 }

@@ -87,21 +87,7 @@ namespace GCBS_INTERNAL.Controllers.API
             return CreatedAtRoute("DefaultApi", new { id = smsSettings.Id }, smsSettings);
         }
 
-        // DELETE: api/SmsSettings/5
-        [ResponseType(typeof(SmsSettings))]
-        public async Task<IHttpActionResult> DeleteSmsSettings(int id)
-        {
-            SmsSettings smsSettings = await db.SmsSettings.FindAsync(id);
-            if (smsSettings == null)
-            {
-                return NotFound();
-            }
-
-            db.SmsSettings.Remove(smsSettings);
-            await db.SaveChangesAsync();
-
-            return Ok(smsSettings);
-        }
+   
 
         protected override void Dispose(bool disposing)
         {

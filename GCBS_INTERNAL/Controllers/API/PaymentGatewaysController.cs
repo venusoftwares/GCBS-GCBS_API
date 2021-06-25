@@ -14,7 +14,7 @@ using GCBS_INTERNAL.Models;
 namespace GCBS_INTERNAL.Controllers.API
 {
     [Authorize]
-    public class PaymentGatewaysController : ApiController
+    public class PaymentGatewaysController : BaseApiController
     {
         private DatabaseContext db = new DatabaseContext();
 
@@ -87,21 +87,7 @@ namespace GCBS_INTERNAL.Controllers.API
             return CreatedAtRoute("DefaultApi", new { id = paymentGateway.Id }, paymentGateway);
         }
 
-        // DELETE: api/PaymentGateways/5
-        [ResponseType(typeof(PaymentGateway))]
-        public async Task<IHttpActionResult> DeletePaymentGateway(int id)
-        {
-            PaymentGateway paymentGateway = await db.PaymentGateway.FindAsync(id);
-            if (paymentGateway == null)
-            {
-                return NotFound();
-            }
-
-            db.PaymentGateway.Remove(paymentGateway);
-            await db.SaveChangesAsync();
-
-            return Ok(paymentGateway);
-        }
+         
 
         protected override void Dispose(bool disposing)
         {

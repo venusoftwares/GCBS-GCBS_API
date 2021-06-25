@@ -14,7 +14,7 @@ using GCBS_INTERNAL.Models;
 namespace GCBS_INTERNAL.Controllers.API
 {
     [Authorize]
-    public class ServicesMastersController : ApiController
+    public class ServicesMastersController : BaseApiController
     {
         private DatabaseContext db = new DatabaseContext();
 
@@ -71,6 +71,28 @@ namespace GCBS_INTERNAL.Controllers.API
 
             return StatusCode(HttpStatusCode.NoContent);
         }
+        // PUT: api/PriceMasters/5
+        [ResponseType(typeof(void))]
+        public async Task<IHttpActionResult> PutServicesMaster(ServiceMasterVisible serviceMasterVisible)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            if (serviceMasterVisible == null)
+            {
+                return BadRequest();
+            }
+            ServicesMaster servicesMaster = await db.ServicesMasters.FindAsync(serviceMasterVisible.Id);
+            servicesMaster.Visible = serviceMasterVisible.Visible;
+            servicesMaster.UpdatedBy = userDetails.Id;
+            servicesMaster.UpdatedOn = DateTime.Now;
+            db.Entry(serviceMasterVisible).State = EntityState.Modified;
+            await db.SaveChangesAsync();
+            return StatusCode(HttpStatusCode.NoContent);
+        }
+
 
         // POST: api/ServicesMasters
         [ResponseType(typeof(ServicesMaster))]

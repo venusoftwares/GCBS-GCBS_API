@@ -14,7 +14,7 @@ using GCBS_INTERNAL.Models;
 namespace GCBS_INTERNAL.Controllers.API
 {
     [Authorize]
-    public class PartnerTypesController : ApiController
+    public class PartnerTypesController : BaseApiController
     {
         private DatabaseContext db = new DatabaseContext();
 
@@ -71,7 +71,27 @@ namespace GCBS_INTERNAL.Controllers.API
 
             return StatusCode(HttpStatusCode.NoContent);
         }
+        // PUT: api/PriceMasters/5
+        [ResponseType(typeof(void))]
+        public async Task<IHttpActionResult> PutPartnerType(PartnerTypeVisible partnerTypeVisible)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
 
+            if (partnerTypeVisible == null)
+            {
+                return BadRequest();
+            }
+            PartnerType partnerType = await db.PartnerType.FindAsync(partnerTypeVisible.Id);
+            partnerType.Status = partnerTypeVisible.Status;
+            partnerType.UpdatedBy = userDetails.Id;
+            partnerType.UpdatedOn = DateTime.Now;
+            db.Entry(partnerType).State = EntityState.Modified;
+            await db.SaveChangesAsync();
+            return StatusCode(HttpStatusCode.NoContent);
+        }
         // POST: api/PartnerTypes
         [ResponseType(typeof(PartnerType))]
         public async Task<IHttpActionResult> PostPartnerType(PartnerType partnerType)

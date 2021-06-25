@@ -25,8 +25,8 @@ namespace GCBS_INTERNAL.Models
 
         public DateTime? ValidStartDate { get; set; }
 
-        public DateTime? ValidEndDate { get; set; }
-
+        public DateTime? ValidEndDate { get; set; }   
+        public bool Status { get; set; }
         public DateTime? CreatedOn { get; set; }
 
         public DateTime? UpdatedOn { get; set; }
@@ -34,5 +34,10 @@ namespace GCBS_INTERNAL.Models
         public int? CreatedBy { get; set; }
 
         public int? UpdatedBy { get; set; }
+    }
+    public class HotelMasterVisible
+    {
+        public int Id { get; set; }
+        public bool Status { get; set; }
     }
 }

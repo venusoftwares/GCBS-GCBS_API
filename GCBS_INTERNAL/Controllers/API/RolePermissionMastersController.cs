@@ -14,7 +14,7 @@ using GCBS_INTERNAL.Models;
 namespace GCBS_INTERNAL.Controllers.API
 {
     [Authorize]
-    public class RolePermissionMastersController : ApiController
+    public class RolePermissionMastersController : BaseApiController
     {
         private DatabaseContext db = new DatabaseContext();
 
@@ -33,9 +33,6 @@ namespace GCBS_INTERNAL.Controllers.API
             base.Dispose(disposing);
         }
 
-        private bool RolePermissionMasterExists(int id)
-        {
-            return db.RolePermissionMaster.Count(e => e.Id == id) > 0;
-        }
+        
     }
 }

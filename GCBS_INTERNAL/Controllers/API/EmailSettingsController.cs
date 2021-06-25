@@ -87,21 +87,7 @@ namespace GCBS_INTERNAL.Controllers.API
             return CreatedAtRoute("DefaultApi", new { id = emailSettings.Id }, emailSettings);
         }
 
-        // DELETE: api/EmailSettings/5
-        [ResponseType(typeof(EmailSettings))]
-        public async Task<IHttpActionResult> DeleteEmailSettings(int id)
-        {
-            EmailSettings emailSettings = await db.EmailSettings.FindAsync(id);
-            if (emailSettings == null)
-            {
-                return NotFound();
-            }
-
-            db.EmailSettings.Remove(emailSettings);
-            await db.SaveChangesAsync();
-
-            return Ok(emailSettings);
-        }
+        
 
         protected override void Dispose(bool disposing)
         {
