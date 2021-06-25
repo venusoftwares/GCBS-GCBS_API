@@ -23,4 +23,10 @@ namespace GCBS_INTERNAL.Models
 
         public int? UpdatedBy { get; set; }
     }
+
+    public class ServiceTypesVisible
+    {
+        public int Id { get; set; }
+        public bool Visible { get; set; }
+    }
 }

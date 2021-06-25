@@ -70,6 +70,25 @@ namespace GCBS_INTERNAL.Models
 
             return StatusCode(HttpStatusCode.NoContent);
         }
+        // PUT: api/PriceMasters/5
+        [ResponseType(typeof(void))]
+        public async Task<IHttpActionResult> PutServiceTypes(ServiceTypesVisible serviceTypesVisible)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            if (serviceTypesVisible == null)
+            {
+                return BadRequest();
+            }
+            ServiceTypes serviceTypes = await db.ServiceTypes.FindAsync(serviceTypesVisible.Id);
+            serviceTypes.Visible = serviceTypesVisible.Visible;
+            db.Entry(serviceTypes).State = EntityState.Modified;
+            await db.SaveChangesAsync();
+            return StatusCode(HttpStatusCode.NoContent);
+        }
 
         // POST: api/ServiceTypes
         [ResponseType(typeof(ServiceTypes))]
