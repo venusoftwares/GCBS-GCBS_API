@@ -335,6 +335,7 @@
     <Compile Include="Controllers\API\PaymentDetailsController.cs" />
     <Compile Include="Controllers\API\PaymentGatewaysController.cs" />
     <Compile Include="Controllers\API\PayoutDetailsController.cs" />
+    <Compile Include="Controllers\API\PermissionKeyValuesController.cs" />
     <Compile Include="Controllers\API\PriceMastersController.cs" />
     <Compile Include="Controllers\API\RoleMastersController.cs" />
     <Compile Include="Controllers\API\RolePermissionMastersController.cs" />
@@ -362,6 +363,7 @@
     <Compile Include="Models\PaymentDetails.cs" />
     <Compile Include="Models\PaymentGateway.cs" />
     <Compile Include="Models\PayoutDetails.cs" />
+    <Compile Include="Models\PermissionKeyValue.cs" />
     <Compile Include="Models\PriceMaster.cs" />
     <Compile Include="Models\RoleMaster.cs" />
     <Compile Include="Models\RolePermissionMaster.cs" />

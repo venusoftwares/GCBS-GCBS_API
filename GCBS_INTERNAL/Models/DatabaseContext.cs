@@ -32,7 +32,8 @@ namespace GCBS_INTERNAL.Models
         public virtual DbSet<SmsSettings> SmsSettings { get; set; }
         public virtual DbSet<SupportEnquiryView> SupportEnquiryView { get; set; }
         public virtual DbSet<UserManagement> UserManagement { get; set; }
-        public virtual DbSet<EmailSettings> EmailSettings { get; set; }
+        public virtual DbSet<EmailSettings> EmailSettings { get; set; }     
+        public virtual DbSet<PermissionKeyValue> PermissionKeyValue { get; set; }
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
            
