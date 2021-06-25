@@ -34,4 +34,13 @@ namespace GCBS_INTERNAL.Models
 
         public int? UpdatedBy { get; set; }
     }
+
+    public class PriceMasterVisible
+    {
+        [Required]
+        public int Id { get; set; }
+        [Required]
+        public bool Visible { get; set; }
+
+    }
 }

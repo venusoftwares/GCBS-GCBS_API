@@ -72,6 +72,26 @@ namespace GCBS_INTERNAL.Controllers.API
             return StatusCode(HttpStatusCode.NoContent);
         }
 
+        // PUT: api/PriceMasters/5
+        [ResponseType(typeof(void))]
+        public async Task<IHttpActionResult> PutPriceMaster(PriceMasterVisible priceMasterVisible)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            if (priceMasterVisible == null)
+            {
+                return BadRequest();
+            }
+            PriceMaster priceMaster = await db.PriceMaster.FindAsync(priceMasterVisible.Id);
+            priceMaster.Visible = priceMasterVisible.Visible;
+            db.Entry(priceMaster).State = EntityState.Modified; 
+            await db.SaveChangesAsync();
+            return StatusCode(HttpStatusCode.NoContent);
+        }
+
         // POST: api/PriceMasters
         [ResponseType(typeof(PriceMaster))]
         public async Task<IHttpActionResult> PostPriceMaster(PriceMaster priceMaster)

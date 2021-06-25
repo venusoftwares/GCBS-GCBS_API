@@ -10,11 +10,12 @@ using System.Threading.Tasks;
 using System.Web.Http;
 using System.Web.Http.Description;
 using GCBS_INTERNAL.Models;
+ 
 
 namespace GCBS_INTERNAL.Controllers.API
 {
     [Authorize]
-    public class BookingDetailsController : ApiController
+    public class BookingDetailsController : BaseApiController
     {
         private DatabaseContext db = new DatabaseContext();
 
@@ -50,7 +51,11 @@ namespace GCBS_INTERNAL.Controllers.API
             {
                 return BadRequest();
             }
-
+           // BookingDetails oldbookingDetails = await db.BookingDetails.FindAsync(id);
+            bookingDetails.UpdatedBy = userDetails.Id;
+            bookingDetails.UpdatedOn = DateTime.Now;
+           // bookingDetails.CreatedOn = oldbookingDetails.CreatedOn;
+           // bookingDetails.CreatedBy = oldbookingDetails.CreatedBy;
             db.Entry(bookingDetails).State = EntityState.Modified;
 
             try
@@ -80,10 +85,10 @@ namespace GCBS_INTERNAL.Controllers.API
             {
                 return BadRequest(ModelState);
             }
-
+            bookingDetails.CreatedBy = userDetails.Id;
+            bookingDetails.CreatedOn = DateTime.Now;
             db.BookingDetails.Add(bookingDetails);
             await db.SaveChangesAsync();
-
             return CreatedAtRoute("DefaultApi", new { id = bookingDetails.Id }, bookingDetails);
         }
 
