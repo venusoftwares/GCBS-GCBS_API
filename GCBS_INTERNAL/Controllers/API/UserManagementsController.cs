@@ -14,7 +14,7 @@ using GCBS_INTERNAL.Models;
 namespace GCBS_INTERNAL.Controllers.API
 {
     [Authorize]
-    public class UserManagementsController : ApiController
+    public class UserManagementsController : BaseApiController
     {
         private DatabaseContext db = new DatabaseContext();
 
@@ -70,7 +70,29 @@ namespace GCBS_INTERNAL.Controllers.API
             }
             return StatusCode(HttpStatusCode.NoContent);
         }
+        // PUT: api/PriceMasters/5
+        [ResponseType(typeof(void))]
+        public async Task<IHttpActionResult> PutUserManagement(UserMasterVisible userMasterVisible)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
 
+            if (userMasterVisible == null)
+            {
+                return BadRequest();
+            }
+            UserManagement userManagement = await db.UserManagement.FindAsync(userMasterVisible.Id);
+            userManagement.Status = userMasterVisible.Status;
+            userManagement.UpdatedBy = userDetails.Id;
+            userManagement.UpdatedOn = DateTime.Now;
+            db.Entry(userManagement).State = EntityState.Modified;
+            await db.SaveChangesAsync();
+            return StatusCode(HttpStatusCode.NoContent);
+        }
+
+        
         // POST: api/UserManagements
         [ResponseType(typeof(UserManagement))]
         public async Task<IHttpActionResult> PostUserManagement(UserManagement userManagement)
