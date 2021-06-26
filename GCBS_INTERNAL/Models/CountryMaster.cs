@@ -38,4 +38,10 @@ namespace GCBS_INTERNAL.Models
         public int Id { get; set; }
         public bool Status { get; set; }
     }
+
+    public class Country
+    {
+        public int Id { get; set; }
+        public string CountryName { get; set; }
+    }
 }
