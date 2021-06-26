@@ -49,4 +49,5 @@ namespace GCBS_INTERNAL.Models
         public int Id { get; set; }
         public bool Status { get; set; }
     }
+  
 }

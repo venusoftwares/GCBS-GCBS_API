@@ -327,6 +327,7 @@
     <Compile Include="Controllers\API\CityMastersController.cs" />
     <Compile Include="Controllers\API\ContactEnquiryViewsController.cs" />
     <Compile Include="Controllers\API\CountryMastersController.cs" />
+    <Compile Include="Controllers\API\DropDownController.cs" />
     <Compile Include="Controllers\API\EmailSettingsController.cs" />
     <Compile Include="Controllers\API\HotelMastersController.cs" />
     <Compile Include="Controllers\API\InAppNotificationsController.cs" />
