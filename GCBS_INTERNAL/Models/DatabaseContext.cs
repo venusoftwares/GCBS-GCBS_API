@@ -38,6 +38,9 @@ namespace GCBS_INTERNAL.Models
         public virtual DbSet<CountryMaster> CountryMaster { get; set; }
         public virtual DbSet<LocationMasters> LocationMasters { get; set; }
         public virtual DbSet<StateMaster> StateMaster { get; set; }
+        public virtual DbSet<AgenciesMaster> AgenciesMaster { get; set; }
+        public virtual DbSet<LanguageMaster> LanguageMaster { get; set; }
+        public virtual DbSet<NationalityMaster> NationalityMaster { get; set; }
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
            

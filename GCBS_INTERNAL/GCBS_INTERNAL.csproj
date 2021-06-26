@@ -321,6 +321,7 @@
     <Compile Include="Areas\HelpPage\SampleGeneration\SampleDirection.cs" />
     <Compile Include="Areas\HelpPage\SampleGeneration\TextSample.cs" />
     <Compile Include="Areas\HelpPage\XmlDocumentationProvider.cs" />
+    <Compile Include="Controllers\API\AgenciesMastersController.cs" />
     <Compile Include="Controllers\API\Auth\AdminLoginController.cs" />
     <Compile Include="Controllers\API\BaseApiController.cs" />
     <Compile Include="Controllers\API\BookingDetailsController.cs" />
@@ -331,8 +332,10 @@
     <Compile Include="Controllers\API\EmailSettingsController.cs" />
     <Compile Include="Controllers\API\HotelMastersController.cs" />
     <Compile Include="Controllers\API\InAppNotificationsController.cs" />
+    <Compile Include="Controllers\API\LanguageMastersController.cs" />
     <Compile Include="Controllers\API\LocationMastersController.cs" />
     <Compile Include="Controllers\API\MarginMastersController.cs" />
+    <Compile Include="Controllers\API\NationalityMastersController.cs" />
     <Compile Include="Controllers\API\PartnerRatingsController.cs" />
     <Compile Include="Controllers\API\PartnerTypesController.cs" />
     <Compile Include="Controllers\API\PaymentDetailsController.cs" />
@@ -354,6 +357,7 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Helper\GetAccessToken.cs" />
+    <Compile Include="Models\AgenciesMaster.cs" />
     <Compile Include="Models\BookingDetail.cs" />
     <Compile Include="Models\CityMaster.cs" />
     <Compile Include="Models\ContactEnquiryView.cs" />
@@ -362,8 +366,10 @@
     <Compile Include="Models\EmailSettings.cs" />
     <Compile Include="Models\HotelMaster.cs" />
     <Compile Include="Models\InAppNotification.cs" />
+    <Compile Include="Models\LanguageMaster.cs" />
     <Compile Include="Models\LocationMasters.cs" />
     <Compile Include="Models\MarginMaster.cs" />
+    <Compile Include="Models\NationalityMaster.cs" />
     <Compile Include="Models\PartnerRating.cs" />
     <Compile Include="Models\PartnerType.cs" />
     <Compile Include="Models\PaymentDetails.cs" />
