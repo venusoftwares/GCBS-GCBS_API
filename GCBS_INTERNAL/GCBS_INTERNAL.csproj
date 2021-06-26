@@ -324,7 +324,9 @@
     <Compile Include="Controllers\API\Auth\AdminLoginController.cs" />
     <Compile Include="Controllers\API\BaseApiController.cs" />
     <Compile Include="Controllers\API\BookingDetailsController.cs" />
+    <Compile Include="Controllers\API\CityMastersController.cs" />
     <Compile Include="Controllers\API\ContactEnquiryViewsController.cs" />
+    <Compile Include="Controllers\API\CountryMastersController.cs" />
     <Compile Include="Controllers\API\EmailSettingsController.cs" />
     <Compile Include="Controllers\API\HotelMastersController.cs" />
     <Compile Include="Controllers\API\InAppNotificationsController.cs" />
@@ -342,6 +344,7 @@
     <Compile Include="Controllers\API\ServicesMastersController.cs" />
     <Compile Include="Controllers\API\SiteSettingsController.cs" />
     <Compile Include="Controllers\API\SmsSettingsController.cs" />
+    <Compile Include="Controllers\API\StateMastersController.cs" />
     <Compile Include="Controllers\API\SupportEnquiryViewsController.cs" />
     <Compile Include="Controllers\API\UserManagementsController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
@@ -351,12 +354,14 @@
     </Compile>
     <Compile Include="Helper\GetAccessToken.cs" />
     <Compile Include="Models\BookingDetail.cs" />
+    <Compile Include="Models\CityMaster.cs" />
     <Compile Include="Models\ContactEnquiryView.cs" />
+    <Compile Include="Models\CountryMaster.cs" />
     <Compile Include="Models\DatabaseContext.cs" />
     <Compile Include="Models\EmailSettings.cs" />
     <Compile Include="Models\HotelMaster.cs" />
     <Compile Include="Models\InAppNotification.cs" />
-    <Compile Include="Models\LocationMaster.cs" />
+    <Compile Include="Models\LocationMasters.cs" />
     <Compile Include="Models\MarginMaster.cs" />
     <Compile Include="Models\PartnerRating.cs" />
     <Compile Include="Models\PartnerType.cs" />
@@ -372,6 +377,7 @@
     <Compile Include="Controllers\API\ServiceTypesController.cs" />
     <Compile Include="Models\SiteSettings.cs" />
     <Compile Include="Models\SmsSettings.cs" />
+    <Compile Include="Models\StateMaster.cs" />
     <Compile Include="Models\SupportEnquiryView.cs" />
     <Compile Include="Models\UserManagement.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

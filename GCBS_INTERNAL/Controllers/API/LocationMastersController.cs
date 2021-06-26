@@ -13,45 +13,44 @@ using GCBS_INTERNAL.Models;
 
 namespace GCBS_INTERNAL.Controllers.API
 {
-    [Authorize]
-    public class LocationMastersController : ApiController
+    public class LocationMastersController : BaseApiController
     {
         private DatabaseContext db = new DatabaseContext();
 
         // GET: api/LocationMasters
-        public IQueryable<LocationMaster> GetLocationMaster()
+        public IQueryable<LocationMasters> GetLocationMasters()
         {
-            return db.LocationMaster;
+            return db.LocationMasters;
         }
 
         // GET: api/LocationMasters/5
-        [ResponseType(typeof(LocationMaster))]
-        public async Task<IHttpActionResult> GetLocationMaster(int id)
+        [ResponseType(typeof(LocationMasters))]
+        public async Task<IHttpActionResult> GetLocationMasters(int id)
         {
-            LocationMaster locationMaster = await db.LocationMaster.FindAsync(id);
-            if (locationMaster == null)
+            LocationMasters locationMasters = await db.LocationMasters.FindAsync(id);
+            if (locationMasters == null)
             {
                 return NotFound();
             }
 
-            return Ok(locationMaster);
+            return Ok(locationMasters);
         }
 
         // PUT: api/LocationMasters/5
         [ResponseType(typeof(void))]
-        public async Task<IHttpActionResult> PutLocationMaster(int id, LocationMaster locationMaster)
+        public async Task<IHttpActionResult> PutLocationMasters(int id, LocationMasters locationMasters)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            if (id != locationMaster.Id)
+            if (id != locationMasters.Id)
             {
                 return BadRequest();
             }
 
-            db.Entry(locationMaster).State = EntityState.Modified;
+            db.Entry(locationMasters).State = EntityState.Modified;
 
             try
             {
@@ -59,7 +58,7 @@ namespace GCBS_INTERNAL.Controllers.API
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!LocationMasterExists(id))
+                if (!LocationMastersExists(id))
                 {
                     return NotFound();
                 }
@@ -72,35 +71,57 @@ namespace GCBS_INTERNAL.Controllers.API
             return StatusCode(HttpStatusCode.NoContent);
         }
 
-        // POST: api/LocationMasters
-        [ResponseType(typeof(LocationMaster))]
-        public async Task<IHttpActionResult> PostLocationMaster(LocationMaster locationMaster)
+        // PUT: api/LocationMasters/5
+        [ResponseType(typeof(void))]
+        public async Task<IHttpActionResult> PutLocationMasters(LocationMasterVisible locationMasterVisible)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            db.LocationMaster.Add(locationMaster);
+            if (locationMasterVisible == null)
+            {
+                return BadRequest();
+            }
+            LocationMasters locationMasters = await db.LocationMasters.FindAsync(locationMasterVisible.Id);
+            locationMasters.Status= locationMasterVisible.Status;
+            db.Entry(locationMasters).State = EntityState.Modified;
+            await db.SaveChangesAsync();
+            return StatusCode(HttpStatusCode.NoContent);
+        }
+        
+
+
+        // POST: api/LocationMasters
+        [ResponseType(typeof(LocationMasters))]
+        public async Task<IHttpActionResult> PostLocationMasters(LocationMasters locationMasters)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            db.LocationMasters.Add(locationMasters);
             await db.SaveChangesAsync();
 
-            return CreatedAtRoute("DefaultApi", new { id = locationMaster.Id }, locationMaster);
+            return CreatedAtRoute("DefaultApi", new { id = locationMasters.Id }, locationMasters);
         }
 
         // DELETE: api/LocationMasters/5
-        [ResponseType(typeof(LocationMaster))]
-        public async Task<IHttpActionResult> DeleteLocationMaster(int id)
+        [ResponseType(typeof(LocationMasters))]
+        public async Task<IHttpActionResult> DeleteLocationMasters(int id)
         {
-            LocationMaster locationMaster = await db.LocationMaster.FindAsync(id);
-            if (locationMaster == null)
+            LocationMasters locationMasters = await db.LocationMasters.FindAsync(id);
+            if (locationMasters == null)
             {
                 return NotFound();
             }
 
-            db.LocationMaster.Remove(locationMaster);
+            db.LocationMasters.Remove(locationMasters);
             await db.SaveChangesAsync();
 
-            return Ok(locationMaster);
+            return Ok(locationMasters);
         }
 
         protected override void Dispose(bool disposing)
@@ -112,9 +133,9 @@ namespace GCBS_INTERNAL.Controllers.API
             base.Dispose(disposing);
         }
 
-        private bool LocationMasterExists(int id)
+        private bool LocationMastersExists(int id)
         {
-            return db.LocationMaster.Count(e => e.Id == id) > 0;
+            return db.LocationMasters.Count(e => e.Id == id) > 0;
         }
     }
 }
