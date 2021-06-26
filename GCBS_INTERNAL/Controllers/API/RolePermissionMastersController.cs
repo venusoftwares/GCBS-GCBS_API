@@ -49,7 +49,7 @@ namespace GCBS_INTERNAL.Controllers.API
             RolePermissionMaster rolePermissionMaster = await db.RolePermissionMaster.Where(x=>x.MenuId == priceMasterVisible.MenuId && x.RoleId == priceMasterVisible.RoleId).FirstOrDefaultAsync();
             if(rolePermissionMaster!=null)
             {
-                rolePermissionMaster.Privilege = priceMasterVisible.Permission;
+                rolePermissionMaster.Privilege = ConvertString(priceMasterVisible.Permission);
                 rolePermissionMaster.UpdatedBy = userDetails.Id;
                 rolePermissionMaster.UpdatedOn = DateTime.Now;
                 db.Entry(rolePermissionMaster).State = EntityState.Modified;
@@ -59,7 +59,7 @@ namespace GCBS_INTERNAL.Controllers.API
                 rolePermissionMaster = new RolePermissionMaster();
                 rolePermissionMaster.MenuId = priceMasterVisible.MenuId;
                 rolePermissionMaster.RoleId = priceMasterVisible.RoleId;
-                rolePermissionMaster.Privilege = priceMasterVisible.Permission;
+                rolePermissionMaster.Privilege = ConvertString(priceMasterVisible.Permission);
                 rolePermissionMaster.CreatedBy = userDetails.Id;
                 rolePermissionMaster.CreatedOn = DateTime.Now;
                 db.RolePermissionMaster.Add(rolePermissionMaster);
@@ -98,6 +98,34 @@ namespace GCBS_INTERNAL.Controllers.API
             menuItemList.permissionViewModels = permissionViewModels;
             menuItemList.menuItem = menuItem;
             return menuItemList;
+        }
+
+        private string ConvertString(bool[] list)
+        {
+            int count = 0;
+            foreach(var o in list)
+            {
+                if(o)
+                {
+                    count++;
+                }
+            }
+            var permissionViewModels = db.PermissionKeyValue.Select(x => new PermissionViewModel { Key = x.Key, Value = x.Value, Visible = x.Status }).ToList();
+            string res = "";
+            string[] t = new string[count];
+            int i = 0;
+            int j = 0;
+            foreach(var k in permissionViewModels)
+            {
+                if(list[i])
+                {
+                    t[j] = k.Value;
+                    j++;
+                }
+                i++;
+            }
+            res = string.Join("|", t);
+            return res;
         }
         private List<bool> PermissionConvert(List<PermissionViewModel> permissionViews,string Permission="")
         {

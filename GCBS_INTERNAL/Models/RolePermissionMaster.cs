@@ -30,6 +30,6 @@ namespace GCBS_INTERNAL.Models
     {     
         public int MenuId { get; set; }
         public int RoleId { get; set; }
-        public string Permission { get; set; }
+        public bool[] Permission { get; set; }
     }
 }
