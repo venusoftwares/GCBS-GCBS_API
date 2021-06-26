@@ -15,8 +15,6 @@ namespace GCBS_INTERNAL.Models
 
         public int MenuId { get; set; }
 
-        public int SubMenu { get; set; }
-
         [StringLength(250)]
         public string Privilege { get; set; }
 
@@ -27,5 +25,11 @@ namespace GCBS_INTERNAL.Models
         public int? CreatedBy { get; set; }
 
         public int? UpdatedBy { get; set; }
+    }
+    public class RolePermissionRequest
+    {     
+        public int MenuId { get; set; }
+        public int RoleId { get; set; }
+        public string Permission { get; set; }
     }
 }

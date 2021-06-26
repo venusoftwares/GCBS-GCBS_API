@@ -378,6 +378,7 @@
     <Compile Include="Provider\OauthProvider.cs" />
     <Compile Include="Startup.cs" />
     <Compile Include="ViewModels\AdminLogin.cs" />
+    <Compile Include="ViewModels\MenuItems.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Areas\HelpPage\HelpPage.css" />

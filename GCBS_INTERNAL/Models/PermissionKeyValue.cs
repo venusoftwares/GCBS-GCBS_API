@@ -18,7 +18,7 @@ namespace GCBS_INTERNAL.Models
         [StringLength(50)]
         public string Value { get; set; }
 
-        public bool? Status { get; set; }
+        public bool Status { get; set; }
 
         public DateTime? CreatedOn { get; set; }
     }
@@ -26,5 +26,11 @@ namespace GCBS_INTERNAL.Models
     {
         public int Id { get; set; }
         public bool Status { get; set; }
+    }
+    public class PermissionViewModel
+    {
+        public string Key { get; set; }
+        public string Value { get; set; }
+        public bool Visible { get; set; }
     }
 }
