@@ -24,18 +24,18 @@ namespace GCBS_INTERNAL.Controllers.API
             return db.PermissionKeyValue;
         }
 
-        // GET: api/PermissionKeyValues/5
-        [ResponseType(typeof(PermissionKeyValue))]
-        public async Task<IHttpActionResult> GetPermissionKeyValue(int id)
-        {
-            PermissionKeyValue permissionKeyValue = await db.PermissionKeyValue.FindAsync(id);
-            if (permissionKeyValue == null)
-            {
-                return NotFound();
-            }
+        //// GET: api/PermissionKeyValues/5
+        //[ResponseType(typeof(PermissionKeyValue))]
+        //public async Task<IHttpActionResult> GetPermissionKeyValue(int id)
+        //{
+        //    PermissionKeyValue permissionKeyValue = await db.PermissionKeyValue.FindAsync(id);
+        //    if (permissionKeyValue == null)
+        //    {
+        //        return NotFound();
+        //    }
 
-            return Ok(permissionKeyValue);
-        }
+        //    return Ok(permissionKeyValue);
+        //}
 
   
         // PUT: api/PriceMasters/5
