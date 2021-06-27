@@ -19,6 +19,7 @@ namespace GCBS_INTERNAL.Controllers.API
         private DatabaseContext db = new DatabaseContext();
 
         // GET: api/LocationMasters
+        [Route("api/LocationMasters/{CountryId}/{StateId}/{CityId}/{Status}")]
         public IQueryable<LocationMasters> GetLocationMasters(int CountryId, int StateId,int CityId, int Status)
         {
             IQueryable<LocationMasters> filter = db.LocationMasters;

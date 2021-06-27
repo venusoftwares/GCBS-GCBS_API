@@ -19,6 +19,7 @@ namespace GCBS_INTERNAL.Controllers.API
         private DatabaseContext db = new DatabaseContext();
 
         // GET: api/StateMasters
+        [Route("api/StateMasters/{CountryId}/{Status}")]
         public IQueryable<StateMaster> GetStateMaster(int CountryId,int Status)
         {
             IQueryable<StateMaster> filter = db.StateMaster;         
