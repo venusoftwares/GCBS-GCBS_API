@@ -19,9 +19,19 @@ namespace GCBS_INTERNAL.Controllers.API
         private DatabaseContext db = new DatabaseContext();
 
         // GET: api/StateMasters
-        public IQueryable<StateMaster> GetStateMaster()
+        public IQueryable<StateMaster> GetStateMaster(int CountryId,int Status)
         {
-            return db.StateMaster;
+            IQueryable<StateMaster> filter = db.StateMaster;         
+            if (CountryId > 0)
+            {
+                filter = filter.Where(x => x.CountryId == CountryId);
+            }
+            if(Status == 0 || Status == 1 )
+            {
+                var status = Status == 1 ? true : false;
+                filter = filter.Where(x => x.Status == status);
+            }            
+            return filter;
         }
 
         // GET: api/StateMasters/5

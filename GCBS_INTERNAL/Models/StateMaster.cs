@@ -43,4 +43,10 @@ namespace GCBS_INTERNAL.Models
         public int Id { get; set; }
         public string StateName { get; set; }
     }
+
+    public class StateFilter
+    {
+        public int CountryId { get; set; }
+        public int Status { get; set; }
+    }
 }

@@ -19,9 +19,23 @@ namespace GCBS_INTERNAL.Controllers.API
         private DatabaseContext db = new DatabaseContext();
 
         // GET: api/CityMasters
-        public IQueryable<CityMaster> GetCityMaster()
+        public IQueryable<CityMaster> GetCityMaster(int CountryId,int StateId, int Status)
         {
-            return db.CityMaster;
+            IQueryable<CityMaster> filter = db.CityMaster;
+            if (CountryId > 0)
+            {
+                filter = filter.Where(x => x.CountryId == CountryId);
+            }
+            if (StateId > 0)
+            {
+                filter = filter.Where(x => x.StateId == StateId);
+            }
+            if (Status == 0 || Status == 1)
+            {
+                var status = Status == 1 ? true : false;
+                filter = filter.Where(x => x.Status == status);
+            }
+            return filter;
         }
 
         // GET: api/CityMasters/5
