@@ -51,6 +51,13 @@
     <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <HintPath>packages\EntityFramework.6.1.3\lib\net45\EntityFramework.SqlServer.dll</HintPath>
     </Reference>
+    <Reference Include="ExcelDataReader, Version=3.6.0.0, Culture=neutral, PublicKeyToken=93517dbe6a4012fa, processorArchitecture=MSIL">
+      <HintPath>packages\ExcelDataReader.3.6.0\lib\net45\ExcelDataReader.dll</HintPath>
+      <EmbedInteropTypes>False</EmbedInteropTypes>
+    </Reference>
+    <Reference Include="ExcelDataReader.DataSet, Version=3.6.0.0, Culture=neutral, PublicKeyToken=93517dbe6a4012fa, processorArchitecture=MSIL">
+      <HintPath>packages\ExcelDataReader.DataSet.3.6.0\lib\net35\ExcelDataReader.DataSet.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.AspNetCore.Authorization, Version=1.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
       <HintPath>packages\Microsoft.AspNetCore.Authorization.1.0.0\lib\net451\Microsoft.AspNetCore.Authorization.dll</HintPath>
     </Reference>
@@ -186,6 +193,7 @@
       <HintPath>packages\System.Diagnostics.DiagnosticSource.4.0.0\lib\net46\System.Diagnostics.DiagnosticSource.dll</HintPath>
     </Reference>
     <Reference Include="System.Drawing" />
+    <Reference Include="System.IO.Compression, Version=4.2.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL" />
     <Reference Include="System.Memory, Version=4.0.1.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>packages\System.Memory.4.5.2\lib\netstandard2.0\System.Memory.dll</HintPath>
     </Reference>
@@ -335,6 +343,7 @@
     <Compile Include="Controllers\API\EmailSettingsController.cs" />
     <Compile Include="Controllers\API\ExportController.cs" />
     <Compile Include="Controllers\API\HotelMastersController.cs" />
+    <Compile Include="Controllers\API\ImportController.cs" />
     <Compile Include="Controllers\API\InAppNotificationsController.cs" />
     <Compile Include="Controllers\API\LanguageMastersController.cs" />
     <Compile Include="Controllers\API\LocationMastersController.cs" />
@@ -395,6 +404,7 @@
     <Compile Include="Provider\OauthProvider.cs" />
     <Compile Include="Startup.cs" />
     <Compile Include="ViewModels\AdminLogin.cs" />
+    <Compile Include="ViewModels\DropDownCommon.cs" />
     <Compile Include="ViewModels\MenuItems.cs" />
   </ItemGroup>
   <ItemGroup>

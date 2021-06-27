@@ -7,10 +7,9 @@ namespace GCBS_INTERNAL.Models
     using System.Data.Entity.Spatial; 
     [Table("ServicesMaster")]
     public partial class ServicesMaster
-    {
-              
+    {          
         public int Id { get; set; }
-
+        public int ServiceTypeId { get; set; }
         [StringLength(200)]
         public string Service { get; set; }   
         public bool Visible { get; set; }
@@ -22,6 +21,8 @@ namespace GCBS_INTERNAL.Models
         public int? CreatedBy { get; set; }
 
         public int? UpdatedBy { get; set; }
+        [ForeignKey("ServiceTypeId")]
+        public ServiceTypes ServiceTypes { get; set; }
     }
     public class ServiceMasterVisible
     {

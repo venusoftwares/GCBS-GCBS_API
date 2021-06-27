@@ -49,4 +49,14 @@ namespace GCBS_INTERNAL.Models
         public int CountryId { get; set; }
         public int Status { get; set; }
     }
+
+    public class StateMasterViewModel
+    {
+        public int Id { get; set; }   
+        public string State { get; set; }
+        public string Country { get; set; }
+        public bool Status { get; set; }
+        public int CountryId { get; set; }
+         
+    }
 }

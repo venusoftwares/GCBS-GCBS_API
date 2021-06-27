@@ -49,5 +49,19 @@ namespace GCBS_INTERNAL.Models
         public int Id { get; set; }
         public bool Status { get; set; }
     }
+
+    public class LocationMasterViewModel
+    {
+        public int Id { get; set; }
+        public string City { get; set; }
+        public string Location { get; set; }
+        public int PinCode { get; set; }
+        public string State { get; set; }
+        public string Country { get; set; }
+        public bool Status { get; set; }
+        public int CountryId { get; set; }
+        public int StateId { get; set; }
+        public int CityId { get; set; }
+    }
   
 }

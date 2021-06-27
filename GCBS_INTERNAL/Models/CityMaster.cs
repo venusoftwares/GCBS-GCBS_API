@@ -43,4 +43,20 @@ namespace GCBS_INTERNAL.Models
         public int Id { get; set; }
         public string CityName { get; set; }
     }
+    public class CitiesVisible
+    {
+        public int Id { get; set; }
+        public bool Status { get; set; }
+    }
+    public class CityViewModel
+    {
+        public int Id { get; set; }
+        public string City { get; set; }  
+        public string State { get; set; }
+        public string Country { get; set; }
+        public bool Status { get; set; }
+        public int CountryId { get; set; }
+        public int StateId { get; set; }
+       
+    }
 }

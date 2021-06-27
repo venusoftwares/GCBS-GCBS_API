@@ -1,4 +1,5 @@
-﻿using System;
+﻿using GCBS_INTERNAL.ViewModels;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
@@ -23,6 +24,11 @@ namespace GCBS_INTERNAL.Models
             return db.ServiceTypes;
         }
 
+        [Route("api/DropDownServiceTypes")]
+        public IQueryable<DropDownCommon> GetDropDownServiceTypes()
+        {
+            return db.ServiceTypes.Where(x=>x.Visible).Select(x=> new DropDownCommon { Key= x.Id, Value=x.ServiceType });
+        }
         // GET: api/ServiceTypes/5
         [ResponseType(typeof(ServiceTypes))]
         public async Task<IHttpActionResult> GetServiceTypes(int id)

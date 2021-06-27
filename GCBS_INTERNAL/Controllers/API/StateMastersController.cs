@@ -20,9 +20,18 @@ namespace GCBS_INTERNAL.Controllers.API
 
         // GET: api/StateMasters
         [Route("api/StateMasters/{CountryId}/{Status}")]
-        public IQueryable<StateMaster> GetStateMaster(int CountryId,int Status)
+        public IQueryable<StateMasterViewModel> GetStateMaster(int CountryId,int Status)
         {
-            IQueryable<StateMaster> filter = db.StateMaster;         
+            IQueryable<StateMasterViewModel> filter = db.StateMaster
+                .Include(x=>x.CountryMaster)
+                .Select(x=>new StateMasterViewModel 
+                {
+                    Id = x.Id,
+                    State = x.StateName,
+                    Country = x.CountryMaster.CountryName,
+                    Status = x.Status,
+                    CountryId = x.CountryId  
+                });         
             if (CountryId > 0)
             {
                 filter = filter.Where(x => x.CountryId == CountryId);

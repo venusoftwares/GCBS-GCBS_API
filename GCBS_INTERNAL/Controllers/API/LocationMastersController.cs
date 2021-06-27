@@ -20,9 +20,25 @@ namespace GCBS_INTERNAL.Controllers.API
 
         // GET: api/LocationMasters
         [Route("api/LocationMasters/{CountryId}/{StateId}/{CityId}/{Status}")]
-        public IQueryable<LocationMasters> GetLocationMasters(int CountryId, int StateId,int CityId, int Status)
+        public IQueryable<LocationMasterViewModel> GetLocationMasters(int CountryId, int StateId,int CityId, int Status)
         {
-            IQueryable<LocationMasters> filter = db.LocationMasters;
+            IQueryable<LocationMasterViewModel> filter = db.LocationMasters
+                .Include(x=>x.CityMaster)
+                .Include(x=>x.CountryMaster)
+                .Include(x=>x.StateMaster)
+                .Select(x=> new LocationMasterViewModel
+                {
+                    City = x.CityMaster.CityName  ,
+                    State = x.StateMaster.StateName,
+                    Location = x.Location,
+                    PinCode = x.PinCode,
+                    Status = x.Status,
+                    Country = x.CountryMaster.CountryName,
+                    CountryId = x.CountryId,
+                    StateId =x .StateId,
+                    CityId = x.CityId,
+                    Id = x.Id
+                });
             if (CountryId > 0)
             {
                 filter = filter.Where(x => x.CountryId == CountryId);
