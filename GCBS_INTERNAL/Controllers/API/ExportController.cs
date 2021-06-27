@@ -11,6 +11,7 @@ using System.Net.Http.Headers;
 using System.Text;
 using System.Web;
 using System.Web.Http;
+using System.Web.Http.Description;
 
 namespace GCBS_INTERNAL.Controllers.API
 {
@@ -21,37 +22,40 @@ namespace GCBS_INTERNAL.Controllers.API
       
         [HttpPost]
         [Route("api/ExportExcelCountry")]
+        [ResponseType(typeof(HttpPostFile))]
         public IHttpActionResult ExportExcelCountry()
-        {     
-            byte[] temp = System.Text.Encoding.UTF8.GetBytes(CountryToHtml().ToString());
-            return Ok(temp);
+        {       
+            return Ok(new HttpPostFile {  FileData = CountryToHtml().ToString(),FileName=DateTime.Now.ToString("yyyyMMddhhmmtt")+".xls",FileType= "application/vnd.ms-excel" });
         }
         [HttpPost]
         [Route("api/ExportExcelState")]
+        [ResponseType(typeof(HttpPostFile))]
         public IHttpActionResult ExportExcelState()
         {
-            byte[] temp = System.Text.Encoding.UTF8.GetBytes(StateToHtml().ToString());
-            return Ok(temp);
+            return Ok(new HttpPostFile { FileData = StateToHtml().ToString(), FileName = DateTime.Now.ToString("yyyyMMddhhmmtt") + ".xls", FileType = "application/vnd.ms-excel" });
+           
         }
         [HttpPost]
         [Route("api/ExportExcelCity")]
+        [ResponseType(typeof(HttpPostFile))]
         public IHttpActionResult ExportExcelCity()
         {
-            byte[] temp = System.Text.Encoding.UTF8.GetBytes(CityToHtml().ToString());
-            return Ok(temp);
+            return Ok(new HttpPostFile { FileData = CityToHtml().ToString(), FileName = DateTime.Now.ToString("yyyyMMddhhmmtt") + ".xls", FileType = "application/vnd.ms-excel" });
+           
         }
         [HttpPost]
         [Route("api/ExportExcelLocation")]
+        [ResponseType(typeof(HttpPostFile))]
         public IHttpActionResult ExportExcelLocation()
         {
-            byte[] temp = System.Text.Encoding.UTF8.GetBytes(LocationToHtml().ToString());
-            return Ok(temp);
+            return Ok(new HttpPostFile { FileData = LocationToHtml().ToString(), FileName = DateTime.Now.ToString("yyyyMMddhhmmtt") + ".xls", FileType = "application/vnd.ms-excel" });            
         }
 
       
 
         [HttpPost]
         [Route("api/ExportPdfCountry")]
+        [ResponseType(typeof(HttpPostFile))]
         public IHttpActionResult ExportPdfCountry()
         {
             string path = HttpContext.Current.Server.MapPath("~/Template/CountryTemp.html");
@@ -68,11 +72,13 @@ namespace GCBS_INTERNAL.Controllers.API
                 str.Append("</tr>");
             }
             html = html.Replace("{td}", str.ToString());  
-            return Ok(HtmlToPdf(html));
+             
+            return Ok(new HttpPostFile { FileData = HtmlToPdf(html).ToString(), FileName = DateTime.Now.ToString("yyyyMMddhhmmtt") + ".pdf", FileType = "application/pdf" });
         }
      
         [HttpPost]
         [Route("api/ExportPdfState")]
+        [ResponseType(typeof(HttpPostFile))]
         public IHttpActionResult ExportPdfState()
         {
             string path = HttpContext.Current.Server.MapPath("~/Template/StateTemp.html");
@@ -88,10 +94,12 @@ namespace GCBS_INTERNAL.Controllers.API
                 str.Append("</tr>");
             }
             html = html.Replace("{td}", str.ToString());
-            return Ok(HtmlToPdf(html));
+            return Ok(new HttpPostFile { FileData = HtmlToPdf(html).ToString(), FileName = DateTime.Now.ToString("yyyyMMddhhmmtt") + ".pdf", FileType = "application/pdf" });
+             
         }
         [HttpPost]
         [Route("api/ExportPdfCity")]
+        [ResponseType(typeof(HttpPostFile))]
         public IHttpActionResult ExportPdfCity()
         {
             string path = HttpContext.Current.Server.MapPath("~/Template/CityTemp.html");
@@ -108,10 +116,11 @@ namespace GCBS_INTERNAL.Controllers.API
                 str.Append("</tr>");
             }
             html = html.Replace("{td}", str.ToString());
-            return Ok(HtmlToPdf(html));
+            return Ok(new HttpPostFile { FileData = HtmlToPdf(html).ToString(), FileName = DateTime.Now.ToString("yyyyMMddhhmmtt") + ".pdf", FileType = "application/pdf" });
         }
         [HttpPost]
         [Route("api/ExportPdfLocation")]
+        [ResponseType(typeof(HttpPostFile))]
         public IHttpActionResult ExportPdfLocation()
         {
             string path = HttpContext.Current.Server.MapPath("~/Template/LocationTemp.html");
@@ -130,7 +139,7 @@ namespace GCBS_INTERNAL.Controllers.API
                 str.Append("</tr>");
             }
             html = html.Replace("{td}", str.ToString());
-            return Ok(HtmlToPdf(html));
+            return Ok(new HttpPostFile { FileData = HtmlToPdf(html).ToString(), FileName = DateTime.Now.ToString("yyyyMMddhhmmtt") + ".pdf", FileType = "application/pdf" });
         }
 
 
@@ -301,7 +310,12 @@ namespace GCBS_INTERNAL.Controllers.API
             public int PinCode { get; set; }
 
         }
-
+        public class HttpPostFile
+        {
+            public string FileName { get; set; }
+            public string FileType { get; set; }
+            public string FileData { get; set; }   
+        }
 
         private string HtmlToPdf(string htmlContent)
         {
