@@ -163,7 +163,8 @@ namespace GCBS_INTERNAL.Controllers.API
                 str.Append("</tr>");
             }
             str.Append("</table>");
-            return str.ToString();
+            byte[] temp = Encoding.UTF8.GetBytes(str.ToString());   
+            return Convert.ToBase64String(temp);
         }
    
 
@@ -184,7 +185,8 @@ namespace GCBS_INTERNAL.Controllers.API
                 str.Append("</tr>");
             }
             str.Append("</table>");
-            return str.ToString();
+            byte[] temp = Encoding.UTF8.GetBytes(str.ToString());
+            return Convert.ToBase64String(temp);
         }
         private string CityToHtml()
         {
@@ -205,7 +207,8 @@ namespace GCBS_INTERNAL.Controllers.API
                 str.Append("</tr>");
             }
             str.Append("</table>");
-            return str.ToString();
+            byte[] temp = Encoding.UTF8.GetBytes(str.ToString());
+            return Convert.ToBase64String(temp);
         }
         private string LocationToHtml()
         {
@@ -230,7 +233,8 @@ namespace GCBS_INTERNAL.Controllers.API
                 str.Append("</tr>");
             }
             str.Append("</table>");
-            return str.ToString();
+            byte[] temp = Encoding.UTF8.GetBytes(str.ToString());
+            return Convert.ToBase64String(temp);
         }
 
     
