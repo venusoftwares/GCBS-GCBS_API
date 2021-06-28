@@ -19,90 +19,24 @@ namespace GCBS_INTERNAL.Controllers.API
         private DatabaseContext db = new DatabaseContext();
 
         // GET: api/PayoutDetails
-        public IQueryable<PayoutDetails> GetPayoutDetails()
+        public IQueryable<PayoutViewModel> GetPayoutDetails(int id)
         {
-            return db.PayoutDetails;
-        }
-
-        // GET: api/PayoutDetails/5
-        [ResponseType(typeof(PayoutDetails))]
-        public async Task<IHttpActionResult> GetPayoutDetails(int id)
-        {
-            PayoutDetails payoutDetails = await db.PayoutDetails.FindAsync(id);
-            if (payoutDetails == null)
+            var res = db.PayoutDetails
+                .Include(x=>x.UserManagement);   
+            if(id >0)
             {
-                return NotFound();
+                res = res.Where(x => x.UserManagement.Id == id);
             }
-
-            return Ok(payoutDetails);
-        }
-
-        // PUT: api/PayoutDetails/5
-        [ResponseType(typeof(void))]
-        public async Task<IHttpActionResult> PutPayoutDetails(int id, PayoutDetails payoutDetails)
-        {
-            if (!ModelState.IsValid)
+            return res.Select(x => new PayoutViewModel
             {
-                return BadRequest(ModelState);
-            }
-
-            if (id != payoutDetails.Id)
-            {
-                return BadRequest();
-            }
-
-            db.Entry(payoutDetails).State = EntityState.Modified;
-
-            try
-            {
-                await db.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!PayoutDetailsExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            return StatusCode(HttpStatusCode.NoContent);
-        }
-
-        // POST: api/PayoutDetails
-        [ResponseType(typeof(PayoutDetails))]
-        public async Task<IHttpActionResult> PostPayoutDetails(PayoutDetails payoutDetails)
-        {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-
-            db.PayoutDetails.Add(payoutDetails);
-            await db.SaveChangesAsync();
-
-            return CreatedAtRoute("DefaultApi", new { id = payoutDetails.Id }, payoutDetails);
-        }
-
-        // DELETE: api/PayoutDetails/5
-        [ResponseType(typeof(PayoutDetails))]
-        public async Task<IHttpActionResult> DeletePayoutDetails(int id)
-        {
-            PayoutDetails payoutDetails = await db.PayoutDetails.FindAsync(id);
-            if (payoutDetails == null)
-            {
-                return NotFound();
-            }
-
-            db.PayoutDetails.Remove(payoutDetails);
-            await db.SaveChangesAsync();
-
-            return Ok(payoutDetails);
-        }
-
+                Id = x.Id,
+                Date = x.PayoutDate.ToString(Constant.DATE_FORMAT),
+                PartnerId = x.PartnerId,
+                PartnerName = x.UserManagement.Username,
+                Status = x.Status,
+                Payment = x.Payment
+            });
+        }   
         protected override void Dispose(bool disposing)
         {
             if (disposing)
@@ -110,11 +44,6 @@ namespace GCBS_INTERNAL.Controllers.API
                 db.Dispose();
             }
             base.Dispose(disposing);
-        }
-
-        private bool PayoutDetailsExists(int id)
-        {
-            return db.PayoutDetails.Count(e => e.Id == id) > 0;
-        }
+        }    
     }
 }

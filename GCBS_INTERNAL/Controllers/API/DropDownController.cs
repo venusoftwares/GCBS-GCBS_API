@@ -1,4 +1,5 @@
 ﻿using GCBS_INTERNAL.Models;
+using GCBS_INTERNAL.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
@@ -52,6 +53,79 @@ namespace GCBS_INTERNAL.Controllers.API
                 && x.StateId == StateId)
                 .Select(x => new Cities { Id = x.Id, CityName = x.CityName });
             return result;
+        }
+        [HttpGet]
+        [Route("api/DropDownCustomers")]
+        public IQueryable<DropDownCommon> GetCustomerDetails()
+        {
+            var result = db.UserManagement
+                .Include(x => x.RoleMasters)
+                .Where(x => x.RoleMasters.RoleName == Constant.CUSTOMER && x.Status)
+                .Select(x => new DropDownCommon { Key = x.Id, Value = x.Id + "-" + x.Username });
+            return result;
+        }
+
+        [HttpGet]
+        [Route("api/DropDownServicePartner")]
+        public IQueryable<DropDownCommon> GetServicePartner()
+        {
+            var result = db.UserManagement
+                .Include(x=>x.RoleMasters)
+                .Where(x=>x.RoleMasters.RoleName== Constant.SERVICE_PROVIDER && x.Status)
+                .Select(x=>new DropDownCommon { Key = x.Id,Value=x.Id +"-"+ x.Username});
+            return result;
+        }
+        [HttpGet]
+        [Route("api/DropDownServiceType")]
+        public IQueryable<DropDownCommon> GetServiceType()
+        {
+            var result = db.ServiceTypes   
+                .Where( x=> x.Visible)
+                .Select(x => new DropDownCommon { Key = x.Id, Value =x.ServiceType });
+            return result;
+        }
+        [HttpGet]
+        [Route("api/DropDownServices")]
+        public IQueryable<DropDownCommon> GetServices()
+        {
+            var result = db.ServicesMasters
+                .Where(x => x.Visible)
+                .Select(x => new DropDownCommon { Key = x.Id, Value = x.Service });
+            return result;
+        }
+        [HttpGet]
+        [Route("api/DropDownServiceStatus")]
+        public List<DropDownCommon2> GetServiceStatus()
+        {
+            List<DropDownCommon2> dropDownCommons = new List<DropDownCommon2>();
+            dropDownCommons.Add(new DropDownCommon2 { Key = "0", Value = "--Select Status--" });
+            dropDownCommons.Add(new DropDownCommon2 { Key = Constant.PENDING, Value = Constant.PENDING });
+            dropDownCommons.Add(new DropDownCommon2 { Key = Constant.ACCEPTED, Value = Constant.ACCEPTED });
+            dropDownCommons.Add(new DropDownCommon2 { Key = Constant.PROCESSING, Value = Constant.PROCESSING });
+            dropDownCommons.Add(new DropDownCommon2 { Key = Constant.COMPLETED, Value = Constant.COMPLETED });
+            dropDownCommons.Add(new DropDownCommon2 { Key = Constant.DECLINE, Value = Constant.DECLINE });     
+            return dropDownCommons;
+        }
+        [HttpGet]
+        [Route("api/DropDownServiceStatus")]
+        public List<DropDownCommon2> GetUserStatus()
+        {
+            List<DropDownCommon2> dropDownCommons = new List<DropDownCommon2>();
+            dropDownCommons.Add(new DropDownCommon2 { Key = "0", Value = "--Status--" });
+            dropDownCommons.Add(new DropDownCommon2 { Key = Constant.PENDING, Value = Constant.PENDING });
+            dropDownCommons.Add(new DropDownCommon2 { Key = Constant.ACCEPTED, Value = Constant.ACCEPTED });
+            dropDownCommons.Add(new DropDownCommon2 { Key = Constant.CANCEL, Value = Constant.CANCEL });  
+            return dropDownCommons;
+        }
+        [HttpGet]
+        [Route("api/DropDownPaymentType")]
+        public List<DropDownCommon2> GetPaymentType()
+        {
+            List<DropDownCommon2> dropDownCommons = new List<DropDownCommon2>();
+            dropDownCommons.Add(new DropDownCommon2 { Key = "0", Value = "Select Payment Type" });
+            dropDownCommons.Add(new DropDownCommon2 { Key = Constant.ONLINE, Value = Constant.ONLINE });
+            dropDownCommons.Add(new DropDownCommon2 { Key = Constant.OFFLINE, Value = Constant.OFFLINE });  
+            return dropDownCommons;
         }
     }
 }

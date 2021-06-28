@@ -22,7 +22,9 @@ namespace GCBS_INTERNAL.Models
 
         [StringLength(500)]
         public string WebsiteUrl { get; set; }
-
+        [Required]
+        [StringLength(200)]
+        public string Email { get; set; }
         public DateTime? ValidStartDate { get; set; }
 
         public DateTime? ValidEndDate { get; set; }   

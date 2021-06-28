@@ -10,4 +10,9 @@ namespace GCBS_INTERNAL.ViewModels
         public int Key { get; set; }
         public string Value { get; set; }
     }
+    public class DropDownCommon2
+    {
+        public string Key { get; set; }
+        public string Value { get; set; }
+    }
 }
