@@ -88,7 +88,7 @@ namespace GCBS_INTERNAL.Controllers.API
             servicesMaster.Visible = serviceMasterVisible.Visible;
             servicesMaster.UpdatedBy = userDetails.Id;
             servicesMaster.UpdatedOn = DateTime.Now;
-            db.Entry(serviceMasterVisible).State = EntityState.Modified;
+            db.Entry(servicesMaster).State = EntityState.Modified;
             await db.SaveChangesAsync();
             return StatusCode(HttpStatusCode.NoContent);
         }
