@@ -50,6 +50,13 @@ namespace GCBS_INTERNAL.Controllers.API
             {
                 return BadRequest();
             }
+            using (var d = new DatabaseContext())
+            {
+                var re = await d.AgenciesMaster.FindAsync(id);
+                agenciesMaster.CreatedBy = re.CreatedBy;
+                agenciesMaster.CreatedOn = re.CreatedOn;
+                d.Dispose();
+            }
             agenciesMaster.UpdatedBy = userDetails.Id;
             agenciesMaster.UpdatedOn = DateTime.Now;
             db.Entry(agenciesMaster).State = EntityState.Modified;

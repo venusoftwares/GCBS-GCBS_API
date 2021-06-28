@@ -50,6 +50,13 @@ namespace GCBS_INTERNAL.Controllers.API
             {
                 return BadRequest();
             }
+            using(var d = new DatabaseContext())
+            {
+                var re = await d.NationalityMaster.FindAsync(id);
+                nationalityMaster.CreatedBy = re.CreatedBy;
+                nationalityMaster.CreatedOn = re.CreatedOn;
+                d.Dispose();
+            }
 
             nationalityMaster.UpdatedBy = userDetails.Id;
             nationalityMaster.UpdatedOn = DateTime.Now;

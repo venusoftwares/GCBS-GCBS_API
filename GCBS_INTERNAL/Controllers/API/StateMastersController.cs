@@ -70,9 +70,17 @@ namespace GCBS_INTERNAL.Controllers.API
             {
                 return BadRequest();
             }
-
+            using (var d = new DatabaseContext())
+            {
+                var re = await d.StateMaster.FindAsync(id);
+                stateMaster.CreatedBy = re.CreatedBy;
+                stateMaster.CreatedOn = re.CreatedOn;
+                d.Dispose();
+            }
+            stateMaster.UpdatedBy = userDetails.Id;
+            stateMaster.UpdatedOn = DateTime.Now;
             db.Entry(stateMaster).State = EntityState.Modified;
-
+       
             try
             {
                 await db.SaveChangesAsync();
@@ -91,9 +99,30 @@ namespace GCBS_INTERNAL.Controllers.API
 
             return StatusCode(HttpStatusCode.NoContent);
         }
+        [ResponseType(typeof(void))]
+        public async Task<IHttpActionResult> PutStateMaster(StateMasterVisible stateMasterVisible)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
 
-        // POST: api/StateMasters
-        [ResponseType(typeof(StateMaster))]
+            if (stateMasterVisible == null)
+            {
+                return BadRequest();
+            }
+            StateMaster stateMaster = await db.StateMaster.FindAsync(stateMasterVisible.Id);
+            stateMaster.Status = stateMasterVisible.Status;
+            stateMaster.UpdatedOn = DateTime.Now;
+            stateMaster.UpdatedBy = userDetails.Id;
+            db.Entry(stateMaster).State = EntityState.Modified;
+            await db.SaveChangesAsync();
+            return StatusCode(HttpStatusCode.NoContent);
+        }
+
+        
+  // POST: api/StateMasters
+  [ResponseType(typeof(StateMaster))]
         public async Task<IHttpActionResult> PostStateMaster(StateMaster stateMaster)
         {
             if (!ModelState.IsValid)

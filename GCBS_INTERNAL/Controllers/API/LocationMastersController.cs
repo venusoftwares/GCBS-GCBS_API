@@ -85,7 +85,15 @@ namespace GCBS_INTERNAL.Controllers.API
             {
                 return BadRequest();
             }
-
+            using (var d = new DatabaseContext())
+            {
+                var re = await d.LocationMasters.FindAsync(id);
+                locationMasters.CreatedBy = re.CreatedBy;
+                locationMasters.CreatedOn = re.CreatedOn;
+                d.Dispose();
+            }
+            locationMasters.UpdatedBy = userDetails.Id;
+            locationMasters.UpdatedOn = DateTime.Now;
             db.Entry(locationMasters).State = EntityState.Modified;
 
             try

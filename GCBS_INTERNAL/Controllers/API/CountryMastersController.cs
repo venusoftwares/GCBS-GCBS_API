@@ -50,7 +50,13 @@ namespace GCBS_INTERNAL.Controllers.API
             {
                 return BadRequest();
             }
-
+            using (var d = new DatabaseContext())
+            {
+                var re = await d.CountryMaster.FindAsync(id);
+                countryMaster.CreatedBy = re.CreatedBy;
+                countryMaster.CreatedOn = re.CreatedOn;
+                d.Dispose();
+            }
             db.Entry(countryMaster).State = EntityState.Modified;
 
             try

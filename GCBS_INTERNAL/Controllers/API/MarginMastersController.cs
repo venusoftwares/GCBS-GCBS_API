@@ -90,7 +90,7 @@ namespace GCBS_INTERNAL.Controllers.API
             marginMaster.Status = marginMasterVisible.Status;
             marginMaster.UpdatedBy = userDetails.Id;
             marginMaster.UpdatedOn = DateTime.Now;
-            db.Entry(marginMasterVisible).State = EntityState.Modified;
+            db.Entry(marginMaster).State = EntityState.Modified;
             await db.SaveChangesAsync();
             return StatusCode(HttpStatusCode.NoContent);
         }

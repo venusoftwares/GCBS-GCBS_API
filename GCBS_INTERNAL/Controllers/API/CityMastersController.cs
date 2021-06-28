@@ -77,7 +77,15 @@ namespace GCBS_INTERNAL.Controllers.API
             {
                 return BadRequest();
             }
-
+            using (var d = new DatabaseContext())
+            {
+                var re = await d.CityMaster.FindAsync(id);
+                cityMaster.CreatedBy = re.CreatedBy;
+                cityMaster.CreatedOn = re.CreatedOn;
+                d.Dispose();
+            }
+            cityMaster.UpdatedBy = userDetails.Id;
+            cityMaster.UpdatedOn = DateTime.Now;
             db.Entry(cityMaster).State = EntityState.Modified;
 
             try
@@ -98,7 +106,27 @@ namespace GCBS_INTERNAL.Controllers.API
 
             return StatusCode(HttpStatusCode.NoContent);
         }
+        
+               [ResponseType(typeof(void))]
+        public async Task<IHttpActionResult> PutCityMaster(CitiesVisible citiesVisible)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
 
+            if (citiesVisible == null)
+            {
+                return BadRequest();
+            }
+            CityMaster cityMaster = await db.CityMaster.FindAsync(citiesVisible.Id);
+            cityMaster.Status = citiesVisible.Status;
+            cityMaster.UpdatedOn = DateTime.Now;
+            cityMaster.UpdatedBy = userDetails.Id;
+            db.Entry(cityMaster).State = EntityState.Modified;
+            await db.SaveChangesAsync();
+            return StatusCode(HttpStatusCode.NoContent);
+        }
         // POST: api/CityMasters
         [ResponseType(typeof(CityMaster))]
         public async Task<IHttpActionResult> PostCityMaster(CityMaster cityMaster)

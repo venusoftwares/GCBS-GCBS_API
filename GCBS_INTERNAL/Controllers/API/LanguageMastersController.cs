@@ -50,7 +50,13 @@ namespace GCBS_INTERNAL.Controllers.API
             {
                 return BadRequest();
             }
-
+            using (var d = new DatabaseContext())
+            {
+                var re = await d.LanguageMaster.FindAsync(id);
+                languageMaster.CreatedBy = re.CreatedBy;
+                languageMaster.CreatedOn = re.CreatedOn;
+                d.Dispose();
+            }
             languageMaster.UpdatedOn = DateTime.Now;
             languageMaster.UpdatedBy = userDetails.Id;
             db.Entry(languageMaster).State = EntityState.Modified;
