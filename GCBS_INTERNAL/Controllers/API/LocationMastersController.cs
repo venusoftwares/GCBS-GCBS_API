@@ -141,6 +141,8 @@ namespace GCBS_INTERNAL.Controllers.API
         [ResponseType(typeof(LocationMasters))]
         public async Task<IHttpActionResult> PostLocationMasters(LocationMasters locationMasters)
         {
+            locationMasters.CreatedBy = userDetails.Id;
+            locationMasters.CreatedOn = DateTime.Now;
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);

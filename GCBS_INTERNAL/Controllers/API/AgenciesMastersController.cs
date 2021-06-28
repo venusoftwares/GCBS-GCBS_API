@@ -106,6 +106,8 @@ namespace GCBS_INTERNAL.Controllers.API
         [ResponseType(typeof(AgenciesMaster))]
         public async Task<IHttpActionResult> PostAgenciesMaster(AgenciesMaster agenciesMaster)
         {
+            agenciesMaster.CreatedBy = userDetails.Id;
+            agenciesMaster.CreatedOn = DateTime.Now;
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);

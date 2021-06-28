@@ -105,6 +105,8 @@ namespace GCBS_INTERNAL.Controllers.API
         [ResponseType(typeof(LanguageMaster))]
         public async Task<IHttpActionResult> PostLanguageMaster(LanguageMaster languageMaster)
         {
+            languageMaster.CreatedBy = userDetails.Id;
+            languageMaster.CreatedOn = DateTime.Now;
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);

@@ -107,7 +107,7 @@ namespace GCBS_INTERNAL.Controllers.API
             return StatusCode(HttpStatusCode.NoContent);
         }
         
-               [ResponseType(typeof(void))]
+        [ResponseType(typeof(void))]
         public async Task<IHttpActionResult> PutCityMaster(CitiesVisible citiesVisible)
         {
             if (!ModelState.IsValid)
@@ -131,6 +131,8 @@ namespace GCBS_INTERNAL.Controllers.API
         [ResponseType(typeof(CityMaster))]
         public async Task<IHttpActionResult> PostCityMaster(CityMaster cityMaster)
         {
+            cityMaster.CreatedBy = userDetails.Id;
+            cityMaster.CreatedOn = DateTime.Now;
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);

@@ -121,10 +121,12 @@ namespace GCBS_INTERNAL.Controllers.API
         }
 
         
-  // POST: api/StateMasters
-  [ResponseType(typeof(StateMaster))]
+        // POST: api/StateMasters
+       [ResponseType(typeof(StateMaster))]
         public async Task<IHttpActionResult> PostStateMaster(StateMaster stateMaster)
         {
+            stateMaster.CreatedBy = userDetails.Id;
+            stateMaster.CreatedOn = DateTime.Now;
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);

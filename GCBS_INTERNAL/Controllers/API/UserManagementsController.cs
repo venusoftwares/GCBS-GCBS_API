@@ -102,6 +102,7 @@ namespace GCBS_INTERNAL.Controllers.API
                 return BadRequest(ModelState);
             }
 
+
             db.UserManagement.Add(userManagement);
             await db.SaveChangesAsync();
 

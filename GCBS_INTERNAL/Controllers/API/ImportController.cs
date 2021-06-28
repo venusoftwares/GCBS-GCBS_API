@@ -25,15 +25,7 @@ namespace GCBS_INTERNAL.Controllers.API
             if(r==0)
             {
                 return BadRequest();
-            }
-            if(r==1)
-            {
-                return Ok();
-            }
-            if(r==2)
-            {
-                return NotFound();
-            }
+            }  
             return Ok(message);
         }
         [HttpPost]
@@ -45,15 +37,7 @@ namespace GCBS_INTERNAL.Controllers.API
             if (r == 0)
             {
                 return BadRequest();
-            }
-            if (r == 1)
-            {
-                return Ok();
-            }
-            if (r == 2)
-            {
-                return NotFound();
-            }
+            } 
             return Ok(message);
         }
         [HttpPost]
@@ -65,15 +49,7 @@ namespace GCBS_INTERNAL.Controllers.API
             if (r == 0)
             {
                 return BadRequest();
-            }
-            if (r == 1)
-            {
-                return Ok();
-            }
-            if (r == 2)
-            {
-                return NotFound();
-            }
+            }    
             return Ok(message);
         }
         [HttpPost]
@@ -85,15 +61,7 @@ namespace GCBS_INTERNAL.Controllers.API
             if (r == 0)
             {
                 return BadRequest();
-            }
-            if (r == 1)
-            {
-                return Ok();
-            }
-            if (r == 2)
-            {
-                return NotFound();
-            }
+            }  
             return Ok(message);
         }
 

@@ -41,6 +41,7 @@ namespace GCBS_INTERNAL.Controllers.API
         [ResponseType(typeof(void))]
         public async Task<IHttpActionResult> PutCountryMaster(int id, CountryMaster countryMaster)
         {
+          
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
@@ -77,11 +78,33 @@ namespace GCBS_INTERNAL.Controllers.API
 
             return StatusCode(HttpStatusCode.NoContent);
         }
+        
+        [ResponseType(typeof(void))]
+        public async Task<IHttpActionResult> PutCountryMaster(CountryMasterVisible countryMasterVisible )
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
 
+            if (countryMasterVisible == null)
+            {
+                return BadRequest();
+            }
+            CountryMaster countryMaster= await db.CountryMaster.FindAsync(countryMasterVisible.Id);
+            countryMaster.Status = countryMasterVisible.Status;
+            countryMaster.UpdatedOn = DateTime.Now;
+            countryMaster.UpdatedBy = userDetails.Id;
+            db.Entry(countryMaster).State = EntityState.Modified;
+            await db.SaveChangesAsync();
+            return StatusCode(HttpStatusCode.NoContent);
+        }
         // POST: api/CountryMasters
         [ResponseType(typeof(CountryMaster))]
         public async Task<IHttpActionResult> PostCountryMaster(CountryMaster countryMaster)
         {
+            countryMaster.CreatedBy = userDetails.Id;
+            countryMaster.CreatedOn = DateTime.Now;
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);

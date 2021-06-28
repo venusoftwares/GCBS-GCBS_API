@@ -106,6 +106,8 @@ namespace GCBS_INTERNAL.Controllers.API
         [ResponseType(typeof(NationalityMaster))]
         public async Task<IHttpActionResult> PostNationalityMaster(NationalityMaster nationalityMaster)
         {
+            nationalityMaster.CreatedBy = userDetails.Id;
+            nationalityMaster.CreatedOn = DateTime.Now;
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
