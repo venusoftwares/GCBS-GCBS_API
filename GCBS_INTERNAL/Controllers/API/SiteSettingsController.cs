@@ -14,7 +14,7 @@ using GCBS_INTERNAL.Models;
 namespace GCBS_INTERNAL.Controllers.API
 {
     [Authorize]
-    public class SiteSettingsController : ApiController
+    public class SiteSettingsController : BaseApiController
     {
         private DatabaseContext db = new DatabaseContext();
 

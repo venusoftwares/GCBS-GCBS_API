@@ -14,7 +14,7 @@ using GCBS_INTERNAL.Models;
 namespace GCBS_INTERNAL.Controllers.API
 {
     [Authorize]
-    public class PartnerRatingsController : ApiController
+    public class PartnerRatingsController : BaseApiController
     {
         private DatabaseContext db = new DatabaseContext();
 

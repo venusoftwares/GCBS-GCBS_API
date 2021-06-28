@@ -14,7 +14,7 @@ using GCBS_INTERNAL.Models;
 namespace GCBS_INTERNAL.Controllers.API
 {
     [Authorize]
-    public class EmailSettingsController : ApiController
+    public class EmailSettingsController : BaseApiController
     {
         private DatabaseContext db = new DatabaseContext();
 

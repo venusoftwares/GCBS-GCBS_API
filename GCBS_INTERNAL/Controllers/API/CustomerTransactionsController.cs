@@ -13,7 +13,8 @@ using GCBS_INTERNAL.Models;
 
 namespace GCBS_INTERNAL.Controllers.API
 {
-    public class CustomerTransactionsController : ApiController
+    [Authorize]
+    public class CustomerTransactionsController : BaseApiController
     {
         private DatabaseContext db = new DatabaseContext();
 

@@ -14,7 +14,7 @@ using GCBS_INTERNAL.Models;
 namespace GCBS_INTERNAL.Controllers.API
 {
     [Authorize]
-    public class InAppNotificationsController : ApiController
+    public class InAppNotificationsController : BaseApiController
     {
         private DatabaseContext db = new DatabaseContext();
 

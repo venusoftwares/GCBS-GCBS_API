@@ -1,4 +1,5 @@
-﻿using GCBS_INTERNAL.ViewModels;
+﻿using GCBS_INTERNAL.Controllers.API;
+using GCBS_INTERNAL.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -14,7 +15,7 @@ using System.Web.Http.Description;
 namespace GCBS_INTERNAL.Models
 {
     [Authorize]
-    public class ServiceTypesController : ApiController
+    public class ServiceTypesController : BaseApiController
     {
         private DatabaseContext db = new DatabaseContext();
 

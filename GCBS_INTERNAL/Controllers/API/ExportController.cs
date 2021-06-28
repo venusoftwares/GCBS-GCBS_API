@@ -15,7 +15,8 @@ using System.Web.Http.Description;
 
 namespace GCBS_INTERNAL.Controllers.API
 {
-    public class ExportController : ApiController
+    [Authorize]
+    public class ExportController : BaseApiController
     {
         private DatabaseContext db = new DatabaseContext();
        
