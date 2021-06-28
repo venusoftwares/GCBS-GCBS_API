@@ -25,7 +25,7 @@ namespace GCBS_INTERNAL.Models
         public virtual DbSet<PartnerType> PartnerType { get; set; }
         public virtual DbSet<PaymentDetails> PaymentDetails { get; set; }
         public virtual DbSet<PaymentGateway> PaymentGateway { get; set; }
-        public virtual DbSet<PayoutDetails> PayoutDetails { get; set; }
+      
         public virtual DbSet<RolePermissionMaster> RolePermissionMaster { get; set; }
         public virtual DbSet<SiteSettings> SiteSettings { get; set; }
         public virtual DbSet<SmsSettings> SmsSettings { get; set; }
@@ -41,6 +41,10 @@ namespace GCBS_INTERNAL.Models
         public virtual DbSet<AgenciesMaster> AgenciesMaster { get; set; }
         public virtual DbSet<LanguageMaster> LanguageMaster { get; set; }
         public virtual DbSet<NationalityMaster> NationalityMaster { get; set; }
+
+        public virtual DbSet<EnquiryDetails> EnquiryDetails { get; set; }
+        public virtual DbSet<CustomerTransactions> CustomerTransactions { get; set; }  
+        public virtual DbSet<PayoutDetails> PayoutDetails { get; set; }
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
            

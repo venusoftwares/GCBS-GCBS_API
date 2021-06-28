@@ -107,7 +107,7 @@ namespace GCBS_INTERNAL.Controllers.API
             return dropDownCommons;
         }
         [HttpGet]
-        [Route("api/DropDownServiceStatus")]
+        [Route("api/DropDownUserStatus")]
         public List<DropDownCommon2> GetUserStatus()
         {
             List<DropDownCommon2> dropDownCommons = new List<DropDownCommon2>();

@@ -11,11 +11,9 @@ namespace GCBS_INTERNAL.Models
         public int Id { get; set; }
 
         public DateTime PayoutDate { get; set; }
-        [StringLength(50)]
-        public string PartnerId { get; set; }
-
-        [StringLength(50)]
-        public string PartnerName { get; set; }    
+       
+        public int PartnerId { get; set; }  
+         
         public double Payment { get; set; }
         public string Status { get; set; }
         
@@ -34,7 +32,7 @@ namespace GCBS_INTERNAL.Models
     {
         public int Id { get; set; }
         public string Date { get; set; }
-        public string PartnerId { get; set; }
+        public int PartnerId { get; set; }
         public string PartnerName { get; set; }
         public string Status { get; set; }
         public double Payment { get; set; }

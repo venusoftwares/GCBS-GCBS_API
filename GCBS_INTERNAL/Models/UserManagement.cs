@@ -24,7 +24,8 @@ namespace GCBS_INTERNAL.Models
         [Required]
         [StringLength(200)]
         public string EmailId { get; set; }
-
+        [Required]
+        public string MobileNo { get; set; }
         public DateTime? DateOfBirth { get; set; }
 
         public bool Status { get; set; }
