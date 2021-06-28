@@ -30,7 +30,7 @@ namespace GCBS_INTERNAL.Controllers.API
         
         // GET: api/PriceMasters/5
         [HttpGet]  
-        [Route("api/States")]
+        [Route("api/States/{CountryId}")]
         public IQueryable<States> GetStates(int CountryId)
         {
             var result = db.StateMaster.Include(x=>x.CountryMaster)
@@ -40,7 +40,7 @@ namespace GCBS_INTERNAL.Controllers.API
         }
 
         [HttpGet]
-        [Route("api/Cities")]
+        [Route("api/Cities/{CountryId}/{StateId}")]
         public IQueryable<Cities> GetCities(int CountryId,int StateId)
         {
             var result = db.CityMaster
@@ -52,6 +52,23 @@ namespace GCBS_INTERNAL.Controllers.API
                 && x.CountryId == CountryId
                 && x.StateId == StateId)
                 .Select(x => new Cities { Id = x.Id, CityName = x.CityName });
+            return result;
+        }
+        [HttpGet]
+        [Route("api/Locations/{CountryId}/{StateId}/{CityId}")]
+        public IQueryable<Locations> GetLocations(int CountryId, int StateId,int CityId)
+        {
+            var result = db.LocationMasters
+                .Include(x => x.CountryMaster)
+                .Include(x => x.StateMaster)
+                .Include(x => x.CityMaster)
+                .Where(x => x.CountryMaster.Status
+                && x.StateMaster.Status
+                && x.Status
+                && x.CountryId == CountryId
+                && x.StateId == StateId 
+                && x.CityId==CityId)
+                .Select(x => new Locations { Id = x.Id, LocationName = x.Location + "_"+x.PinCode });
             return result;
         }
         [HttpGet]

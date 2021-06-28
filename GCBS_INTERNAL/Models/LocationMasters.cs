@@ -63,5 +63,10 @@ namespace GCBS_INTERNAL.Models
         public int StateId { get; set; }
         public int CityId { get; set; }
     }
-  
+    public class Locations
+    {
+        public int Id { get; set; }
+        public string LocationName { get; set; }
+    }
+
 }
