@@ -21,8 +21,7 @@ namespace GCBS_INTERNAL.Controllers.API
             if (!Directory.Exists(path))
             {
                 Directory.CreateDirectory(path);
-            }
-           
+            }      
             int i = 0;
             var httpRequest = HttpContext.Current.Request;
             if (httpRequest.Files.Count > 0)
@@ -51,13 +50,6 @@ namespace GCBS_INTERNAL.Controllers.API
             }  
             return Request.CreateResponse(HttpStatusCode.OK, images);
         }
-
-        public class FileModel
-        {
-            [Required(ErrorMessage = "Please select file.")]
-            [Display(Name = "Browse File")]
-            public HttpPostedFileBase[] files { get; set; }
-
-        }
+         
     }
 }
