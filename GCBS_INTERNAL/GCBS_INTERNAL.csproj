@@ -343,8 +343,10 @@
     <Compile Include="Controllers\API\CustomerTransactionsController.cs" />
     <Compile Include="Controllers\API\DropDownController.cs" />
     <Compile Include="Controllers\API\EmailSettingsController.cs" />
+    <Compile Include="Controllers\API\EnquiryDetailsController.cs" />
     <Compile Include="Controllers\API\ExportController.cs" />
     <Compile Include="Controllers\API\HotelMastersController.cs" />
+    <Compile Include="Controllers\API\ImageApiController.cs" />
     <Compile Include="Controllers\API\ImportController.cs" />
     <Compile Include="Controllers\API\InAppNotificationsController.cs" />
     <Compile Include="Controllers\API\LanguageMastersController.cs" />
@@ -361,6 +363,7 @@
     <Compile Include="Controllers\API\RoleMastersController.cs" />
     <Compile Include="Controllers\API\RolePermissionMastersController.cs" />
     <Compile Include="Controllers\API\ServicesMastersController.cs" />
+    <Compile Include="Controllers\API\SiteBannerMastersController.cs" />
     <Compile Include="Controllers\API\SiteSettingsController.cs" />
     <Compile Include="Controllers\API\SmsSettingsController.cs" />
     <Compile Include="Controllers\API\StateMastersController.cs" />
@@ -399,6 +402,7 @@
     <Compile Include="Models\ServicesMaster.cs" />
     <Compile Include="Models\ServiceTypes.cs" />
     <Compile Include="Controllers\API\ServiceTypesController.cs" />
+    <Compile Include="Models\SiteBannerMaster.cs" />
     <Compile Include="Models\SiteSettings.cs" />
     <Compile Include="Models\SmsSettings.cs" />
     <Compile Include="Models\StateMaster.cs" />

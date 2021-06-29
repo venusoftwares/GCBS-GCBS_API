@@ -31,7 +31,7 @@ namespace GCBS_INTERNAL.Models
     public class PayoutViewModel
     {
         public int Id { get; set; }
-        public string Date { get; set; }
+        public DateTime Date { get; set; }
         public int PartnerId { get; set; }
         public string PartnerName { get; set; }
         public string Status { get; set; }

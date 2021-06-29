@@ -40,4 +40,19 @@ namespace GCBS_INTERNAL.Models
         [ForeignKey("ServiceId")]
         public ServicesMaster servicesMasters { get; set; }
     }
+                     
+    public class EnquiryViewModel
+    {
+        public int Id { get; set; }
+        public string Username { get; set; }
+        public int UserId { get; set; }
+        public string Email { get; set; }
+        public string ServicePartner { get; set; }
+        public int ServicePartnerId { get; set; }
+        public string Service { get; set; }
+        public string ServiceStatus { get; set; }
+        public string UserStatus { get; set; }
+
+
+    }
 }

@@ -30,7 +30,7 @@ namespace GCBS_INTERNAL.Controllers.API
             return res.Select(x => new PayoutViewModel
             {
                 Id = x.Id,
-                Date = x.PayoutDate.ToString(Constant.DATE_FORMAT),
+                Date = x.PayoutDate,
                 PartnerId = x.PartnerId,
                 PartnerName = x.UserManagement.Username,
                 Status = x.Status,

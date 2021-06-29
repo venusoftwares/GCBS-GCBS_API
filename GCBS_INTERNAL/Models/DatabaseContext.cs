@@ -45,6 +45,8 @@ namespace GCBS_INTERNAL.Models
         public virtual DbSet<EnquiryDetails> EnquiryDetails { get; set; }
         public virtual DbSet<CustomerTransactions> CustomerTransactions { get; set; }  
         public virtual DbSet<PayoutDetails> PayoutDetails { get; set; }
+
+        public virtual DbSet<SiteBannerMaster> SiteBannerMasters { get; set; }
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
            
