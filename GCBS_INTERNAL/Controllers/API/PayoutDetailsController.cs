@@ -19,23 +19,24 @@ namespace GCBS_INTERNAL.Controllers.API
         private DatabaseContext db = new DatabaseContext();
 
         // GET: api/PayoutDetails
-        public IQueryable<PayoutViewModel> GetPayoutDetails(int id)
+        public List<PayoutViewModel> GetPayoutDetails(int id)
         {
+            List<PayoutViewModel> payoutViewModels = new List<PayoutViewModel>();
             var res = db.PayoutDetails
-                .Include(x=>x.UserManagement);   
+                .Include(x=>x.UserManagement).Select(x => new PayoutViewModel
+                {
+                    Id = x.Id,
+                    Date = x.PayoutDate,
+                    PartnerId = x.PartnerId,
+                    PartnerName = x.UserManagement.Username,
+                    Status = x.Status,
+                    Payment = x.Payment
+                }).ToList();   
             if(id >0)
             {
-                res = res.Where(x => x.UserManagement.Id == id);
-            }
-            return res.Select(x => new PayoutViewModel
-            {
-                Id = x.Id,
-                Date = x.PayoutDate,
-                PartnerId = x.PartnerId,
-                PartnerName = x.UserManagement.Username,
-                Status = x.Status,
-                Payment = x.Payment
-            });
+                res = res.Where(x => x.PartnerId == id).ToList();
+            }   
+            return res;
         }   
         protected override void Dispose(bool disposing)
         {

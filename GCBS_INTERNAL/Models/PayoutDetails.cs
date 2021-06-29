@@ -14,7 +14,7 @@ namespace GCBS_INTERNAL.Models
        
         public int PartnerId { get; set; }  
          
-        public double Payment { get; set; }
+        public decimal Payment { get; set; }
         public string Status { get; set; }
         
         public DateTime? CreatedOn { get; set; }
@@ -35,6 +35,6 @@ namespace GCBS_INTERNAL.Models
         public int PartnerId { get; set; }
         public string PartnerName { get; set; }
         public string Status { get; set; }
-        public double Payment { get; set; }
+        public decimal Payment { get; set; }
     }
 }

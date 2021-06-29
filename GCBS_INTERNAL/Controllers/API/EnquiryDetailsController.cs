@@ -19,15 +19,16 @@ namespace GCBS_INTERNAL.Controllers.API
         private DatabaseContext db = new DatabaseContext();
 
         // GET: api/EnquiryDetails
-        public IQueryable<EnquiryViewModel> GetEnquiryDetails()
+        [ResponseType(typeof(EnquiryViewModel))]
+        public async Task< IHttpActionResult> PostEnquiryDetails(EnquiryViewModel enquiryViewModel)
         {
-            return db.EnquiryDetails
-                .Include(x=>x.UserManagements)
-                .Include(x=>x.PartnerManagements)
-                .Include(x=>x.servicesMasters)
-                .Select(x=> new EnquiryViewModel 
-                { 
-                    Id = x.Id,  
+            var res = await db.EnquiryDetails
+                .Include(x => x.UserManagements)
+                .Include(x => x.PartnerManagements)
+                .Include(x => x.servicesMasters)
+                .Select(x => new EnquiryViewModel
+                {
+                    Id = x.Id,
                     Email = x.UserManagements.EmailId,
                     Service = x.servicesMasters.Service,
                     ServicePartner = x.PartnerManagements.Username,
@@ -35,103 +36,58 @@ namespace GCBS_INTERNAL.Controllers.API
                     Username = x.UserManagements.Username,
                     UserId = x.UserId,
                     ServiceStatus = x.EnquiryStatus,
-                    UserStatus = x.UserStatus    
-                });
-        }
+                    UserStatus = x.UserStatus,
+                    ServiceId = x.ServiceId,
+                    Mobile = x.UserManagements.MobileNo  ,
+                    EnquiryDate = x.EnquiryDate
+                }).ToListAsync();
 
-        // GET: api/EnquiryDetails/5
-        [ResponseType(typeof(EnquiryDetails))]
-        public async Task<IHttpActionResult> GetEnquiryDetails(int id)
-        {
-            EnquiryDetails enquiryDetails = await db.EnquiryDetails.FindAsync(id);
-            if (enquiryDetails == null)
+            if (enquiryViewModel != null)
             {
-                return NotFound();
-            }
-
-            return Ok(enquiryDetails);
-        }
-
-        // PUT: api/EnquiryDetails/5
-        [ResponseType(typeof(void))]
-        public async Task<IHttpActionResult> PutEnquiryDetails(int id, EnquiryDetails enquiryDetails)
-        {
-           
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-
-            if (id != enquiryDetails.Id)
-            {
-                return BadRequest();
-            }
-            using(var db2 = new DatabaseContext())
-            {
-                EnquiryDetails enquiry = await db2.EnquiryDetails.FindAsync(id);
-                enquiryDetails.CreatedBy = enquiry.CreatedBy;
-                enquiryDetails.CreatedOn = enquiry.CreatedOn;
-                db2.Dispose();
-            }
-            enquiryDetails.UpdatedBy = userDetails.Id;
-            enquiryDetails.UpdatedOn = DateTime.Now;
-            db.Entry(enquiryDetails).State = EntityState.Modified;
-
-            try
-            {
-                await db.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!EnquiryDetailsExists(id))
+                if (enquiryViewModel.UserId > 0)
                 {
-                    return NotFound();
+                    res = res.Where(x => x.UserId == enquiryViewModel.UserId).ToList();
                 }
-                else
+                if (enquiryViewModel.ServicePartnerId > 0)
                 {
-                    throw;
+                    res = res.Where(x => x.ServicePartnerId == enquiryViewModel.ServicePartnerId).ToList();
+                }
+                if (enquiryViewModel.ServiceId > 0)
+                {
+                    res = res.Where(x => x.ServiceId == enquiryViewModel.ServiceId).ToList();
+                }
+                if (!string.IsNullOrEmpty(enquiryViewModel.Username))
+                {
+                    res = res.Where(x => x.Username.ToLower() == enquiryViewModel.Username.ToLower()).ToList();
+                }
+                if (!string.IsNullOrEmpty(enquiryViewModel.Email))
+                {
+                    res = res.Where(x => x.Email.ToLower() == enquiryViewModel.Email.ToLower()).ToList();
+                }
+                if (!string.IsNullOrEmpty(enquiryViewModel.Mobile))
+                {
+                    res = res.Where(x => x.Mobile.ToLower() == enquiryViewModel.Mobile.ToLower()).ToList();
+                }
+                if (!string.IsNullOrEmpty(enquiryViewModel.ServiceStatus))
+                {
+                    res = res.Where(x => x.ServiceStatus.ToLower() == enquiryViewModel.ServiceStatus.ToLower()).ToList();
+                }
+                if (!string.IsNullOrEmpty(enquiryViewModel.UserStatus))
+                {
+                    res = res.Where(x => x.UserStatus.ToLower() == enquiryViewModel.UserStatus.ToLower()).ToList();
+                }
+                if (enquiryViewModel.FromDate != null && enquiryViewModel.ToDate != null)
+                {
+                    res = res.Where(x => x.EnquiryDate >= Convert.ToDateTime(enquiryViewModel.FromDate)
+                    && x.EnquiryDate <= Convert.ToDateTime(enquiryViewModel.ToDate)).ToList();
                 }
             }
-
-            return StatusCode(HttpStatusCode.NoContent);
+                return Ok(res); 
         }
 
-        // POST: api/EnquiryDetails
-        [ResponseType(typeof(EnquiryDetails))]
-        public async Task<IHttpActionResult> PostEnquiryDetails(EnquiryDetails enquiryDetails)
-        {
-            if (enquiryDetails != null)
-            {
-                enquiryDetails.CreatedBy = userDetails.Id;
-                enquiryDetails.CreatedOn = DateTime.Now;
-            }
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
+  
 
-            db.EnquiryDetails.Add(enquiryDetails);
-            await db.SaveChangesAsync();
-
-            return CreatedAtRoute("DefaultApi", new { id = enquiryDetails.Id }, enquiryDetails);
-        }
-
-        // DELETE: api/EnquiryDetails/5
-        [ResponseType(typeof(EnquiryDetails))]
-        public async Task<IHttpActionResult> DeleteEnquiryDetails(int id)
-        {
-            EnquiryDetails enquiryDetails = await db.EnquiryDetails.FindAsync(id);
-            if (enquiryDetails == null)
-            {
-                return NotFound();
-            }
-
-            db.EnquiryDetails.Remove(enquiryDetails);
-            await db.SaveChangesAsync();
-
-            return Ok(enquiryDetails);
-        }
-
+       
         protected override void Dispose(bool disposing)
         {
             if (disposing)

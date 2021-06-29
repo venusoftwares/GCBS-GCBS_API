@@ -23,7 +23,7 @@ namespace GCBS_INTERNAL.Models
         public int UserId { get; set; }
 
         public int PartnerId { get; set; }   
-        public double Amount { get; set; }
+        public decimal Amount { get; set; }
 
         [Required]
         [StringLength(50)]
@@ -56,7 +56,7 @@ namespace GCBS_INTERNAL.Models
         public string ServiceCategory { get; set; }
         public string PartnerName { get; set; }
         public int PartnerId { get; set; }
-        public double Amount { get; set; }
+        public decimal Amount { get; set; }
         public string PaymentMode { get; set; }
         public string PaymentType { get; set; }
         public DateTime? PaymentDateFrom { get; set; }

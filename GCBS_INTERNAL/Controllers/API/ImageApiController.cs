@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -12,46 +13,51 @@ namespace GCBS_INTERNAL.Controllers.API
    
     public class ImageAPIController : ApiController
     {
-        [Route("api/ImageAPI/UploadFiles")]
+        [Route("api/ImageAPI/MultipleUploadFiles")]
         [HttpPost]
-        public HttpResponseMessage UploadFiles()
+        public HttpResponseMessage MultiUploadFiles()
         {
-            //Create the Directory.
             string path = HttpContext.Current.Server.MapPath("~/Uploads/");
             if (!Directory.Exists(path))
             {
                 Directory.CreateDirectory(path);
             }
-
-            //Fetch the File.
-            HttpPostedFile postedFile = HttpContext.Current.Request.Files[0];
-
-            //Fetch the File Name.
-            string fileName = Path.GetFileName(postedFile.FileName);
-
-            //Save the File.
-            postedFile.SaveAs(path + fileName);
-
-            //Send OK Response to Client.
-            return Request.CreateResponse(HttpStatusCode.OK, fileName);
-        }
+           
+            int i = 0;
+            var httpRequest = HttpContext.Current.Request;
+            if (httpRequest.Files.Count > 0)
+            {
+                foreach (string file in httpRequest.Files)
+                {                           
+                    var postedFile = httpRequest.Files[i];      
+                    string imageName = DateTime.Now.ToString("yyyymmddhhmmssfff") +
+                        Path.GetExtension(postedFile.FileName);   
+                    postedFile.SaveAs(path+ imageName);   
+                    i++;
+                }
+            }    
+            return Request.CreateResponse(HttpStatusCode.Created);
+        }     
 
         [HttpPost]
         [Route("api/ImageAPI/GetFiles")]
         public HttpResponseMessage GetFiles()
         {
-            string path = HttpContext.Current.Server.MapPath("~/Uploads/");
-
-            //Fetch the Image Files.
-            List<string> images = new List<string>();
-
-            //Extract only the File Names to save data.
+            string path = HttpContext.Current.Server.MapPath("~/Uploads/");  
+            List<string> images = new List<string>(); 
             foreach (string file in Directory.GetFiles(path))
             {
                 images.Add(Path.GetFileName(file));
-            }
-
+            }  
             return Request.CreateResponse(HttpStatusCode.OK, images);
+        }
+
+        public class FileModel
+        {
+            [Required(ErrorMessage = "Please select file.")]
+            [Display(Name = "Browse File")]
+            public HttpPostedFileBase[] files { get; set; }
+
         }
     }
 }

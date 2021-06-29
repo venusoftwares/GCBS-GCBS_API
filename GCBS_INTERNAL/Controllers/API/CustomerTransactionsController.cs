@@ -66,7 +66,7 @@ namespace GCBS_INTERNAL.Controllers.API
                     if (customerTransactionsViewModel.PaymentDateFrom != null && customerTransactionsViewModel.PaymentDateTo != null)
                     {
                         res = res.Where(x => x.PaymentDate >= Convert.ToDateTime(customerTransactionsViewModel.PaymentDateFrom)
-                        && x.PaymentDate <= Convert.ToDateTime(customerTransactionsViewModel.PaymentDateFrom)).ToList();
+                        && x.PaymentDate <= Convert.ToDateTime(customerTransactionsViewModel.PaymentDateTo)).ToList();
                     }
                     if (!string.IsNullOrEmpty(customerTransactionsViewModel.PaymentType))
                     {

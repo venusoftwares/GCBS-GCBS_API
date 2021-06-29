@@ -47,6 +47,8 @@ namespace GCBS_INTERNAL.Models
         public virtual DbSet<PayoutDetails> PayoutDetails { get; set; }
 
         public virtual DbSet<SiteBannerMaster> SiteBannerMasters { get; set; }
+
+        public virtual DbSet<TaxSettings> TaxSettings { get; set; }
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
            
