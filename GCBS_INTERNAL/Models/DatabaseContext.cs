@@ -47,8 +47,21 @@ namespace GCBS_INTERNAL.Models
         public virtual DbSet<PayoutDetails> PayoutDetails { get; set; }
 
         public virtual DbSet<SiteBannerMaster> SiteBannerMasters { get; set; }
-
+        public virtual DbSet<ImageMaster> ImageMaster { get; set; }
         public virtual DbSet<TaxSettings> TaxSettings { get; set; }
+
+        //Partner Bio
+        public virtual DbSet<Orientation> Orientation { get; set; }
+        public virtual DbSet<Ethnicity> Ethnicity { get; set; }
+        public virtual DbSet<DickSize> DickSize { get; set; }
+        public virtual DbSet<Eye> Eye { get; set; }
+        public virtual DbSet<Hair> Hair { get; set; }
+        public virtual DbSet<Height> Height { get; set; }
+        public virtual DbSet<Weight> Weight { get; set; }
+        public virtual DbSet<Meeting> Meeting { get; set; }     
+        public virtual DbSet<Tit> Tit { get; set; }
+        public virtual DbSet<TitType> TitType { get; set; }      
+     
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
            

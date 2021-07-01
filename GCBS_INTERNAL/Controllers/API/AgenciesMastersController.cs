@@ -7,6 +7,7 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
+using System.Web;
 using System.Web.Http;
 using System.Web.Http.Description;
 using GCBS_INTERNAL.Models;
@@ -103,20 +104,17 @@ namespace GCBS_INTERNAL.Controllers.API
             return StatusCode(HttpStatusCode.NoContent);
         }
         // POST: api/AgenciesMasters
-        [ResponseType(typeof(AgenciesMaster))]
-        public async Task<IHttpActionResult> PostAgenciesMaster(AgenciesMaster agenciesMaster)
+        [ResponseType(typeof(AgenciesMaster))]    
+        public async Task<IHttpActionResult> PostAgenciesMaster(AgenciesMaster agenciesMaster,HttpPostedFileBase[] files )
         {
             agenciesMaster.CreatedBy = userDetails.Id;
             agenciesMaster.CreatedOn = DateTime.Now;
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
-            }
-            agenciesMaster.CreatedBy = userDetails.Id;
-            agenciesMaster.CreatedOn = DateTime.Now;
+            }                                      
             db.AgenciesMaster.Add(agenciesMaster);
-            await db.SaveChangesAsync();
-
+            await db.SaveChangesAsync();    
             return CreatedAtRoute("DefaultApi", new { id = agenciesMaster.Id }, agenciesMaster);
         }
 

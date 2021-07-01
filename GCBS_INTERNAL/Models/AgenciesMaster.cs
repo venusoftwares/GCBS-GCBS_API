@@ -5,6 +5,7 @@ namespace GCBS_INTERNAL.Models
     using System.ComponentModel.DataAnnotations;
     using System.ComponentModel.DataAnnotations.Schema;
     using System.Data.Entity.Spatial;
+    using System.Web;
 
     [Table("AgenciesMaster")]
     public partial class AgenciesMaster
@@ -49,4 +50,6 @@ namespace GCBS_INTERNAL.Models
         public int Id { get; set; }
         public bool Status { get; set; }
     }
+
+     
 }
