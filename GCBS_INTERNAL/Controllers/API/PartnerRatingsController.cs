@@ -19,9 +19,21 @@ namespace GCBS_INTERNAL.Controllers.API
         private DatabaseContext db = new DatabaseContext();
 
         // GET: api/PartnerRatings
-        public IQueryable<PartnerRating> GetPartnerRating()
+        public List<PartnerRatingViewModel> GetPartnerRating()
         {
-            return db.PartnerRating;
+            List<PartnerRatingViewModel> partnerRatingViewModels = new List<PartnerRatingViewModel>();
+            var list = db.PartnerRating.Include(x => x.UserManagement).Include(x => x.partnerManagement).ToList();
+                  
+            foreach(var a in list)
+            {
+                PartnerRatingViewModel partnerRatingViewModel = new PartnerRatingViewModel();
+                partnerRatingViewModel.UserId = a.UserId + "_" + a.UserManagement.Username;
+                partnerRatingViewModel.Partnerid = a.Partnerid + "_" + a.partnerManagement.Username;
+                partnerRatingViewModel.CreatedOn = a.CreatedOn.ToString("dd-MM-yyyy hh:mm tt");
+                partnerRatingViewModel.Rating = a.Rating;
+                partnerRatingViewModels.Add(partnerRatingViewModel);        
+            }
+            return partnerRatingViewModels;
         }
 
         // GET: api/PartnerRatings/5
