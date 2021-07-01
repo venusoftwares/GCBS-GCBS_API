@@ -19,10 +19,16 @@ namespace GCBS_INTERNAL.Controllers.API
         private DatabaseContext db = new DatabaseContext();
 
         // GET: api/PartnerRatings
+        /// <summary>
+        /// Order by created Desc , Inner join Usermanagement UserId and Inner join Usermanagement PartnerId
+        /// </summary>
+        /// <returns></returns>
         public List<PartnerRatingViewModel> GetPartnerRating()
         {
             List<PartnerRatingViewModel> partnerRatingViewModels = new List<PartnerRatingViewModel>();
-            var list = db.PartnerRating.Include(x => x.UserManagement).Include(x => x.partnerManagement).ToList();
+            var list = db.PartnerRating.OrderByDescending(x=>x.CreatedOn)
+                .Include(x => x.UserManagement)
+                .Include(x => x.partnerManagement).ToList();
                   
             foreach(var a in list)
             {
