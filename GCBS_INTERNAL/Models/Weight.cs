@@ -11,9 +11,10 @@ namespace GCBS_INTERNAL.Models
     {
         public int Id { get; set; }
 
+        [Column("Weight")]
         [Required]
         [StringLength(50)]
-        public string Height { get; set; }
+        public string Weight1 { get; set; }
 
         public bool Status { get; set; }
 
