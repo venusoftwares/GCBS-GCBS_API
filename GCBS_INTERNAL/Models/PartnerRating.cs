@@ -19,12 +19,26 @@ namespace GCBS_INTERNAL.Models
         [StringLength(200)]
         public string Rating { get; set; }
 
-        public DateTime? CreatedOn { get; set; }
+        public DateTime CreatedOn { get; set; }
 
         public DateTime? UpdatedOn { get; set; }
 
-        public int? CreatedBy { get; set; }
+        public int CreatedBy { get; set; }
 
         public int? UpdatedBy { get; set; }
+        [ForeignKey("UserId")]
+        public UserManagement UserManagement { get; set; }
+        [ForeignKey("Partnerid")]
+        public UserManagement partnerManagement { get; set; }
+    }
+
+    public class PartnerRatingViewModel
+    {
+        public string UserId { get; set; }
+
+        public string Partnerid { get; set; }
+
+        public string Rating { get; set; }
+        public string CreatedOn { get; set; }
     }
 }
