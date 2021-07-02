@@ -105,7 +105,7 @@ namespace GCBS_INTERNAL.Controllers.API
         }
         // POST: api/AgenciesMasters
         [ResponseType(typeof(AgenciesMaster))]    
-        public async Task<IHttpActionResult> PostAgenciesMaster(AgenciesMaster agenciesMaster,HttpPostedFileBase[] files )
+        public async Task<IHttpActionResult> PostAgenciesMaster(AgenciesMaster agenciesMaster)
         {
             agenciesMaster.CreatedBy = userDetails.Id;
             agenciesMaster.CreatedOn = DateTime.Now;
