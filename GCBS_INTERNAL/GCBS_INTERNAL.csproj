@@ -433,6 +433,8 @@
     <Compile Include="Models\Weight.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Provider\OauthProvider.cs" />
+    <Compile Include="Services\Images.cs" />
+    <Compile Include="Services\ImageServices.cs" />
     <Compile Include="Startup.cs" />
     <Compile Include="ViewModels\AdminLogin.cs" />
     <Compile Include="ViewModels\DropDownCommon.cs" />

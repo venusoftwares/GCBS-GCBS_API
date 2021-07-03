@@ -18,10 +18,7 @@ namespace GCBS_INTERNAL.Models
 
         [Required]
         [StringLength(200)]
-        public string Location { get; set; }
-
-        [StringLength(200)]
-        public string Images { get; set; }
+        public string Location { get; set; }    
 
         [StringLength(500)]
         public string WebsiteUrl { get; set; }
@@ -38,9 +35,9 @@ namespace GCBS_INTERNAL.Models
 
         public DateTime CreatedOn { get; set; }
 
-        public DateTime UpdatedOn { get; set; }
+        public DateTime? UpdatedOn { get; set; }
 
-        public int? CreatedBy { get; set; }
+        public int CreatedBy { get; set; }
 
         public int? UpdatedBy { get; set; }
     }
@@ -51,5 +48,10 @@ namespace GCBS_INTERNAL.Models
         public bool Status { get; set; }
     }
 
+    public class AgenciesMasterViewModel
+    {
+         public AgenciesMaster AgenciesMaster { get; set; }
+         public string[] imageBase64 { get; set; }
+    }
      
 }

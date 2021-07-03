@@ -11,6 +11,7 @@ using System.Web;
 using System.Web.Http;
 using System.Web.Http.Description;
 using GCBS_INTERNAL.Models;
+using GCBS_INTERNAL.Services;
 
 namespace GCBS_INTERNAL.Controllers.API
 {
@@ -18,6 +19,7 @@ namespace GCBS_INTERNAL.Controllers.API
     public class AgenciesMastersController : BaseApiController
     {
         private DatabaseContext db = new DatabaseContext();
+        public ImageServices imgser = new ImageServices();
 
         // GET: api/AgenciesMasters
         public IQueryable<AgenciesMaster> GetAgenciesMaster()
@@ -105,17 +107,33 @@ namespace GCBS_INTERNAL.Controllers.API
         }
         // POST: api/AgenciesMasters
         [ResponseType(typeof(AgenciesMaster))]    
-        public async Task<IHttpActionResult> PostAgenciesMaster(AgenciesMaster agenciesMaster)
+        public async Task<IHttpActionResult> PostAgenciesMaster(AgenciesMasterViewModel agenciesMasterViewModel)
         {
-            agenciesMaster.CreatedBy = userDetails.Id;
-            agenciesMaster.CreatedOn = DateTime.Now;
-            if (!ModelState.IsValid)
+            try
             {
-                return BadRequest(ModelState);
-            }                                      
-            db.AgenciesMaster.Add(agenciesMaster);
-            await db.SaveChangesAsync();    
-            return CreatedAtRoute("DefaultApi", new { id = agenciesMaster.Id }, agenciesMaster);
+                string a = "";
+                AgenciesMaster agenciesMaster = agenciesMasterViewModel.AgenciesMaster;
+                agenciesMaster.CreatedBy = userDetails.Id;
+                agenciesMaster.CreatedOn = DateTime.Now;
+                if (!ModelState.IsValid)
+                {
+                    return BadRequest(ModelState);
+                }
+                db.AgenciesMaster.Add(agenciesMaster);
+                await db.SaveChangesAsync();
+                if (agenciesMaster.Id > 0 && agenciesMasterViewModel.imageBase64.Count()>0)
+                {
+                    foreach (var imgbase64 in agenciesMasterViewModel.imageBase64)
+                    {
+                        imgser.SaveImage(imgbase64, "Agencies", agenciesMaster.Id, userDetails.Id);
+                    }
+                }
+                return CreatedAtRoute("DefaultApi", new { id = agenciesMaster.Id }, agenciesMaster);
+            }
+            catch(Exception ex)
+            {
+                throw ex;
+            }
         }
 
         // DELETE: api/AgenciesMasters/5
@@ -130,7 +148,10 @@ namespace GCBS_INTERNAL.Controllers.API
 
             db.AgenciesMaster.Remove(agenciesMaster);
             await db.SaveChangesAsync();
-
+            if(agenciesMaster!=null)
+            {
+                imgser.DeleteFiles(agenciesMaster.Id);
+            }   
             return Ok(agenciesMaster);
         }
 
