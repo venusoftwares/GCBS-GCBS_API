@@ -51,7 +51,7 @@ namespace GCBS_INTERNAL.Models
     public class AgenciesMasterViewModel
     {
          public AgenciesMaster AgenciesMaster { get; set; }
-         public string[] imageBase64 { get; set; }
+         public List<string> imageBase64 { get; set; }
     }
      
 }

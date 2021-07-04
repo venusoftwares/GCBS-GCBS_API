@@ -28,7 +28,7 @@ namespace GCBS_INTERNAL.Controllers.API
         }
 
         // GET: api/AgenciesMasters/5
-        [ResponseType(typeof(AgenciesMaster))]
+        [ResponseType(typeof(AgenciesMasterViewModel))]
         public async Task<IHttpActionResult> GetAgenciesMaster(int id)
         {
             AgenciesMaster agenciesMaster = await db.AgenciesMaster.FindAsync(id);
@@ -36,14 +36,17 @@ namespace GCBS_INTERNAL.Controllers.API
             {
                 return NotFound();
             }
-
-            return Ok(agenciesMaster);
+            AgenciesMasterViewModel agenciesMasterViewModel = new AgenciesMasterViewModel();
+            agenciesMasterViewModel.AgenciesMaster = agenciesMaster;
+            agenciesMasterViewModel.imageBase64 = imgser.EditGetFiles(id, "Agencies");
+            return Ok(agenciesMasterViewModel);
         }
 
         // PUT: api/AgenciesMasters/5
         [ResponseType(typeof(void))]
-        public async Task<IHttpActionResult> PutAgenciesMaster(int id, AgenciesMaster agenciesMaster)
+        public async Task<IHttpActionResult> PutAgenciesMaster(int id, AgenciesMasterViewModel agenciesMasterViewModel)
         {
+            AgenciesMaster agenciesMaster = agenciesMasterViewModel.AgenciesMaster;
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
@@ -62,11 +65,18 @@ namespace GCBS_INTERNAL.Controllers.API
             }
             agenciesMaster.UpdatedBy = userDetails.Id;
             agenciesMaster.UpdatedOn = DateTime.Now;
-            db.Entry(agenciesMaster).State = EntityState.Modified;
-
+            db.Entry(agenciesMaster).State = EntityState.Modified;     
             try
             {
                 await db.SaveChangesAsync();
+                if (agenciesMaster.Id > 0 && agenciesMasterViewModel.imageBase64.Count() > 0)
+                {
+                    imgser.DeleteFiles(agenciesMaster.Id);
+                    foreach (var imgbase64 in agenciesMasterViewModel.imageBase64)
+                    {      
+                        imgser.SaveImage(imgbase64, "Agencies", agenciesMaster.Id, userDetails.Id);
+                    }
+                }
             }
             catch (DbUpdateConcurrencyException)
             {
