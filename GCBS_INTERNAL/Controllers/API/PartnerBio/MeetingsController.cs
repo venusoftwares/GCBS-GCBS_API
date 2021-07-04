@@ -55,6 +55,7 @@ namespace GCBS_INTERNAL.Controllers.API.PartnerBio
                 Meeting meeting1 = await db2.Meeting.FindAsync(id);
                 meeting.CreatedBy = meeting1.CreatedBy;
                 meeting.CreatedOn = meeting1.CreatedOn;
+                meeting.Status = meeting1.Status;
                 db2.Dispose();
             }
             meeting.UpdatedBy = userDetails.Id;
@@ -108,6 +109,7 @@ namespace GCBS_INTERNAL.Controllers.API.PartnerBio
             {
                 meeting.CreatedBy = userDetails.Id;
                 meeting.CreatedOn = DateTime.Now;
+                meeting.Status = true;
             }
             if (!ModelState.IsValid)
             {

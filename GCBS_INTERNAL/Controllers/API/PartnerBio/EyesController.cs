@@ -55,6 +55,7 @@ namespace GCBS_INTERNAL.Controllers.API.PartnerBio
                 Eye eye1 = await db2.Eye.FindAsync(id);
                 eye.CreatedBy = eye1.CreatedBy;
                 eye.CreatedOn = eye1.CreatedOn;
+                eye.Status = eye1.Status;
                 db2.Dispose();
             }
             eye.UpdatedBy = userDetails.Id;
@@ -107,6 +108,7 @@ namespace GCBS_INTERNAL.Controllers.API.PartnerBio
             {
                 eye.CreatedBy = userDetails.Id;
                 eye.CreatedOn = DateTime.Now;
+                eye.Status = true;
             }
             if (!ModelState.IsValid)
             {

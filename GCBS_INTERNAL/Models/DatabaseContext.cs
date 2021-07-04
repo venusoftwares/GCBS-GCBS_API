@@ -15,7 +15,7 @@ namespace GCBS_INTERNAL.Models
         public virtual DbSet<ServiceTypes> ServiceTypes { get; set; }
         public virtual DbSet<ServicesMaster> ServicesMasters { get; set; }
         public virtual DbSet<MarginMaster> MarginMaster { get; set; }
-        public virtual DbSet<PriceMaster> PriceMaster { get; set; }
+        
         public virtual DbSet<RoleMaster> RoleMaster { get; set; }
         public virtual DbSet<BookingDetail> BookingDetails { get; set; }
         public virtual DbSet<ContactEnquiryView> ContactEnquiryView { get; set; }
@@ -25,7 +25,7 @@ namespace GCBS_INTERNAL.Models
         public virtual DbSet<PartnerType> PartnerType { get; set; }
         public virtual DbSet<PaymentDetails> PaymentDetails { get; set; }
         public virtual DbSet<PaymentGateway> PaymentGateway { get; set; }
-      
+        public virtual DbSet<DurationMaster> DurationMaster { get; set; }
         public virtual DbSet<RolePermissionMaster> RolePermissionMaster { get; set; }
         public virtual DbSet<SiteSettings> SiteSettings { get; set; }
         public virtual DbSet<SmsSettings> SmsSettings { get; set; }

@@ -55,6 +55,7 @@ namespace GCBS_INTERNAL.Controllers.API.PartnerBio
                 Height height1 = await db2.Height.FindAsync(id);
                 height.CreatedBy = height1.CreatedBy;
                 height.CreatedOn = height1.CreatedOn;
+                height.Status = height1.Status;
                 db2.Dispose();
             }
             height.UpdatedBy = userDetails.Id;
@@ -110,6 +111,7 @@ namespace GCBS_INTERNAL.Controllers.API.PartnerBio
             {
                 height.CreatedBy = userDetails.Id;
                 height.CreatedOn = DateTime.Now;
+                height.Status = true;
             }
             if (!ModelState.IsValid)
             {

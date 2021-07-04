@@ -56,6 +56,7 @@ namespace GCBS_INTERNAL.Controllers.API.PartnerBio
                 DickSize dick = await db2.DickSize.FindAsync(id);
                 dickSize.CreatedBy = dick.CreatedBy;
                 dickSize.CreatedOn = dick.CreatedOn;
+                dickSize.Status = dick.Status;
                 db2.Dispose();
             }
             dickSize.UpdatedBy = userDetails.Id;
@@ -106,6 +107,7 @@ namespace GCBS_INTERNAL.Controllers.API.PartnerBio
             {
                 dickSize.CreatedBy = userDetails.Id;
                 dickSize.CreatedOn = DateTime.Now;
+                dickSize.Status = true;
             }
             if (!ModelState.IsValid)
             {

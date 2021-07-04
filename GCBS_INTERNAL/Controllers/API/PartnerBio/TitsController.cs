@@ -55,6 +55,7 @@ namespace GCBS_INTERNAL.Controllers.API.PartnerBio
                 Tit tit1 = await db2.Tit.FindAsync(id);
                 tit.CreatedBy = tit1.CreatedBy;
                 tit.CreatedOn = tit1.CreatedOn;
+                tit.Status = tit1.Status;
                 db2.Dispose();
             }
             tit.UpdatedBy = userDetails.Id;
@@ -107,6 +108,7 @@ namespace GCBS_INTERNAL.Controllers.API.PartnerBio
             {
                 tit.CreatedBy = userDetails.Id;
                 tit.CreatedOn = DateTime.Now;
+                tit.Status = true;
             }
             if (!ModelState.IsValid)
             {

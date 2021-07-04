@@ -12,63 +12,79 @@ namespace GCBS_INTERNAL.Services
     {
         public string urlLink = ConfigurationManager.AppSettings["ApiUrl"];
         public bool SaveImage(string ImgStr, string Type, int Id,int userId)
-        {
-            string[] b = ImgStr.Split(';');
-            string[] c = b[0].Split('/');
-            //Console.WriteLine(c[1]);
-            string[] d = ImgStr.Split(',');
-            string path = HttpContext.Current.Server.MapPath("~/"+ Type+"/"+ Id); //Path   
-            //Check if directory exist
-            if (!Directory.Exists(path))
+        {    try
             {
-                Directory.CreateDirectory(path); //Create directory if it doesn't exist
+                string[] b = ImgStr.Split(';');
+                string[] c = b[0].Split('/');
+                //Console.WriteLine(c[1]);
+                string[] d = ImgStr.Split(',');
+                string path = HttpContext.Current.Server.MapPath("~/" + Type + "/" + Id); //Path   
+                                                                                          //Check if directory exist
+                if (!Directory.Exists(path))
+                {
+                    Directory.CreateDirectory(path); //Create directory if it doesn't exist
+                }
+                string imageName = DateTime.Now.ToString("yyyymmddhhmmssfff") + "." + c[1];
+                //set the image path
+                string imgPath = Path.Combine(path, imageName);
+                byte[] imageBytes = Convert.FromBase64String(d[1]);
+                File.WriteAllBytes(imgPath, imageBytes);
+                using (var db = new DatabaseContext())
+                {
+                    ImageMaster imageMaster = new ImageMaster();
+                    imageMaster.ImageUrl = imageName;
+                    imageMaster.Folder = "Uploads";
+                    imageMaster.Type = Type;
+                    imageMaster.ReferenceId = Id;
+                    imageMaster.CreatedOn = DateTime.Now;
+                    imageMaster.CreatedBy = userId;
+                    imageMaster.Status = false;
+                    db.ImageMaster.Add(imageMaster);
+                    db.SaveChanges();
+                    db.Dispose();
+                }
+                return true;
             }
-            string imageName = DateTime.Now.ToString("yyyymmddhhmmssfff") + "." + c[1];
-            //set the image path
-            string imgPath = Path.Combine(path, imageName);
-            byte[] imageBytes = Convert.FromBase64String(d[1]);
-            File.WriteAllBytes(imgPath, imageBytes);
-            using (var db = new DatabaseContext())
+            catch(Exception ex)
             {
-                ImageMaster imageMaster = new ImageMaster();
-                imageMaster.ImageUrl = imageName;
-                imageMaster.Folder = "Uploads";
-                imageMaster.Type = Type;
-                imageMaster.ReferenceId = Id;
-                imageMaster.CreatedOn = DateTime.Now;
-                imageMaster.CreatedBy = userId;
-                imageMaster.Status = false;
-                db.ImageMaster.Add(imageMaster);
-                db.SaveChanges();
-                db.Dispose();
+                return false; 
             }
-            return true;
+           
         }
         public List<string> GetFiles(int Id, string Type)
         {
-            string path = HttpContext.Current.Server.MapPath("~/"+Type+"/"+Id+"/");
-            List<string> images = new List<string>();
-            List<string> images2 = new List<string>();
-            foreach (string file in Directory.GetFiles(path))
+            try
             {
-                images.Add(Path.GetFileName(file));
-            }
-            using (var db = new DatabaseContext())
-            {
-                var list = db.ImageMaster.Where(x => x.ReferenceId == Id && x.Type == Type).ToList();
-                foreach (var i in list)
+                string path = HttpContext.Current.Server.MapPath("~/" + Type + "/" + Id + "/");
+                List<string> images = new List<string>();
+                List<string> images2 = new List<string>();
+                foreach (string file in Directory.GetFiles(path))
                 {
-                    if (images.Contains(i.ImageUrl))
-                    {   
-                        images2.Add(urlLink + "/" + i.Type + "/" + i.ReferenceId + "/" + i.ImageUrl);
+                    images.Add(Path.GetFileName(file));
+                }
+                using (var db = new DatabaseContext())
+                {
+                    var list = db.ImageMaster.Where(x => x.ReferenceId == Id && x.Type == Type).ToList();
+                    foreach (var i in list)
+                    {
+                        if (images.Contains(i.ImageUrl))
+                        {
+                            images2.Add(urlLink + "/" + i.Type + "/" + i.ReferenceId + "/" + i.ImageUrl);
+                        }
                     }
                 }
+                return images2;
             }
-            return images2;
+            catch(Exception ex)
+            {
+                return new List<string>();
+            }    
         }
         public List<string> EditGetFiles(int Id, string Type)
-        {     
-            List<string> images = new List<string>();   
+        {
+            try
+            {
+                List<string> images = new List<string>();   
             using (var db = new DatabaseContext())
             {
                 var list = db.ImageMaster.Where(x => x.ReferenceId == Id && x.Type == Type).ToList();
@@ -83,6 +99,11 @@ namespace GCBS_INTERNAL.Services
                 }
             }
             return images;
+            }
+            catch (Exception ex)
+            {
+                return new List<string>();
+            }
         }
         public string ImageToBase64(string path,string extension)
         {    

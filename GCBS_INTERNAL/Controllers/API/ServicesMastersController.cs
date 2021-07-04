@@ -21,7 +21,7 @@ namespace GCBS_INTERNAL.Controllers.API
         // GET: api/ServicesMasters
         public IQueryable<ServicesMaster> GetServicesMasters()
         {
-            return db.ServicesMasters;
+            return db.ServicesMasters.Include(x=>x.ServiceTypes);
         }
 
         // GET: api/ServicesMasters/5

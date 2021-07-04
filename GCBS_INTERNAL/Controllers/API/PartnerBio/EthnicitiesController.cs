@@ -55,6 +55,7 @@ namespace GCBS_INTERNAL.Controllers.API.PartnerBio
                 Ethnicity ethnicity1 = await db2.Ethnicity.FindAsync(id);
                 ethnicity.CreatedBy = ethnicity1.CreatedBy;
                 ethnicity.CreatedOn = ethnicity1.CreatedOn;
+                ethnicity.Status = ethnicity1.Status;
                 db2.Dispose();
             }
             ethnicity.UpdatedBy = userDetails.Id;
@@ -107,6 +108,7 @@ namespace GCBS_INTERNAL.Controllers.API.PartnerBio
             {
                 ethnicity.CreatedBy = userDetails.Id;
                 ethnicity.CreatedOn = DateTime.Now;
+                ethnicity.Status = true;
             }
             if (!ModelState.IsValid)
             {

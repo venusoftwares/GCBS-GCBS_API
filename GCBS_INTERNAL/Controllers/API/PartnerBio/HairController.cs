@@ -55,6 +55,7 @@ namespace GCBS_INTERNAL.Controllers.API.PartnerBio
                 Hair hair1 = await db2.Hair.FindAsync(id);
                 hair.CreatedBy = hair1.CreatedBy;
                 hair.CreatedOn = hair1.CreatedOn;
+                hair.Status = hair1.Status;
                 db2.Dispose();
             }
             hair.UpdatedBy = userDetails.Id;
@@ -107,6 +108,7 @@ namespace GCBS_INTERNAL.Controllers.API.PartnerBio
             {
                 hair.CreatedBy = userDetails.Id;
                 hair.CreatedOn = DateTime.Now;
+                hair.Status = true;
             }
             if (!ModelState.IsValid)
             {

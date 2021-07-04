@@ -22,9 +22,28 @@ namespace GCBS_INTERNAL.Controllers.API
         public ImageServices imgser = new ImageServices();
 
         // GET: api/AgenciesMasters
-        public IQueryable<AgenciesMaster> GetAgenciesMaster()
+        public List<AgenciesMasterView> GetAgenciesMaster()
         {
-            return db.AgenciesMaster;
+            List<AgenciesMasterView> list = new List<AgenciesMasterView>();
+            var res = db.AgenciesMaster.ToList();
+            foreach (var a in res)
+            {
+                // First or default 
+                string path = imgser.GetFiles(a.Id, Constant.AGENCIES_FOLDER_TYPE).FirstOrDefault();
+                list.Add(new AgenciesMasterView
+                {         
+                    Id = a.Id,                    
+                    Status = a.Status ,
+                    Email = a.Email,
+                    HotelName = a.HotelName,
+                    Location = a.Location,
+                    WebsiteUrl = a.WebsiteUrl,
+                    ValidEndDate = a.ValidEndDate.ToString("dd-MM-yyyy hh:mm tt"),
+                    ValidStartDate = a.ValidStartDate.ToString("dd-MM-yyyy hh:mm tt"),
+                    Image = path
+                });
+            }
+            return list;         
         }
 
         // GET: api/AgenciesMasters/5

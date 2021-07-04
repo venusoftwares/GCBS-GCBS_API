@@ -82,16 +82,44 @@ namespace GCBS_INTERNAL.Controllers.API
                 return BadRequest(ModelState);
             }
 
-            if (marginMasterVisible == null)
+            try
             {
-                return BadRequest();
+                if (marginMasterVisible == null)
+                {
+                    return BadRequest();
+                }
+                //MarginMaster marginMaster = await db.MarginMaster.FindAsync(marginMasterVisible.Id);
+                //marginMaster.Status = marginMasterVisible.Status;
+                //marginMaster.UpdatedBy = userDetails.Id;
+                //marginMaster.UpdatedOn = DateTime.Now;
+                //db.Entry(marginMaster).State = EntityState.Modified;
+                //await db.SaveChangesAsync();
+                using (var db2 = new DatabaseContext())
+                {
+                    var checklist = await db2.MarginMaster.ToArrayAsync();
+                    foreach (var i in checklist)
+                    {
+                        if (marginMasterVisible.Id == i.Id)
+                        {
+                            i.Status = true;
+                        }
+                        else
+                        {
+                            i.Status = false;
+                        }
+                        i.UpdatedBy = userDetails.Id;
+                        i.UpdatedOn = DateTime.Now;
+                        db2.Entry(i).State = EntityState.Modified;
+                        await db2.SaveChangesAsync();
+                    }
+
+                }
             }
-            MarginMaster marginMaster = await db.MarginMaster.FindAsync(marginMasterVisible.Id);
-            marginMaster.Status = marginMasterVisible.Status;
-            marginMaster.UpdatedBy = userDetails.Id;
-            marginMaster.UpdatedOn = DateTime.Now;
-            db.Entry(marginMaster).State = EntityState.Modified;
-            await db.SaveChangesAsync();
+            catch(Exception ex)
+            {
+                throw ex;
+            }
+           
             return StatusCode(HttpStatusCode.NoContent);
         }
 

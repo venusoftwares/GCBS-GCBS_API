@@ -25,9 +25,9 @@ namespace GCBS_INTERNAL.Models
         [Required]
         [StringLength(200)]
         public string Email { get; set; }
-        public DateTime? ValidStartDate { get; set; }
+        public DateTime ValidStartDate { get; set; }
 
-        public DateTime? ValidEndDate { get; set; }   
+        public DateTime ValidEndDate { get; set; }   
         public bool Status { get; set; }
         public DateTime? CreatedOn { get; set; }
 
@@ -46,5 +46,21 @@ namespace GCBS_INTERNAL.Models
     {
         public HotelMaster HotelMaster { get; set; }
         public List<string> imageBase64 { get; set; }
+    }
+    public class HotelMasterView
+    {
+        public int Id { get; set; }
+        public string HotelName { get; set; }
+        public string Location { get; set; }
+
+        public string Image { get; set; }
+        public string WebsiteUrl { get; set; }
+        public string Email { get; set; }
+
+        public string ValidStartDate { get; set; }
+
+        public string ValidEndDate { get; set; }
+
+        public bool Status { get; set; }
     }
 }

@@ -55,6 +55,7 @@ namespace GCBS_INTERNAL.Controllers.API.PartnerBio
                 Orientation orientation1 = await db2.Orientation.FindAsync(id);
                 orientation.CreatedBy = orientation1.CreatedBy;
                 orientation.CreatedOn = orientation1.CreatedOn;
+                orientation.Status = orientation1.Status;
                 db2.Dispose();
             }
             orientation.UpdatedBy = userDetails.Id;
@@ -106,6 +107,7 @@ namespace GCBS_INTERNAL.Controllers.API.PartnerBio
             {
                 orientation.CreatedBy = userDetails.Id;
                 orientation.CreatedOn = DateTime.Now;
+                orientation.Status = true;
             }
             if (!ModelState.IsValid)
             {

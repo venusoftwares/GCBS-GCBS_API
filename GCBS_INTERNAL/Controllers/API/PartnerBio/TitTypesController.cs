@@ -55,6 +55,7 @@ namespace GCBS_INTERNAL.Controllers.API.PartnerBio
                 TitType titType1 = await db2.TitType.FindAsync(id);
                 titType.CreatedBy = titType1.CreatedBy;
                 titType.CreatedOn = titType1.CreatedOn;
+                titType.Status = titType1.Status;
                 db2.Dispose();
             }
             titType.UpdatedBy = userDetails.Id;
@@ -107,6 +108,7 @@ namespace GCBS_INTERNAL.Controllers.API.PartnerBio
             {
                 titType.CreatedBy = userDetails.Id;
                 titType.CreatedOn = DateTime.Now;
+                titType.Status = true;
             }
             if (!ModelState.IsValid)
             {

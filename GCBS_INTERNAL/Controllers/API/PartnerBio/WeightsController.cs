@@ -55,6 +55,7 @@ namespace GCBS_INTERNAL.Controllers.API.PartnerBio
                 Weight weight1 = await db2.Weight.FindAsync(id);
                 weight.CreatedBy = weight1.CreatedBy;
                 weight.CreatedOn = weight1.CreatedOn;
+                weight.Status = weight1.Status;
                 db2.Dispose();
             }
             weight.UpdatedBy = userDetails.Id;
@@ -110,6 +111,7 @@ namespace GCBS_INTERNAL.Controllers.API.PartnerBio
             {
                 weight.CreatedBy = userDetails.Id;
                 weight.CreatedOn = DateTime.Now;
+                weight.Status = true;
             }
             if (!ModelState.IsValid)
             {
