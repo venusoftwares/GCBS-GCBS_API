@@ -38,7 +38,7 @@ namespace GCBS_INTERNAL.Controllers.API
             }
             AgenciesMasterViewModel agenciesMasterViewModel = new AgenciesMasterViewModel();
             agenciesMasterViewModel.AgenciesMaster = agenciesMaster;
-            agenciesMasterViewModel.imageBase64 = imgser.EditGetFiles(id, "Agencies");
+            agenciesMasterViewModel.imageBase64 = imgser.EditGetFiles(id, Constant.AGENCIES_FOLDER_TYPE);
             return Ok(agenciesMasterViewModel);
         }
 
@@ -71,10 +71,10 @@ namespace GCBS_INTERNAL.Controllers.API
                 await db.SaveChangesAsync();
                 if (agenciesMaster.Id > 0 && agenciesMasterViewModel.imageBase64.Count() > 0)
                 {
-                    imgser.DeleteFiles(agenciesMaster.Id);
+                    imgser.DeleteFiles(agenciesMaster.Id, Constant.AGENCIES_FOLDER_TYPE);
                     foreach (var imgbase64 in agenciesMasterViewModel.imageBase64)
                     {      
-                        imgser.SaveImage(imgbase64, "Agencies", agenciesMaster.Id, userDetails.Id);
+                        imgser.SaveImage(imgbase64, Constant.AGENCIES_FOLDER_TYPE, agenciesMaster.Id, userDetails.Id);
                     }
                 }
             }
@@ -108,7 +108,7 @@ namespace GCBS_INTERNAL.Controllers.API
                 return BadRequest();
             }
             AgenciesMaster agenciesMaster = await db.AgenciesMaster.FindAsync(agenciesVisible.Id);
-            agenciesMaster.Status = agenciesMaster.Status;
+            agenciesMaster.Status = agenciesVisible.Status;
             agenciesMaster.UpdatedBy = userDetails.Id;
             agenciesMaster.UpdatedOn = DateTime.Now;
             db.Entry(agenciesMaster).State = EntityState.Modified;
@@ -135,7 +135,7 @@ namespace GCBS_INTERNAL.Controllers.API
                 {
                     foreach (var imgbase64 in agenciesMasterViewModel.imageBase64)
                     {
-                        imgser.SaveImage(imgbase64, "Agencies", agenciesMaster.Id, userDetails.Id);
+                        imgser.SaveImage(imgbase64, Constant.AGENCIES_FOLDER_TYPE, agenciesMaster.Id, userDetails.Id);
                     }
                 }
                 return CreatedAtRoute("DefaultApi", new { id = agenciesMaster.Id }, agenciesMaster);
@@ -160,7 +160,7 @@ namespace GCBS_INTERNAL.Controllers.API
             await db.SaveChangesAsync();
             if(agenciesMaster!=null)
             {
-                imgser.DeleteFiles(agenciesMaster.Id);
+                imgser.DeleteFiles(agenciesMaster.Id, Constant.AGENCIES_FOLDER_TYPE);
             }   
             return Ok(agenciesMaster);
         }

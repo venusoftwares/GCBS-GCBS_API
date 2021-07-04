@@ -19,5 +19,9 @@ namespace GCBS_INTERNAL
         public const string ONLINE = "Online";
         public const string OFFLINE = "Offline";
 
+        public const string AGENCIES_FOLDER_TYPE = "Agencies";
+        public const string HOTEL_FOLDER_TYPE = "Hotels";
+
+
     }
 }

@@ -42,4 +42,9 @@ namespace GCBS_INTERNAL.Models
         public int Id { get; set; }
         public bool Status { get; set; }
     }
+    public class HotelMasterViewModel
+    {
+        public HotelMaster HotelMaster { get; set; }
+        public List<string> imageBase64 { get; set; }
+    }
 }

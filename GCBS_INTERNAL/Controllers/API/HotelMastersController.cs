@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 using System.Web.Http;
 using System.Web.Http.Description;
 using GCBS_INTERNAL.Models;
+using GCBS_INTERNAL.Services;
 
 namespace GCBS_INTERNAL.Controllers.API
 {
@@ -17,6 +18,7 @@ namespace GCBS_INTERNAL.Controllers.API
     public class HotelMastersController : BaseApiController
     {
         private DatabaseContext db = new DatabaseContext();
+        public ImageServices imgser = new ImageServices();
 
         // GET: api/HotelMasters
         public IQueryable<HotelMaster> GetHotelMaster()
@@ -25,7 +27,7 @@ namespace GCBS_INTERNAL.Controllers.API
         }
 
         // GET: api/HotelMasters/5
-        [ResponseType(typeof(HotelMaster))]
+        [ResponseType(typeof(HotelMasterViewModel))]
         public async Task<IHttpActionResult> GetHotelMaster(int id)
         {
             HotelMaster hotelMaster = await db.HotelMaster.FindAsync(id);
@@ -33,14 +35,17 @@ namespace GCBS_INTERNAL.Controllers.API
             {
                 return NotFound();
             }
-
-            return Ok(hotelMaster);
+            HotelMasterViewModel hotelMasterViewModel = new HotelMasterViewModel();
+            hotelMasterViewModel.HotelMaster = hotelMaster;
+            hotelMasterViewModel.imageBase64 = imgser.EditGetFiles(id, Constant.HOTEL_FOLDER_TYPE);
+            return Ok(hotelMasterViewModel);
         }
 
         // PUT: api/HotelMasters/5
         [ResponseType(typeof(void))]
-        public async Task<IHttpActionResult> PutHotelMaster(int id, HotelMaster hotelMaster)
+        public async Task<IHttpActionResult> PutHotelMaster(int id, HotelMasterViewModel hotelMasterViewModel)
         {
+            HotelMaster hotelMaster = hotelMasterViewModel.HotelMaster;
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
@@ -56,6 +61,14 @@ namespace GCBS_INTERNAL.Controllers.API
             try
             {
                 await db.SaveChangesAsync();
+                if (hotelMaster.Id > 0 && hotelMasterViewModel.imageBase64.Count() > 0)
+                {
+                    imgser.DeleteFiles(hotelMaster.Id, Constant.HOTEL_FOLDER_TYPE);
+                    foreach (var imgbase64 in hotelMasterViewModel.imageBase64)
+                    {
+                        imgser.SaveImage(imgbase64, Constant.HOTEL_FOLDER_TYPE, hotelMaster.Id, userDetails.Id);
+                    }
+                }
             }
             catch (DbUpdateConcurrencyException)
             {
@@ -96,9 +109,10 @@ namespace GCBS_INTERNAL.Controllers.API
 
 
         // POST: api/HotelMasters
-        [ResponseType(typeof(HotelMaster))]
-        public async Task<IHttpActionResult> PostHotelMaster(HotelMaster hotelMaster)
+        [ResponseType(typeof(HotelMasterViewModel))]
+        public async Task<IHttpActionResult> PostHotelMaster(HotelMasterViewModel hotelMasterViewModel)
         {
+            HotelMaster hotelMaster = hotelMasterViewModel.HotelMaster;
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
@@ -106,7 +120,13 @@ namespace GCBS_INTERNAL.Controllers.API
 
             db.HotelMaster.Add(hotelMaster);
             await db.SaveChangesAsync();
-
+            if (hotelMaster.Id > 0 && hotelMasterViewModel.imageBase64.Count() > 0)
+            {
+                foreach (var imgbase64 in hotelMasterViewModel.imageBase64)
+                {
+                    imgser.SaveImage(imgbase64, Constant.HOTEL_FOLDER_TYPE, hotelMaster.Id, userDetails.Id);
+                }
+            }
             return CreatedAtRoute("DefaultApi", new { id = hotelMaster.Id }, hotelMaster);
         }
 
@@ -122,7 +142,10 @@ namespace GCBS_INTERNAL.Controllers.API
 
             db.HotelMaster.Remove(hotelMaster);
             await db.SaveChangesAsync();
-
+            if (hotelMaster != null)
+            {
+                imgser.DeleteFiles(hotelMaster.Id, Constant.HOTEL_FOLDER_TYPE);
+            }
             return Ok(hotelMaster);
         }
 

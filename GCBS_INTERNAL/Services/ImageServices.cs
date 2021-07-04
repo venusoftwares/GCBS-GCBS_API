@@ -132,12 +132,12 @@ namespace GCBS_INTERNAL.Services
             }
             return true;
         }
-        public bool DeleteFiles(long ReferenceId)
+        public bool DeleteFiles(long ReferenceId,string Type)
         {       
             List<string> images = new List<string>();
             using (var db = new DatabaseContext())
             {
-                var list = db.ImageMaster.Where(x => x.ReferenceId == ReferenceId).ToList();
+                var list = db.ImageMaster.Where(x => x.ReferenceId == ReferenceId && x.Type == Type).ToList();
                 foreach (var a in list)
                 {
                     string path = HttpContext.Current.Server.MapPath("~/" + a.Type + "/" + a.ReferenceId + "/");
