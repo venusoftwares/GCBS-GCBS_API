@@ -9,10 +9,7 @@ namespace GCBS_INTERNAL.Models
     [Table("SiteBannerMaster")]
     public partial class SiteBannerMaster
     {
-        public int Id { get; set; }
-
-        [Required]
-        public string Images { get; set; }
+        public int Id { get; set; }      
 
         [Required]
         public string MainHeading { get; set; }
@@ -29,9 +26,23 @@ namespace GCBS_INTERNAL.Models
         public int? UpdatedBy { get; set; }
     }
 
+    public class SiteBannerViewIndex
+    {
+        public int Id { get; set; }      
+        public string MainHeading { get; set; }
+
+        public string Image { get; set; }
+        public string MainTitle { get; set; }
+        public bool Status { get; set; }
+    }
     public class SiteBannerVisible
     {
         public int Id { get; set; }
         public bool Status { get; set; }
+    }
+    public class SiteBannerViewModel
+    {
+        public SiteBannerMaster SiteBannerMasters { get; set; }
+        public List<string> imageBase64 { get; set; }
     }
 }

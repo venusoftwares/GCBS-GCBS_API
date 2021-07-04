@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 using System.Web.Http;
 using System.Web.Http.Description;
 using GCBS_INTERNAL.Models;
+using GCBS_INTERNAL.Services;
 
 namespace GCBS_INTERNAL.Controllers.API
 {
@@ -17,15 +18,30 @@ namespace GCBS_INTERNAL.Controllers.API
     public class SiteBannerMastersController : BaseApiController
     {
         private DatabaseContext db = new DatabaseContext();
+        public ImageServices imgser = new ImageServices();
 
         // GET: api/SiteBannerMasters
-        public IQueryable<SiteBannerMaster> GetSiteBannerMasters()
+        public List<SiteBannerViewIndex> GetSiteBannerMasters()
         {
-            return db.SiteBannerMasters;
+            List<SiteBannerViewIndex> list = new List<SiteBannerViewIndex>();
+            var res = db.SiteBannerMasters.ToList();
+            foreach(var a in res)
+            {
+                string path = imgser.GetFiles(a.Id, Constant.SITE_BANNER_FOLDER_TYPE).FirstOrDefault();
+                list.Add(new SiteBannerViewIndex
+                {  
+                    Id = a.Id,
+                    Image = path,
+                    MainHeading = a.MainHeading,
+                    MainTitle = a.MainTitle,
+                    Status = a.Status
+                });
+            }
+            return list;
         }
 
         // GET: api/SiteBannerMasters/5
-        [ResponseType(typeof(SiteBannerMaster))]
+        [ResponseType(typeof(SiteBannerViewModel))]
         public async Task<IHttpActionResult> GetSiteBannerMaster(int id)
         {
             SiteBannerMaster siteBannerMaster = await db.SiteBannerMasters.FindAsync(id);
@@ -33,14 +49,17 @@ namespace GCBS_INTERNAL.Controllers.API
             {
                 return NotFound();
             }
-
-            return Ok(siteBannerMaster);
+            SiteBannerViewModel siteBannerViewModel = new SiteBannerViewModel();
+            siteBannerViewModel.SiteBannerMasters = siteBannerMaster;
+            siteBannerViewModel.imageBase64 = imgser.EditGetFiles(id, Constant.SITE_BANNER_FOLDER_TYPE);   
+            return Ok(siteBannerViewModel);
         }
 
         // PUT: api/SiteBannerMasters/5
         [ResponseType(typeof(void))]
-        public async Task<IHttpActionResult> PutSiteBannerMaster(int id, SiteBannerMaster siteBannerMaster)
+        public async Task<IHttpActionResult> PutSiteBannerMaster(int id, SiteBannerViewModel siteBannerViewModel)
         {
+            SiteBannerMaster siteBannerMaster = siteBannerViewModel.SiteBannerMasters;
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
@@ -63,6 +82,16 @@ namespace GCBS_INTERNAL.Controllers.API
             try
             {
                 await db.SaveChangesAsync();
+                if (siteBannerMaster.Id > 0 && siteBannerViewModel.imageBase64.Count() > 0)
+                {
+                    //Delete
+                    imgser.DeleteFiles(siteBannerMaster.Id, Constant.SITE_BANNER_FOLDER_TYPE);
+                    foreach (var imgbase64 in siteBannerViewModel.imageBase64)
+                    {
+                        //Save
+                        imgser.SaveImage(imgbase64, Constant.SITE_BANNER_FOLDER_TYPE, siteBannerMaster.Id, userDetails.Id);
+                    }
+                }
             }
             catch (DbUpdateConcurrencyException)
             {
@@ -94,7 +123,7 @@ namespace GCBS_INTERNAL.Controllers.API
                 return BadRequest();
             }
             SiteBannerMaster siteBannerMaster = await db.SiteBannerMasters.FindAsync(siteBannerVisible.Id);
-            siteBannerMaster.Status = siteBannerMaster.Status;
+            siteBannerMaster.Status = siteBannerVisible.Status;
             siteBannerMaster.UpdatedOn = DateTime.Now;
             siteBannerMaster.UpdatedBy = userDetails.Id;
             db.Entry(siteBannerMaster).State = EntityState.Modified;
@@ -104,9 +133,10 @@ namespace GCBS_INTERNAL.Controllers.API
 
         // POST: api/SiteBannerMasters
         [ResponseType(typeof(SiteBannerMaster))]
-        public async Task<IHttpActionResult> PostSiteBannerMaster(SiteBannerMaster siteBannerMaster)
+        public async Task<IHttpActionResult> PostSiteBannerMaster(SiteBannerViewModel siteBannerViewModel)
         {
-            if(siteBannerMaster!=null)
+            SiteBannerMaster siteBannerMaster = siteBannerViewModel.SiteBannerMasters;
+            if (siteBannerMaster!=null)
             {
                 siteBannerMaster.CreatedBy = userDetails.Id;
                 siteBannerMaster.CreatedOn = DateTime.Now;
@@ -118,7 +148,13 @@ namespace GCBS_INTERNAL.Controllers.API
 
             db.SiteBannerMasters.Add(siteBannerMaster);
             await db.SaveChangesAsync();
-
+            if (siteBannerMaster.Id > 0 && siteBannerViewModel.imageBase64.Count() > 0)
+            {
+                foreach (var imgbase64 in siteBannerViewModel.imageBase64)
+                {
+                    imgser.SaveImage(imgbase64, Constant.SITE_BANNER_FOLDER_TYPE, siteBannerMaster.Id, userDetails.Id);
+                }
+            }
             return CreatedAtRoute("DefaultApi", new { id = siteBannerMaster.Id }, siteBannerMaster);
         }
 

@@ -21,6 +21,7 @@ namespace GCBS_INTERNAL
 
         public const string AGENCIES_FOLDER_TYPE = "Agencies";
         public const string HOTEL_FOLDER_TYPE = "Hotels";
+        public const string SITE_BANNER_FOLDER_TYPE = "SiteBanner";
 
 
     }

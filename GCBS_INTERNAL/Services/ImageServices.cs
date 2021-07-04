@@ -44,11 +44,11 @@ namespace GCBS_INTERNAL.Services
             }
             return true;
         }
-        public List<Images> GetFiles(int Id, string Type)
+        public List<string> GetFiles(int Id, string Type)
         {
             string path = HttpContext.Current.Server.MapPath("~/"+Type+"/"+Id+"/");
             List<string> images = new List<string>();
-            List<Images> images2 = new List<Images>();
+            List<string> images2 = new List<string>();
             foreach (string file in Directory.GetFiles(path))
             {
                 images.Add(Path.GetFileName(file));
@@ -59,13 +59,8 @@ namespace GCBS_INTERNAL.Services
                 foreach (var i in list)
                 {
                     if (images.Contains(i.ImageUrl))
-                    {
-                        var a = new Images
-                        {
-                            Id = i.Id,
-                            Path = urlLink+ "/"+ i.Type + "/" + i.ReferenceId + "/" + i.ImageUrl
-                        };
-                        images2.Add(a);
+                    {   
+                        images2.Add(urlLink + "/" + i.Type + "/" + i.ReferenceId + "/" + i.ImageUrl);
                     }
                 }
             }
