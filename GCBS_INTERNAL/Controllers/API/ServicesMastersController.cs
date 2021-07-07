@@ -50,7 +50,16 @@ namespace GCBS_INTERNAL.Controllers.API
             {
                 return BadRequest();
             }
-
+            using (var d = new DatabaseContext())
+            {
+                var re = await d.ServicesMasters.FindAsync(id);
+                servicesMaster.CreatedBy = re.CreatedBy;
+                servicesMaster.CreatedOn = re.CreatedOn;
+                servicesMaster.Visible = re.Visible;
+                d.Dispose();
+            }
+            servicesMaster.UpdatedBy = userDetails.Id;
+            servicesMaster.UpdatedOn = DateTime.Now;
             db.Entry(servicesMaster).State = EntityState.Modified;
 
             try
@@ -98,6 +107,12 @@ namespace GCBS_INTERNAL.Controllers.API
         [ResponseType(typeof(ServicesMaster))]
         public async Task<IHttpActionResult> PostServicesMaster(ServicesMaster servicesMaster)
         {
+            if (servicesMaster != null)
+            {
+                servicesMaster.CreatedBy = userDetails.Id;
+                servicesMaster.CreatedOn = DateTime.Now;
+                servicesMaster.Visible = true;
+            }
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);

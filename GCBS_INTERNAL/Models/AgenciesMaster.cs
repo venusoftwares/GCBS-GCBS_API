@@ -14,11 +14,9 @@ namespace GCBS_INTERNAL.Models
 
         [Required]
         [StringLength(200)]
-        public string HotelName { get; set; }
+        public string HotelName { get; set; }    
 
-        [Required]
-        [StringLength(200)]
-        public string Location { get; set; }    
+        public int Location { get; set; }    
 
         [StringLength(500)]
         public string WebsiteUrl { get; set; }
@@ -40,6 +38,8 @@ namespace GCBS_INTERNAL.Models
         public int CreatedBy { get; set; }
 
         public int? UpdatedBy { get; set; }
+        [ForeignKey("Location")]
+        public LocationMasters LocationMasters { get; set; }
     }
 
     public class AgenciesVisible
@@ -50,14 +50,15 @@ namespace GCBS_INTERNAL.Models
 
     public class AgenciesMasterViewModel
     {
-         public AgenciesMaster AgenciesMaster { get; set; }
-         public List<string> imageBase64 { get; set; }
+        public LocationMasters LocationMasters { get; set; }
+        public AgenciesMaster AgenciesMaster { get; set; }
+        public List<string> imageBase64 { get; set; }
     }
     public class AgenciesMasterView
     {
         public int Id { get; set; }    
         public string HotelName { get; set; } 
-        public string Location { get; set; }
+        public int Location { get; set; }
                                   
         public string Image { get; set; }
         public string WebsiteUrl { get; set; }  
@@ -68,6 +69,8 @@ namespace GCBS_INTERNAL.Models
         public string ValidEndDate { get; set; }
 
         public bool Status { get; set; }
+        [ForeignKey("Location")]
+        public virtual LocationMasters LocationMasters { get; set; }
     }
      
 }

@@ -28,6 +28,7 @@ namespace GCBS_INTERNAL.Models
         public string MobileNo { get; set; }
         public DateTime? DateOfBirth { get; set; }
 
+        public int LocationId { get; set; }
         public bool Status { get; set; }
 
         public DateTime CreatedOn { get; set; }
@@ -40,6 +41,9 @@ namespace GCBS_INTERNAL.Models
 
         [ForeignKey("RoleId")]
         public RoleMaster RoleMasters { get; set; }
+
+        [ForeignKey("LocationId")]
+        public LocationMasters  LocationMasters { get; set; }
     }
 
     public class UserMasterVisible

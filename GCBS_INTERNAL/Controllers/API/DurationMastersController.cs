@@ -55,6 +55,7 @@ namespace GCBS_INTERNAL.Controllers.API
                 var re = await d.DurationMaster.FindAsync(id);
                 durationMaster.CreatedBy = re.CreatedBy;
                 durationMaster.CreatedOn = re.CreatedOn;
+                durationMaster.Status = re.Status;
                 d.Dispose();
             }
             durationMaster.UpdatedBy = userDetails.Id;
@@ -108,6 +109,7 @@ namespace GCBS_INTERNAL.Controllers.API
             {
                 durationMaster.CreatedBy = userDetails.Id;
                 durationMaster.CreatedOn = DateTime.Now;
+                durationMaster.Status = true;
             }
             if (!ModelState.IsValid)
             {

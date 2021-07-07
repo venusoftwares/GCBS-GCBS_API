@@ -19,9 +19,17 @@ namespace GCBS_INTERNAL.Controllers.API
         private DatabaseContext db = new DatabaseContext();
 
         // GET: api/ContactEnquiryViews
-        public IQueryable<ContactEnquiryView> GetContactEnquiryView()
+        [Route("api/ContactEnquiryViews/{startDate}/{endDate}")]
+        public List<ContactEnquiryView> GetContactEnquiryView(string startDate, string endDate)
         {
-            return db.ContactEnquiryView;
+            var list = db.ContactEnquiryView
+                .Include(x => x.PartnerManagements)
+               .Include(x => x.UserManagements).ToList();
+            if(!string.IsNullOrEmpty(startDate) && !string.IsNullOrEmpty(endDate) && startDate!="empty" && endDate != "empty")
+            {
+                list = list.Where(x => x.Date >= Convert.ToDateTime(startDate) && x.Date <= Convert.ToDateTime(endDate)).ToList();
+            }
+            return list.ToList();
         }
 
         // GET: api/ContactEnquiryViews/5

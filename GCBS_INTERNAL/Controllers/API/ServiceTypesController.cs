@@ -52,7 +52,16 @@ namespace GCBS_INTERNAL.Models
             {
                 return BadRequest();
             }
-
+            using (var d = new DatabaseContext())
+            {
+                var re = await d.ServiceTypes.FindAsync(id);
+                serviceTypes.CreatedBy = re.CreatedBy;
+                serviceTypes.CreatedOn = re.CreatedOn;
+                serviceTypes.Visible = re.Visible;
+                d.Dispose();
+            }
+            serviceTypes.UpdatedBy = userDetails.Id;
+            serviceTypes.UpdatedOn = DateTime.Now;
             db.Entry(serviceTypes).State = EntityState.Modified;
 
             try
@@ -97,6 +106,12 @@ namespace GCBS_INTERNAL.Models
         [ResponseType(typeof(ServiceTypes))]
         public async Task<IHttpActionResult> PostServiceTypes(ServiceTypes serviceTypes)
         {
+            if (serviceTypes != null)
+            {
+                serviceTypes.CreatedBy = userDetails.Id;
+                serviceTypes.CreatedOn = DateTime.Now;
+                serviceTypes.Visible = true;
+            }
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);

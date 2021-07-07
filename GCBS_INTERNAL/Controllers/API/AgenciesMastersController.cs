@@ -25,7 +25,7 @@ namespace GCBS_INTERNAL.Controllers.API
         public List<AgenciesMasterView> GetAgenciesMaster()
         {
             List<AgenciesMasterView> list = new List<AgenciesMasterView>();
-            var res = db.AgenciesMaster.ToList();
+            var res = db.AgenciesMaster.Include(x=>x.LocationMasters).ToList();
             foreach (var a in res)
             {
                 // First or default 
@@ -40,7 +40,8 @@ namespace GCBS_INTERNAL.Controllers.API
                     WebsiteUrl = a.WebsiteUrl,
                     ValidEndDate = a.ValidEndDate.ToString("dd-MM-yyyy hh:mm tt"),
                     ValidStartDate = a.ValidStartDate.ToString("dd-MM-yyyy hh:mm tt"),
-                    Image = path
+                    Image = path  ,
+                    LocationMasters = a.LocationMasters
                 });
             }
             return list;         
@@ -58,6 +59,7 @@ namespace GCBS_INTERNAL.Controllers.API
             AgenciesMasterViewModel agenciesMasterViewModel = new AgenciesMasterViewModel();
             agenciesMasterViewModel.AgenciesMaster = agenciesMaster;
             agenciesMasterViewModel.imageBase64 = imgser.EditGetFiles(id, Constant.AGENCIES_FOLDER_TYPE);
+            agenciesMasterViewModel.LocationMasters =await db.LocationMasters.FindAsync(agenciesMaster.Location);
             return Ok(agenciesMasterViewModel);
         }
 
@@ -80,6 +82,7 @@ namespace GCBS_INTERNAL.Controllers.API
                 var re = await d.AgenciesMaster.FindAsync(id);
                 agenciesMaster.CreatedBy = re.CreatedBy;
                 agenciesMaster.CreatedOn = re.CreatedOn;
+                agenciesMaster.Status = re.Status;
                 d.Dispose();
             }
             agenciesMaster.UpdatedBy = userDetails.Id;
@@ -144,6 +147,7 @@ namespace GCBS_INTERNAL.Controllers.API
                 AgenciesMaster agenciesMaster = agenciesMasterViewModel.AgenciesMaster;
                 agenciesMaster.CreatedBy = userDetails.Id;
                 agenciesMaster.CreatedOn = DateTime.Now;
+                agenciesMaster.Status = true;
                 if (!ModelState.IsValid)
                 {
                     return BadRequest(ModelState);

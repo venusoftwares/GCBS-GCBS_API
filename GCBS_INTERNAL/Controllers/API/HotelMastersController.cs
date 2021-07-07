@@ -24,7 +24,7 @@ namespace GCBS_INTERNAL.Controllers.API
         public List<HotelMasterView> GetHotelMaster()
         {
             List<HotelMasterView> list = new List<HotelMasterView>();
-            var res = db.HotelMaster.ToList();
+            var res = db.HotelMaster.Include(x => x.LocationMasters).ToList();
             foreach (var a in res)
             {
                 // First or default 
@@ -39,7 +39,8 @@ namespace GCBS_INTERNAL.Controllers.API
                     WebsiteUrl = a.WebsiteUrl,
                     ValidEndDate = a.ValidEndDate.ToString("dd-MM-yyyy hh:mm tt"),
                     ValidStartDate = a.ValidStartDate.ToString("dd-MM-yyyy hh:mm tt"),
-                    Image = path
+                    Image = path ,
+                    LocationMasters = a.LocationMasters
                 });
             }
             return list;
@@ -57,6 +58,7 @@ namespace GCBS_INTERNAL.Controllers.API
             HotelMasterViewModel hotelMasterViewModel = new HotelMasterViewModel();
             hotelMasterViewModel.HotelMaster = hotelMaster;
             hotelMasterViewModel.imageBase64 = imgser.EditGetFiles(id, Constant.HOTEL_FOLDER_TYPE);
+            hotelMasterViewModel.LocationMasters = await db.LocationMasters.FindAsync(hotelMaster.Location);
             return Ok(hotelMasterViewModel);
         }
 
@@ -74,9 +76,17 @@ namespace GCBS_INTERNAL.Controllers.API
             {
                 return BadRequest();
             }
-
-            db.Entry(hotelMaster).State = EntityState.Modified;
-
+            using (var d = new DatabaseContext())
+            {
+                var re = await d.HotelMaster.FindAsync(id);
+                hotelMaster.CreatedBy = re.CreatedBy;
+                hotelMaster.CreatedOn = re.CreatedOn;
+                hotelMaster.Status = re.Status;
+                d.Dispose();
+            }
+            hotelMaster.UpdatedBy = userDetails.Id;
+            hotelMaster.UpdatedOn = DateTime.Now;
+            db.Entry(hotelMaster).State = EntityState.Modified;   
             try
             {
                 await db.SaveChangesAsync();
@@ -132,6 +142,12 @@ namespace GCBS_INTERNAL.Controllers.API
         public async Task<IHttpActionResult> PostHotelMaster(HotelMasterViewModel hotelMasterViewModel)
         {
             HotelMaster hotelMaster = hotelMasterViewModel.HotelMaster;
+            if(hotelMaster!=null)
+            {
+                hotelMaster.CreatedBy = userDetails.Id;
+                hotelMaster.CreatedOn = DateTime.Now;
+                hotelMaster.Status = true;
+            }
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);

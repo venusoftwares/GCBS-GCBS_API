@@ -50,7 +50,15 @@ namespace GCBS_INTERNAL.Controllers.API
             {
                 return BadRequest();
             }
-
+            using (var d = new DatabaseContext())
+            {
+                var re = await d.SiteSettings.FindAsync(id);
+                siteSettings.CreatedBy = re.CreatedBy;
+                siteSettings.CreatedOn = re.CreatedOn;   
+                d.Dispose();
+            }
+            siteSettings.UpdatedBy = userDetails.Id;
+            siteSettings.UpdatedOn = DateTime.Now;
             db.Entry(siteSettings).State = EntityState.Modified;
 
             try
@@ -76,6 +84,11 @@ namespace GCBS_INTERNAL.Controllers.API
         [ResponseType(typeof(SiteSettings))]
         public async Task<IHttpActionResult> PostSiteSettings(SiteSettings siteSettings)
         {
+            if (siteSettings != null)
+            {
+                siteSettings.CreatedBy = userDetails.Id;
+                siteSettings.CreatedOn = DateTime.Now;      
+            }
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);

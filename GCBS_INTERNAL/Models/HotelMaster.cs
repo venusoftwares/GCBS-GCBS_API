@@ -11,31 +11,32 @@ namespace GCBS_INTERNAL.Models
     {
         public int Id { get; set; }
 
-        [StringLength(200)]
+        [Required]
         public string HotelName { get; set; }
-
-        [StringLength(200)]
-        public string Location { get; set; }
-
-        [StringLength(200)]
+        [Required]
+        public int Location { get; set; }  
         public string Images { get; set; }
 
-        [StringLength(500)]
+        [Required]
         public string WebsiteUrl { get; set; }
         [Required]
         [StringLength(200)]
         public string Email { get; set; }
+        [Required]
         public DateTime ValidStartDate { get; set; }
-
+        [Required]
         public DateTime ValidEndDate { get; set; }   
         public bool Status { get; set; }
-        public DateTime? CreatedOn { get; set; }
+        public DateTime CreatedOn { get; set; }
 
         public DateTime? UpdatedOn { get; set; }
 
-        public int? CreatedBy { get; set; }
+        public int CreatedBy { get; set; }
 
         public int? UpdatedBy { get; set; }
+
+        [ForeignKey("Location")]
+        public LocationMasters LocationMasters { get; set; }
     }
     public class HotelMasterVisible
     {
@@ -46,21 +47,19 @@ namespace GCBS_INTERNAL.Models
     {
         public HotelMaster HotelMaster { get; set; }
         public List<string> imageBase64 { get; set; }
+        public LocationMasters LocationMasters { get; set; }
     }
     public class HotelMasterView
     {
         public int Id { get; set; }
         public string HotelName { get; set; }
-        public string Location { get; set; }
-
+        public int Location { get; set; }    
         public string Image { get; set; }
         public string WebsiteUrl { get; set; }
-        public string Email { get; set; }
-
-        public string ValidStartDate { get; set; }
-
+        public string Email { get; set; }         
+        public string ValidStartDate { get; set; }     
         public string ValidEndDate { get; set; }
-
         public bool Status { get; set; }
+        public LocationMasters LocationMasters { get; set; }
     }
 }

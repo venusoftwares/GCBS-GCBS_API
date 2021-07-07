@@ -75,6 +75,7 @@ namespace GCBS_INTERNAL.Controllers.API
                 var re = await d.StateMaster.FindAsync(id);
                 stateMaster.CreatedBy = re.CreatedBy;
                 stateMaster.CreatedOn = re.CreatedOn;
+                stateMaster.Status = re.Status;
                 d.Dispose();
             }
             stateMaster.UpdatedBy = userDetails.Id;
@@ -127,6 +128,7 @@ namespace GCBS_INTERNAL.Controllers.API
         {
             stateMaster.CreatedBy = userDetails.Id;
             stateMaster.CreatedOn = DateTime.Now;
+            stateMaster.Status = true;
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);

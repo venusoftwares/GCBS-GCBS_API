@@ -55,6 +55,7 @@ namespace GCBS_INTERNAL.Controllers.API
                 var re = await d.NationalityMaster.FindAsync(id);
                 nationalityMaster.CreatedBy = re.CreatedBy;
                 nationalityMaster.CreatedOn = re.CreatedOn;
+                nationalityMaster.Status = re.Status;
                 d.Dispose();
             }
 
@@ -108,6 +109,7 @@ namespace GCBS_INTERNAL.Controllers.API
         {
             nationalityMaster.CreatedBy = userDetails.Id;
             nationalityMaster.CreatedOn = DateTime.Now;
+            nationalityMaster.Status = true;
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);

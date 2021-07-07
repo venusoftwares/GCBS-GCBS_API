@@ -50,7 +50,16 @@ namespace GCBS_INTERNAL.Controllers.API
             {
                 return BadRequest();
             }
-
+            using (var d = new DatabaseContext())
+            {
+                var re = await d.UserManagement.FindAsync(id);
+                userManagement.CreatedBy = re.CreatedBy;
+                userManagement.CreatedOn = re.CreatedOn;
+                userManagement.Status = re.Status;
+                d.Dispose();
+            }
+            userManagement.UpdatedBy = userDetails.Id;
+            userManagement.UpdatedOn = DateTime.Now;
             db.Entry(userManagement).State = EntityState.Modified;
 
             try
@@ -97,15 +106,15 @@ namespace GCBS_INTERNAL.Controllers.API
         [ResponseType(typeof(UserManagement))]
         public async Task<IHttpActionResult> PostUserManagement(UserManagement userManagement)
         {
+            userManagement.CreatedBy = userDetails.Id;
+            userManagement.CreatedOn = DateTime.Now;
+            userManagement.Status = true;
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
-            }
-
-
+            }   
             db.UserManagement.Add(userManagement);
-            await db.SaveChangesAsync();
-
+            await db.SaveChangesAsync();   
             return CreatedAtRoute("DefaultApi", new { id = userManagement.Id }, userManagement);
         }
 

@@ -82,6 +82,7 @@ namespace GCBS_INTERNAL.Controllers.API
                 var re = await d.CityMaster.FindAsync(id);
                 cityMaster.CreatedBy = re.CreatedBy;
                 cityMaster.CreatedOn = re.CreatedOn;
+                cityMaster.Status = re.Status;
                 d.Dispose();
             }
             cityMaster.UpdatedBy = userDetails.Id;
@@ -131,6 +132,7 @@ namespace GCBS_INTERNAL.Controllers.API
         [ResponseType(typeof(CityMaster))]
         public async Task<IHttpActionResult> PostCityMaster(CityMaster cityMaster)
         {
+            cityMaster.Status = true;
             cityMaster.CreatedBy = userDetails.Id;
             cityMaster.CreatedOn = DateTime.Now;
             if (!ModelState.IsValid)

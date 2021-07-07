@@ -55,6 +55,7 @@ namespace GCBS_INTERNAL.Controllers.API
                 var re = await d.LanguageMaster.FindAsync(id);
                 languageMaster.CreatedBy = re.CreatedBy;
                 languageMaster.CreatedOn = re.CreatedOn;
+                languageMaster.Status = re.Status;
                 d.Dispose();
             }
             languageMaster.UpdatedOn = DateTime.Now;
@@ -107,6 +108,7 @@ namespace GCBS_INTERNAL.Controllers.API
         {
             languageMaster.CreatedBy = userDetails.Id;
             languageMaster.CreatedOn = DateTime.Now;
+            languageMaster.Status = true;
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);

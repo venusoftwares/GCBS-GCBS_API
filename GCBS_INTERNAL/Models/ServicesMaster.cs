@@ -12,6 +12,9 @@ namespace GCBS_INTERNAL.Models
         public int ServiceTypeId { get; set; }
         [StringLength(200)]
         public string Service { get; set; }   
+        public string Title { get; set; }
+        public string KeyWords { get; set; }
+        public string Description { get; set; }
         public bool Visible { get; set; }
 
         public DateTime? CreatedOn { get; set; }

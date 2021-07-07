@@ -58,6 +58,9 @@
     <Reference Include="ExcelDataReader.DataSet, Version=3.6.0.0, Culture=neutral, PublicKeyToken=93517dbe6a4012fa, processorArchitecture=MSIL">
       <HintPath>packages\ExcelDataReader.DataSet.3.6.0\lib\net35\ExcelDataReader.DataSet.dll</HintPath>
     </Reference>
+    <Reference Include="log4net, Version=2.0.12.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
+      <HintPath>packages\log4net.2.0.12\lib\net45\log4net.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.AspNetCore.Authorization, Version=1.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
       <HintPath>packages\Microsoft.AspNetCore.Authorization.1.0.0\lib\net451\Microsoft.AspNetCore.Authorization.dll</HintPath>
     </Reference>
@@ -340,6 +343,7 @@
     <Compile Include="Controllers\API\CityMastersController.cs" />
     <Compile Include="Controllers\API\ContactEnquiryViewsController.cs" />
     <Compile Include="Controllers\API\CountryMastersController.cs" />
+    <Compile Include="Controllers\API\CustomerDetailViewController.cs" />
     <Compile Include="Controllers\API\CustomerTransactionsController.cs" />
     <Compile Include="Controllers\API\DropDownController.cs" />
     <Compile Include="Controllers\API\DurationMastersController.cs" />
@@ -347,7 +351,6 @@
     <Compile Include="Controllers\API\EnquiryDetailsController.cs" />
     <Compile Include="Controllers\API\ExportController.cs" />
     <Compile Include="Controllers\API\HotelMastersController.cs" />
-    <Compile Include="Controllers\API\ImageApiController.cs" />
     <Compile Include="Controllers\API\ImportController.cs" />
     <Compile Include="Controllers\API\InAppNotificationsController.cs" />
     <Compile Include="Controllers\API\LanguageMastersController.cs" />
@@ -364,6 +367,7 @@
     <Compile Include="Controllers\API\PartnerBio\TitsController.cs" />
     <Compile Include="Controllers\API\PartnerBio\TitTypesController.cs" />
     <Compile Include="Controllers\API\PartnerBio\WeightsController.cs" />
+    <Compile Include="Controllers\API\PartnerDetailViewController.cs" />
     <Compile Include="Controllers\API\PartnerRatingsController.cs" />
     <Compile Include="Controllers\API\PartnerTypesController.cs" />
     <Compile Include="Controllers\API\PaymentDetailsController.cs" />
@@ -439,6 +443,7 @@
     <Compile Include="ViewModels\AdminLogin.cs" />
     <Compile Include="ViewModels\DropDownCommon.cs" />
     <Compile Include="ViewModels\MenuItems.cs" />
+    <Compile Include="ViewModels\PartnerDetailsViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Areas\HelpPage\HelpPage.css" />

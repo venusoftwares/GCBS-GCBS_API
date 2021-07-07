@@ -15,7 +15,7 @@ namespace GCBS_INTERNAL.Models
 
         public int PartnerId { get; set; }
 
-        public DateTime? Date { get; set; }
+        public DateTime Date { get; set; }
 
         [StringLength(250)]
         public string Description { get; set; }
@@ -27,5 +27,9 @@ namespace GCBS_INTERNAL.Models
         public int? CreatedBy { get; set; }
 
         public int? UpdatedBy { get; set; }
+        [ForeignKey("PartnerId")]
+        public UserManagement PartnerManagements { get; set; }
+        [ForeignKey("UserId")]
+        public UserManagement UserManagements { get; set; }      
     }
 }

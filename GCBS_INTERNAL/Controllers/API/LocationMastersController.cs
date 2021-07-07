@@ -90,6 +90,7 @@ namespace GCBS_INTERNAL.Controllers.API
                 var re = await d.LocationMasters.FindAsync(id);
                 locationMasters.CreatedBy = re.CreatedBy;
                 locationMasters.CreatedOn = re.CreatedOn;
+                locationMasters.Status = re.Status;
                 d.Dispose();
             }
             locationMasters.UpdatedBy = userDetails.Id;
@@ -142,7 +143,8 @@ namespace GCBS_INTERNAL.Controllers.API
         public async Task<IHttpActionResult> PostLocationMasters(LocationMasters locationMasters)
         {
             locationMasters.CreatedBy = userDetails.Id;
-            locationMasters.CreatedOn = DateTime.Now;
+            locationMasters.CreatedOn = DateTime.Now; 
+            locationMasters.Status = true;
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);

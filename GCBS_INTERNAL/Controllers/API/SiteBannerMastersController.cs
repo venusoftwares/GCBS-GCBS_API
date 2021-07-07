@@ -71,9 +71,10 @@ namespace GCBS_INTERNAL.Controllers.API
             }
             using(var db2 = new DatabaseContext())
             {
-                SiteBannerMaster siteBanner = await db2.SiteBannerMasters.FindAsync(id);
-                siteBannerMaster.CreatedOn = DateTime.Now;
-                siteBannerMaster.CreatedBy = userDetails.Id;
+                SiteBannerMaster re = await db2.SiteBannerMasters.FindAsync(id);
+                siteBannerMaster.CreatedOn = re.CreatedOn;
+                siteBannerMaster.CreatedBy = re.CreatedBy;
+                siteBannerMaster.Status = re.Status;
                 db2.Dispose();
             }
             siteBannerMaster.UpdatedOn = DateTime.Now;
@@ -140,6 +141,7 @@ namespace GCBS_INTERNAL.Controllers.API
             {
                 siteBannerMaster.CreatedBy = userDetails.Id;
                 siteBannerMaster.CreatedOn = DateTime.Now;
+                siteBannerMaster.Status = true;
             }     
             if (!ModelState.IsValid)
             {

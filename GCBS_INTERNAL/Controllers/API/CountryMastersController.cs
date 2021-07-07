@@ -56,6 +56,7 @@ namespace GCBS_INTERNAL.Controllers.API
                 var re = await d.CountryMaster.FindAsync(id);
                 countryMaster.CreatedBy = re.CreatedBy;
                 countryMaster.CreatedOn = re.CreatedOn;
+                countryMaster.Status = re.Status;
                 d.Dispose();
             }
             db.Entry(countryMaster).State = EntityState.Modified;
@@ -105,6 +106,7 @@ namespace GCBS_INTERNAL.Controllers.API
         {
             countryMaster.CreatedBy = userDetails.Id;
             countryMaster.CreatedOn = DateTime.Now;
+            countryMaster.Status = true;
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
