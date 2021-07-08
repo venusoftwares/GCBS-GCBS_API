@@ -24,10 +24,8 @@ namespace GCBS_INTERNAL.Models
         public string Password { get; set; }
 
         [StringLength(50)]
-        public string HostAddress { get; set; }
-
-        [StringLength(50)]
-        public string Port { get; set; }
+        public string HostAddress { get; set; }    
+        public int? Port { get; set; }
 
         public bool? Ssl { get; set; }
 
