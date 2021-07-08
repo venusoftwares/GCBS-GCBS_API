@@ -19,9 +19,9 @@ namespace GCBS_INTERNAL.Controllers.API.Auth
     {
         public DatabaseContext db = new DatabaseContext();
         private readonly GetAccessToken getAccessToken = new GetAccessToken();
-        private readonly SMTPService sMTPService = new SMTPService();
-        private readonly Algorithum algorithum = new Algorithum();
+  
 
+        //[HttpPost]
         [ResponseType(typeof(AdminResponse))]
         public async Task<IHttpActionResult> AdminLogin(AdminLogin adminLogin)
         {
@@ -46,32 +46,32 @@ namespace GCBS_INTERNAL.Controllers.API.Auth
                 throw ex;
             }    
         }
-
-        [ResponseType(typeof(ForgetPassword))]
-        public async Task<IHttpActionResult> ForgetPassword(ForgetPassword forgetPassword)
-        {      
-            try
-            {
-                if (!ModelState.IsValid)
-                {
-                    return BadRequest(ModelState);
-                }
-                var userManagement =await db.UserManagement.Where(x => x.EmailId == forgetPassword.Email).FirstOrDefaultAsync();
-                if(userManagement != null)
-                {
-                    userManagement.Password = algorithum.RandomPassword();
-                    string htmlString = "Email:" + userManagement.EmailId + " Password:" + userManagement.Password;
-                    sMTPService.Email(userManagement.EmailId, "Forget Password", htmlString);
-                    db.Entry(userManagement).State = EntityState.Modified;
-                    await db.SaveChangesAsync();  
-                    return Ok(forgetPassword);
-                }
-                return Content(HttpStatusCode.BadRequest,"No User found");
-            }
-            catch(Exception ex)
-            {
-                throw ex;
-            }   
-        }    
+        //[HttpPost]
+        //[ResponseType(typeof(ForgetPassword))]
+        //public async Task<IHttpActionResult> ForgetPassword(ForgetPassword forgetPassword)
+        //{      
+        //    try
+        //    {
+        //        if (!ModelState.IsValid)
+        //        {
+        //            return BadRequest(ModelState);
+        //        }
+        //        var userManagement =await db.UserManagement.Where(x => x.EmailId == forgetPassword.Email).FirstOrDefaultAsync();
+        //        if(userManagement != null)
+        //        {
+        //            userManagement.Password = algorithum.RandomPassword();
+        //            string htmlString = "Email:" + userManagement.EmailId + " Password:" + userManagement.Password;
+        //            sMTPService.Email(userManagement.EmailId, "Forget Password", htmlString);
+        //            db.Entry(userManagement).State = EntityState.Modified;
+        //            await db.SaveChangesAsync();  
+        //            return Ok(forgetPassword);
+        //        }
+        //        return Content(HttpStatusCode.BadRequest,"No User found");
+        //    }
+        //    catch(Exception ex)
+        //    {
+        //        throw ex;
+        //    }   
+        //}    
     }
 }

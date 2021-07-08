@@ -338,6 +338,7 @@
     <Compile Include="Constant.cs" />
     <Compile Include="Controllers\API\AgenciesMastersController.cs" />
     <Compile Include="Controllers\API\Auth\AdminLoginController.cs" />
+    <Compile Include="Controllers\API\Auth\ForgetPasswordController.cs" />
     <Compile Include="Controllers\API\BaseApiController.cs" />
     <Compile Include="Controllers\API\BookingDetailsController.cs" />
     <Compile Include="Controllers\API\CityMastersController.cs" />
