@@ -45,7 +45,7 @@ namespace GCBS_INTERNAL.Controllers.API
         [Authorize]
         // PUT: api/UserManagements/5
         [ResponseType(typeof(void))]
-        public async Task<IHttpActionResult> PutUserManagement(UserManagementViewModel userManagementViewModel)
+        public async Task<IHttpActionResult> PutUserManagement(int id,UserManagementViewModel userManagementViewModel)
         {     
             if (userDetails.Id != userManagementViewModel.UserManagements.Id)
             {
@@ -55,6 +55,7 @@ namespace GCBS_INTERNAL.Controllers.API
             using (var d = new DatabaseContext())
             {
                 var re = await d.UserManagement.FindAsync(userManagementViewModel.UserManagements.Id);
+                userManagement = re;
                 userManagement.Name = userManagementViewModel.UserManagements.Name;
                 userManagement.Username = userManagementViewModel.UserManagements.Username;
                 userManagement.MobileNo = userManagementViewModel.UserManagements.MobileNo;
