@@ -38,7 +38,7 @@ namespace GCBS_INTERNAL.Controllers.API
             }
             UserManagementViewModel userManagementViewModel = new UserManagementViewModel();
             userManagementViewModel.UserManagements = userManagement;
-            userManagementViewModel.imageBase64 = imgser.EditGetFiles(id, common.FolderForRole(userManagement.RoleId));  
+            userManagementViewModel.imageBase64 = imgser.EditGetFiles(userDetails.Id, common.FolderForRole(userManagement.RoleId));  
             return Ok(userManagementViewModel);
         }
 
