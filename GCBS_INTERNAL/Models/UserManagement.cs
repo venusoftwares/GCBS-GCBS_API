@@ -10,6 +10,8 @@ namespace GCBS_INTERNAL.Models
     public partial class UserManagement
     {
         public int Id { get; set; }
+        [StringLength(200)]  
+        public string Name { get; set; }
 
         [Required]
         [StringLength(200)]
@@ -44,6 +46,12 @@ namespace GCBS_INTERNAL.Models
 
         [ForeignKey("LocationId")]
         public LocationMasters  LocationMasters { get; set; }
+    }
+
+    public class UserManagementViewModel   
+    {  
+        public UserManagement UserManagements { get; set; }
+        public List<string> imageBase64 { get; set; }
     }
 
     public class UserMasterVisible

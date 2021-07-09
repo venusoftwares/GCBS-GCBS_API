@@ -19,10 +19,15 @@ namespace GCBS_INTERNAL
         public const string ONLINE = "Online";
         public const string OFFLINE = "Offline";
 
+        //Folder
+        public const string SUPER_ADMIN_FLODER_TYPE = "Admin";
+        public const string SERVICE_PROVIDER_FOLDER_TYPE = "ServiceProvider";
+        public const string SERVICE_MANAGER_FOLDER_TYPE = "Manager";
+        public const string SUPPORT_TEAM_FOLDER_TYPE = "Support";
+        public const string HUMAN_RESOURCE_FOLDER_TYPE = "Hr";
+        public const string CUSTOMER_FOLDER_TYPE = "Customer";
         public const string AGENCIES_FOLDER_TYPE = "Agencies";
         public const string HOTEL_FOLDER_TYPE = "Hotels";
-        public const string SITE_BANNER_FOLDER_TYPE = "SiteBanner";
-
-
+        public const string SITE_BANNER_FOLDER_TYPE = "SiteBanner";        
     }
 }

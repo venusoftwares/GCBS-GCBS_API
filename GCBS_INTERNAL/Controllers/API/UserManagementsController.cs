@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 using System.Web.Http;
 using System.Web.Http.Description;
 using GCBS_INTERNAL.Models;
+using GCBS_INTERNAL.Services;
 
 namespace GCBS_INTERNAL.Controllers.API
 {
@@ -17,7 +18,9 @@ namespace GCBS_INTERNAL.Controllers.API
     public class UserManagementsController : BaseApiController
     {
         private DatabaseContext db = new DatabaseContext();
+        public ImageServices imgser = new ImageServices();
 
+        public Common common = new Common();
         // GET: api/UserManagements
         public IQueryable<UserManagement> GetUserManagement()
         {
@@ -25,34 +28,33 @@ namespace GCBS_INTERNAL.Controllers.API
         }
 
         // GET: api/UserManagements/5
-        [ResponseType(typeof(UserManagement))]
+        [ResponseType(typeof(UserManagementViewModel))]
         public async Task<IHttpActionResult> GetUserManagement(int id)
         {
-            UserManagement userManagement = await db.UserManagement.FindAsync(id);
+            UserManagement userManagement = await db.UserManagement.FindAsync(userDetails.Id);
             if (userManagement == null)
             {
                 return NotFound();
             }
-
-            return Ok(userManagement);
+            UserManagementViewModel userManagementViewModel = new UserManagementViewModel();
+            userManagementViewModel.UserManagements = userManagement;
+            userManagementViewModel.imageBase64 = imgser.EditGetFiles(id, common.FolderForRole(userManagement.RoleId));  
+            return Ok(userManagementViewModel);
         }
 
+        [Authorize]
         // PUT: api/UserManagements/5
         [ResponseType(typeof(void))]
-        public async Task<IHttpActionResult> PutUserManagement(int id, UserManagement userManagement)
-        {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-
-            if (id != userManagement.Id)
+        public async Task<IHttpActionResult> PutUserManagement(UserManagementViewModel userManagementViewModel)
+        {     
+            if (userDetails.Id != userManagementViewModel.UserManagements.Id)
             {
                 return BadRequest();
             }
+            UserManagement userManagement = new UserManagement();
             using (var d = new DatabaseContext())
             {
-                var re = await d.UserManagement.FindAsync(id);
+                var re = await d.UserManagement.FindAsync(userManagementViewModel.UserManagements.Id);
                 userManagement.CreatedBy = re.CreatedBy;
                 userManagement.CreatedOn = re.CreatedOn;
                 userManagement.Status = re.Status;
@@ -65,10 +67,20 @@ namespace GCBS_INTERNAL.Controllers.API
             try
             {
                 await db.SaveChangesAsync();
+                if (userManagement.Id > 0 && userManagementViewModel.imageBase64.Count() > 0)
+                {
+                    string FolderName = common.FolderForRole(userManagement.RoleId);
+                   
+                    imgser.DeleteFiles(userManagement.Id, FolderName);
+                    foreach (var imgbase64 in userManagementViewModel.imageBase64)
+                    {
+                        imgser.SaveImage(imgbase64, FolderName, userManagement.Id, userDetails.Id);
+                    }
+                }
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!UserManagementExists(id))
+                if (!UserManagementExists(userManagementViewModel.UserManagements.Id))
                 {
                     return NotFound();
                 }
@@ -106,9 +118,12 @@ namespace GCBS_INTERNAL.Controllers.API
         [ResponseType(typeof(UserManagement))]
         public async Task<IHttpActionResult> PostUserManagement(UserManagement userManagement)
         {
-            userManagement.CreatedBy = userDetails.Id;
-            userManagement.CreatedOn = DateTime.Now;
-            userManagement.Status = true;
+            if(userManagement!=null)
+            {
+                userManagement.CreatedBy = userDetails.Id;
+                userManagement.CreatedOn = DateTime.Now;
+                userManagement.Status = false;
+            }   
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);

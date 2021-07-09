@@ -338,6 +338,7 @@
     <Compile Include="Constant.cs" />
     <Compile Include="Controllers\API\AgenciesMastersController.cs" />
     <Compile Include="Controllers\API\Auth\AdminLoginController.cs" />
+    <Compile Include="Controllers\API\Auth\ChangePasswordController.cs" />
     <Compile Include="Controllers\API\Auth\ForgetPasswordController.cs" />
     <Compile Include="Controllers\API\BaseApiController.cs" />
     <Compile Include="Controllers\API\BookingDetailsController.cs" />
@@ -438,6 +439,7 @@
     <Compile Include="Models\Weight.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Provider\OauthProvider.cs" />
+    <Compile Include="Services\Common.cs" />
     <Compile Include="Services\Images.cs" />
     <Compile Include="Services\ImageServices.cs" />
     <Compile Include="Services\SMTPService.cs" />

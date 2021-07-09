@@ -24,4 +24,14 @@ namespace GCBS_INTERNAL.ViewModels
         [DataType(DataType.EmailAddress)]
         public string Email { get; set; }
     }
+    public class ChangePassword
+    {              
+        public string OldPassword { get; set; }
+        public string NewPassword { get; set; }
+    }
+    public class ChangePasswordReponse
+    {
+        public string Message { get; set; }    
+    }
+
 }
