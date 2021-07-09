@@ -1,4 +1,5 @@
 ﻿using GCBS_INTERNAL.Models;
+using log4net;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -16,6 +17,7 @@ namespace GCBS_INTERNAL.Controllers.API
     {
         protected UserManagement userDetails = new UserManagement();
         private DatabaseContext context = new DatabaseContext();
+        protected static readonly ILog log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
         public BaseApiController()
         {
             var response = HttpContext.Current.User.Identity.Name;

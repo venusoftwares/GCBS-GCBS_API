@@ -13,7 +13,7 @@ namespace GCBS_INTERNAL.Controllers.API.GCBS_FrontEnd
 {
     public class HomeDashboardController : ApiController
     {
-        private static readonly ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+        private static readonly ILog log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
         private DatabaseContext db = new DatabaseContext();
         [ResponseType(typeof(HomeDashboardViewModels))]

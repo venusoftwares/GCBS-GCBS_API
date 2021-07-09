@@ -12,6 +12,7 @@ using System.Web.Http;
 using System.Web.Http.Description;
 using GCBS_INTERNAL.Models;
 using GCBS_INTERNAL.Services;
+using log4net;
 
 namespace GCBS_INTERNAL.Controllers.API
 {
@@ -20,31 +21,40 @@ namespace GCBS_INTERNAL.Controllers.API
     {
         private DatabaseContext db = new DatabaseContext();
         public ImageServices imgser = new ImageServices();
-
+       
         // GET: api/AgenciesMasters
-        public List<AgenciesMasterView> GetAgenciesMaster()
+        public IHttpActionResult GetAgenciesMaster()
         {
-            List<AgenciesMasterView> list = new List<AgenciesMasterView>();
-            var res = db.AgenciesMaster.Include(x=>x.LocationMasters).ToList();
-            foreach (var a in res)
+            try
             {
-                // First or default 
-                string path = imgser.GetFiles(a.Id, Constant.AGENCIES_FOLDER_TYPE).FirstOrDefault();
-                list.Add(new AgenciesMasterView
-                {         
-                    Id = a.Id,                    
-                    Status = a.Status ,
-                    Email = a.Email,
-                    HotelName = a.HotelName,
-                    Location = a.Location,
-                    WebsiteUrl = a.WebsiteUrl,
-                    ValidEndDate = a.ValidEndDate.ToString("dd-MM-yyyy hh:mm tt"),
-                    ValidStartDate = a.ValidStartDate.ToString("dd-MM-yyyy hh:mm tt"),
-                    Image = path  ,
-                    LocationMasters = a.LocationMasters
-                });
+                List<AgenciesMasterView> list = new List<AgenciesMasterView>();
+                var res = db.AgenciesMaster.Include(x => x.LocationMasters).ToList();
+                foreach (var a in res)
+                {
+                    // First or default 
+                    string path = imgser.GetFiles(a.Id, Constant.AGENCIES_FOLDER_TYPE).FirstOrDefault();
+                    list.Add(new AgenciesMasterView
+                    {
+                        Id = a.Id,
+                        Status = a.Status,
+                        Email = a.Email,
+                        HotelName = a.HotelName,
+                        Location = a.Location,
+                        WebsiteUrl = a.WebsiteUrl,
+                        ValidEndDate = a.ValidEndDate.ToString("dd-MM-yyyy hh:mm tt"),
+                        ValidStartDate = a.ValidStartDate.ToString("dd-MM-yyyy hh:mm tt"),
+                        Image = path,
+                        LocationMasters = a.LocationMasters
+                    });
+                }
+                return Ok(list);
             }
-            return list;         
+            catch(Exception ex)
+            {
+                log.Error(ex.Message);
+                return Content(HttpStatusCode.InternalServerError, "Something went wrong try again");
+            }
+                
         }
 
         // GET: api/AgenciesMasters/5
