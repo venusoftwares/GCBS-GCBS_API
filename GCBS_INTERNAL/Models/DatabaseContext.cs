@@ -60,8 +60,15 @@ namespace GCBS_INTERNAL.Models
         public virtual DbSet<Weight> Weight { get; set; }
         public virtual DbSet<Meeting> Meeting { get; set; }     
         public virtual DbSet<Tit> Tit { get; set; }
-        public virtual DbSet<TitType> TitType { get; set; }      
-     
+        public virtual DbSet<TitType> TitType { get; set; }
+
+        //content Management Items 
+        public virtual DbSet<AboutUsContent> AboutUsContent { get; set; }
+        public virtual DbSet<DisclaimerContent> DisclaimerContent { get; set; }
+        public virtual DbSet<HomePageContent> HomePageContent { get; set; }
+        public virtual DbSet<PrivacyAndPolicy> PrivacyAndPolicy { get; set; }
+        public virtual DbSet<TermsAndConditions> TermsAndConditions { get; set; }
+        public virtual DbSet<Warning18Content> Warning18Content { get; set; }
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
            

@@ -336,6 +336,7 @@
     <Compile Include="Areas\HelpPage\SampleGeneration\TextSample.cs" />
     <Compile Include="Areas\HelpPage\XmlDocumentationProvider.cs" />
     <Compile Include="Constant.cs" />
+    <Compile Include="Controllers\API\ContentManagement\AboutUsContentsController.cs" />
     <Compile Include="Controllers\API\AgenciesMastersController.cs" />
     <Compile Include="Controllers\API\Auth\AdminLoginController.cs" />
     <Compile Include="Controllers\API\Auth\ChangePasswordController.cs" />
@@ -347,11 +348,13 @@
     <Compile Include="Controllers\API\CountryMastersController.cs" />
     <Compile Include="Controllers\API\CustomerDetailViewController.cs" />
     <Compile Include="Controllers\API\CustomerTransactionsController.cs" />
+    <Compile Include="Controllers\API\ContentManagement\DisclaimerContentsController.cs" />
     <Compile Include="Controllers\API\DropDownController.cs" />
     <Compile Include="Controllers\API\DurationMastersController.cs" />
     <Compile Include="Controllers\API\EmailSettingsController.cs" />
     <Compile Include="Controllers\API\EnquiryDetailsController.cs" />
     <Compile Include="Controllers\API\ExportController.cs" />
+    <Compile Include="Controllers\API\ContentManagement\HomePageContentsController.cs" />
     <Compile Include="Controllers\API\HotelMastersController.cs" />
     <Compile Include="Controllers\API\ImportController.cs" />
     <Compile Include="Controllers\API\InAppNotificationsController.cs" />
@@ -376,6 +379,7 @@
     <Compile Include="Controllers\API\PaymentGatewaysController.cs" />
     <Compile Include="Controllers\API\PayoutDetailsController.cs" />
     <Compile Include="Controllers\API\PermissionKeyValuesController.cs" />
+    <Compile Include="Controllers\API\ContentManagement\PrivacyAndPoliciesController.cs" />
     <Compile Include="Controllers\API\RoleMastersController.cs" />
     <Compile Include="Controllers\API\RolePermissionMastersController.cs" />
     <Compile Include="Controllers\API\ServicesMastersController.cs" />
@@ -385,13 +389,16 @@
     <Compile Include="Controllers\API\StateMastersController.cs" />
     <Compile Include="Controllers\API\SupportEnquiryViewsController.cs" />
     <Compile Include="Controllers\API\TaxSettingsController.cs" />
+    <Compile Include="Controllers\API\ContentManagement\TermsAndConditionsController.cs" />
     <Compile Include="Controllers\API\UserManagementsController.cs" />
+    <Compile Include="Controllers\API\ContentManagement\Warning18ContentController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ValuesController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Helper\GetAccessToken.cs" />
+    <Compile Include="Models\AboutUsContent.cs" />
     <Compile Include="Models\AgenciesMaster.cs" />
     <Compile Include="Models\BookingDetail.cs" />
     <Compile Include="Models\CityMaster.cs" />
@@ -400,6 +407,7 @@
     <Compile Include="Models\CustomerTransactions.cs" />
     <Compile Include="Models\DatabaseContext.cs" />
     <Compile Include="Models\DickSize.cs" />
+    <Compile Include="Models\DisclaimerContent.cs" />
     <Compile Include="Models\DurationMaster.cs" />
     <Compile Include="Models\EmailSettings.cs" />
     <Compile Include="Models\EnquiryDetails.cs" />
@@ -407,6 +415,7 @@
     <Compile Include="Models\Eye.cs" />
     <Compile Include="Models\Hair.cs" />
     <Compile Include="Models\Height.cs" />
+    <Compile Include="Models\HomePageContent.cs" />
     <Compile Include="Models\HotelMaster.cs" />
     <Compile Include="Models\ImageMaster.cs" />
     <Compile Include="Models\InAppNotification.cs" />
@@ -422,6 +431,7 @@
     <Compile Include="Models\PaymentGateway.cs" />
     <Compile Include="Models\PayoutDetails.cs" />
     <Compile Include="Models\PermissionKeyValue.cs" />
+    <Compile Include="Models\PrivacyAndPolicy.cs" />
     <Compile Include="Models\RoleMaster.cs" />
     <Compile Include="Models\RolePermissionMaster.cs" />
     <Compile Include="Models\ServicesMaster.cs" />
@@ -433,9 +443,11 @@
     <Compile Include="Models\StateMaster.cs" />
     <Compile Include="Models\SupportEnquiryView.cs" />
     <Compile Include="Models\TaxSettings.cs" />
+    <Compile Include="Models\TermsAndConditions.cs" />
     <Compile Include="Models\Tit.cs" />
     <Compile Include="Models\TitType.cs" />
     <Compile Include="Models\UserManagement.cs" />
+    <Compile Include="Models\Warning18Content.cs" />
     <Compile Include="Models\Weight.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Provider\OauthProvider.cs" />
