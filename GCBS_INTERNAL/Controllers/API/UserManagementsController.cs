@@ -55,6 +55,9 @@ namespace GCBS_INTERNAL.Controllers.API
             using (var d = new DatabaseContext())
             {
                 var re = await d.UserManagement.FindAsync(userManagementViewModel.UserManagements.Id);
+                userManagement.Name = userManagementViewModel.UserManagements.Name;
+                userManagement.Username = userManagementViewModel.UserManagements.Username;
+                userManagement.MobileNo = userManagementViewModel.UserManagements.MobileNo;
                 userManagement.CreatedBy = re.CreatedBy;
                 userManagement.CreatedOn = re.CreatedOn;
                 userManagement.Status = re.Status;
