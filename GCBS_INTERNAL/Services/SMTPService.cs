@@ -1,4 +1,5 @@
 ﻿using GCBS_INTERNAL.Models;
+using log4net;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,10 +12,12 @@ namespace GCBS_INTERNAL.Services
     public class SMTPService
     {
         private DatabaseContext db = new DatabaseContext();
-        public void Email(string To,string Subject,string htmlString)
+        private static readonly ILog log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+        public bool Email(string To,string Subject,string htmlString)
         {   
             try
             {
+                log.Info("sending mail called : "+ To + ":" + Subject);
                 var result = db.EmailSettings.FirstOrDefault();
                 MailMessage message = new MailMessage();
                 SmtpClient smtp = new SmtpClient();
@@ -30,8 +33,14 @@ namespace GCBS_INTERNAL.Services
                 smtp.Credentials = new NetworkCredential(result.Username, result.Password);
                 smtp.DeliveryMethod = SmtpDeliveryMethod.Network;
                 smtp.Send(message);
+                log.Info("sending mail end : ");
+                return true;
             }
-            catch (Exception) { }
+            catch (Exception ex) 
+            {
+                log.Error("sending failed", ex);
+                return false;
+            }
         }
     }
 }

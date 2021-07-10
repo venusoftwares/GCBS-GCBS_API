@@ -34,10 +34,17 @@ namespace GCBS_INTERNAL.Controllers.API.Auth
                 {
                     userManagement.Password = algorithum.RandomPassword();
                     string htmlString = "Email:" + userManagement.EmailId + " Password:" + userManagement.Password;
-                    sMTPService.Email(userManagement.EmailId, "Forget Password", htmlString);
-                    db.Entry(userManagement).State = EntityState.Modified;
-                    await db.SaveChangesAsync();
-                    return Ok(forgetPassword);
+                    var res = sMTPService.Email(userManagement.EmailId, "Forget Password", htmlString);
+                    if(res)
+                    {
+                        db.Entry(userManagement).State = EntityState.Modified;
+                        await db.SaveChangesAsync();
+                        return Ok(forgetPassword);
+                    }
+                    else
+                    {
+                        return Content(HttpStatusCode.InternalServerError, "Sending failed");
+                    }  
                 }
                 return Content(HttpStatusCode.BadRequest, "No User found");
             }

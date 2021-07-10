@@ -1,39 +1,38 @@
-﻿using System;
+﻿using GCBS_INTERNAL.Models;
+using System;
 using System.Collections.Generic;
-using System.Data;
-using System.Data.Entity;
-using System.Data.Entity.Infrastructure;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
 using System.Web.Http;
-using System.Web.Http.Description;
-using GCBS_INTERNAL.Models;
+using System.Web.Http.Description;  
+using System.Data.Entity;
 
-namespace GCBS_INTERNAL.Controllers.API
+namespace GCBS_INTERNAL.Controllers.API.Transactions
 {
     [Authorize]
-    public class EnquiryDetailsController : BaseApiController
+    public class PastTransactionsController : BaseApiController
     {
+        //(Service Status completed or cancelled) and Partner status pending
         private DatabaseContext db = new DatabaseContext();
-
-        // GET: api/EnquiryDetails
-        [ResponseType(typeof(EnquiryViewModel))]
-        public async Task< IHttpActionResult> PostEnquiryDetails(EnquiryViewModel enquiryViewModel)
+        [ResponseType(typeof(PastTransactionsViewModel))]
+        public async Task<IHttpActionResult> PostOpenTransactions(PastTransactionsViewModel enquiryViewModel)
         {
             var res = await db.EnquiryDetails
                 .Include(x => x.UserManagements)
                 .Include(x => x.PartnerManagements)
                 .Include(x => x.servicesMasters)
-                .Select(x => new EnquiryViewModel
+                .Select(x => new PastTransactionsViewModel
                 {
-                    Id = x.Id,
+                    BookingId = x.Id,
+                    TransactionDate = x.TransactionDate,
+                    TransactionId = x.TransactionId,
                     Email = x.UserManagements.EmailId,
                     Service = x.servicesMasters.Service,
-                    ServicePartner = x.PartnerManagements.Username+"_"+ x.PartnerId,
+                    ServicePartner = x.PartnerManagements.Username + "_" + x.PartnerId,
                     ServicePartnerId = x.PartnerId,
-                    Username = x.UserManagements.Username+"_"+x.UserId,
+                    Username = x.UserManagements.Username + "_" + x.UserId,
                     UserId = x.UserId,
                     ServiceStatus = x.ServiceStatus,
                     ServiceStatusToString = x.ServiceStatus == 1 ? "Active" : x.ServiceStatus == 2 ? "Completed" : x.ServiceStatus == 3 ? "Cancel" : "None",
@@ -42,7 +41,7 @@ namespace GCBS_INTERNAL.Controllers.API
                     ServiceId = x.ServiceId,
                     Mobile = x.UserManagements.MobileNo,
                     ServiceDate = x.ServiceDate
-                }).ToListAsync();
+                }).Where(x => (x.ServiceStatus == 2 || x.ServiceStatus == 3) && x.PaymentStatus == 1).ToListAsync();
 
             if (enquiryViewModel != null)
             {
@@ -73,19 +72,16 @@ namespace GCBS_INTERNAL.Controllers.API
                 if (enquiryViewModel.ServiceStatus > 0)
                 {
                     res = res.Where(x => x.ServiceStatus == enquiryViewModel.ServiceStatus).ToList();
-                }     
+                }
                 if (enquiryViewModel.FromDate != null && enquiryViewModel.ToDate != null)
                 {
                     res = res.Where(x => x.ServiceDate >= Convert.ToDateTime(enquiryViewModel.FromDate)
                     && x.ServiceDate <= Convert.ToDateTime(enquiryViewModel.ToDate)).ToList();
                 }
-            }     
-            return Ok(res); 
+            }
+            return Ok(res);
         }
 
-  
-
-       
         protected override void Dispose(bool disposing)
         {
             if (disposing)
@@ -100,4 +96,5 @@ namespace GCBS_INTERNAL.Controllers.API
             return db.EnquiryDetails.Count(e => e.Id == id) > 0;
         }
     }
+    
 }

@@ -66,7 +66,7 @@ namespace GCBS_INTERNAL.Controllers.API.GCBS_FrontEnd
             }
             catch(Exception ex)
             {
-                log.Error(ex.Message);
+                log.Error("Sending failed",ex);
                 return Content(HttpStatusCode.InternalServerError, "Something went wrong try again");
             }
         }

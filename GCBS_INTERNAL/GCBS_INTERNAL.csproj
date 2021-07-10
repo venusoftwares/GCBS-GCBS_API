@@ -391,6 +391,8 @@
     <Compile Include="Controllers\API\SupportEnquiryViewsController.cs" />
     <Compile Include="Controllers\API\TaxSettingsController.cs" />
     <Compile Include="Controllers\API\ContentManagement\TermsAndConditionsController.cs" />
+    <Compile Include="Controllers\API\Transactions\OpenTransactionsController.cs" />
+    <Compile Include="Controllers\API\Transactions\PastTransactionsController.cs" />
     <Compile Include="Controllers\API\UserManagementsController.cs" />
     <Compile Include="Controllers\API\ContentManagement\Warning18ContentController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
@@ -499,6 +501,8 @@
     <Content Include="Scripts\jquery-3.4.1.slim.js" />
     <Content Include="Scripts\jquery-3.4.1.slim.min.js" />
     <Content Include="Scripts\modernizr-2.8.3.js" />
+    <Content Include="Template\ForgetPassword.html" />
+    <Content Include="Template\ChangePassword.html" />
     <Content Include="Template\LocationTemp.html" />
     <Content Include="Template\CountryTemp.html" />
     <Content Include="Template\CityTemp.html" />

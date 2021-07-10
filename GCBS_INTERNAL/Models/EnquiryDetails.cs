@@ -9,22 +9,14 @@ namespace GCBS_INTERNAL.Models
     public partial class EnquiryDetails
     {
         public int Id { get; set; }
-
-        public int UserId { get; set; }
-
-        public int PartnerId { get; set; }
-
-        public int ServiceId { get; set; }
-
-        public DateTime EnquiryDate { get; set; }
-
-        [Required]
-        [StringLength(50)]
-        public string EnquiryStatus { get; set; }
-
-        [Required]
-        [StringLength(50)]
-        public string UserStatus { get; set; }
+        public DateTime? TransactionDate { get; set; }
+        public string TransactionId { get; set; }
+        public int UserId { get; set; }     
+        public int PartnerId { get; set; }    
+        public int ServiceId { get; set; }      
+        public DateTime ServiceDate { get; set; }    
+        public int ServiceStatus { get; set; }  
+        public int PaymentStatus { get; set; }
 
         public DateTime CreatedOn { get; set; }
 
@@ -50,14 +42,56 @@ namespace GCBS_INTERNAL.Models
         public string Mobile { get; set; }
         public DateTime?  FromDate {get;set;}
         public DateTime? ToDate { get; set; }
-        public DateTime EnquiryDate { get; set; }
+        public DateTime ServiceDate { get; set; }
         public string ServicePartner { get; set; }
         public int ServicePartnerId { get; set; }
         public int ServiceId { get; set; }
         public string Service { get; set; }
-        public string ServiceStatus { get; set; }
-        public string UserStatus { get; set; }
-
-
+        public int ServiceStatus { get; set; }
+        public string ServiceStatusToString { get; set; }
+        public int PaymentStatus { get; set; }
+        public string PaymentStatusToString { get; set; }
+    }
+    public class OpenTransactionsViewModel
+    {
+        public int BookingId { get; set; }
+        public DateTime? TransactionDate { get; set; }
+        public string TransactionId { get; set; }
+        public string Username { get; set; }
+        public int UserId { get; set; }
+        public string Email { get; set; }
+        public string Mobile { get; set; }
+        public DateTime? FromDate { get; set; }
+        public DateTime? ToDate { get; set; }
+        public DateTime ServiceDate { get; set; }
+        public string ServicePartner { get; set; }
+        public int ServicePartnerId { get; set; }
+        public int ServiceId { get; set; }
+        public string Service { get; set; }
+        public int ServiceStatus { get; set; }
+        public string ServiceStatusToString { get; set; }
+        public int PaymentStatus { get; set; }
+        public string PaymentStatusToString { get; set; }
+    }
+    public class PastTransactionsViewModel
+    {
+        public int BookingId { get; set; }
+        public DateTime? TransactionDate { get; set; }
+        public string TransactionId { get; set; }
+        public string Username { get; set; }
+        public int UserId { get; set; }
+        public string Email { get; set; }
+        public string Mobile { get; set; }
+        public DateTime? FromDate { get; set; }
+        public DateTime? ToDate { get; set; }
+        public DateTime ServiceDate { get; set; }
+        public string ServicePartner { get; set; }
+        public int ServicePartnerId { get; set; }
+        public int ServiceId { get; set; }
+        public string Service { get; set; }
+        public int ServiceStatus { get; set; }
+        public string ServiceStatusToString { get; set; }
+        public int PaymentStatus { get; set; }
+        public string PaymentStatusToString { get; set; }
     }
 }

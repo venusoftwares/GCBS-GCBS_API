@@ -1,4 +1,5 @@
 ﻿using GCBS_INTERNAL.Models;
+using log4net;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -11,8 +12,10 @@ namespace GCBS_INTERNAL.Services
     public class ImageServices
     {
         public string urlLink = ConfigurationManager.AppSettings["ApiUrl"];
+        private static readonly ILog log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
         public bool SaveImage(string ImgStr, string Type, int Id,int userId)
-        {    try
+        {    
+            try
             {
                 string[] b = ImgStr.Split(';');
                 string[] c = b[0].Split('/');
@@ -47,6 +50,7 @@ namespace GCBS_INTERNAL.Services
             }
             catch(Exception ex)
             {
+                log.Error(ex.Message);
                 return false; 
             }
            

@@ -36,10 +36,17 @@ namespace GCBS_INTERNAL.Controllers.API.Auth
                     userManagement.Password = changePassword.NewPassword;
                     //userManagement.Password = algorithum.RandomPassword();
                     string htmlString = "Email:" + userManagement.EmailId + " Password:" + userManagement.Password;
-                    sMTPService.Email(userManagement.EmailId, "Change Password", htmlString);
-                    db.Entry(userManagement).State = EntityState.Modified;
-                    await db.SaveChangesAsync();
-                    return Ok(new ChangePasswordReponse {  Message = "success"});
+                    var res = sMTPService.Email(userManagement.EmailId, "Change Password", htmlString);
+                    if(res)
+                    {
+                        db.Entry(userManagement).State = EntityState.Modified;
+                        await db.SaveChangesAsync();
+                        return Ok(new ChangePasswordReponse { Message = "success" });
+                    }
+                    else
+                    {
+                        return Content(HttpStatusCode.InternalServerError, new ChangePasswordReponse { Message = "Sending failed" });
+                    }   
                 }
                 else
                 {
