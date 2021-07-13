@@ -53,7 +53,11 @@ namespace GCBS_INTERNAL.Models
     public class UserManagementViewModel   
     {  
         public UserManagement UserManagements { get; set; }
-        public List<string> imageBase64 { get; set; }
+        public List<string> imageBase64 { get; set; } 
+        public int Age { get; set; }
+        public CityMaster CityMaster { get; set; }
+        public StateMaster StateMaster { get; set; }
+        public CountryMaster CountryMaster { get; set; }
     }
 
     public class UserMasterVisible
