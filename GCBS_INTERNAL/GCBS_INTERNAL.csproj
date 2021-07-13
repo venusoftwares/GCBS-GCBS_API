@@ -355,7 +355,10 @@
     <Compile Include="Controllers\API\EnquiryDetailsController.cs" />
     <Compile Include="Controllers\API\ExportController.cs" />
     <Compile Include="Controllers\API\ContentManagement\HomePageContentsController.cs" />
+    <Compile Include="Controllers\API\GCBS_FrontEnd\HomeAgenciesController.cs" />
     <Compile Include="Controllers\API\GCBS_FrontEnd\HomeDashboardController.cs" />
+    <Compile Include="Controllers\API\GCBS_FrontEnd\HomeHotelController.cs" />
+    <Compile Include="Controllers\API\GCBS_FrontEnd\HomeSiteBannerController.cs" />
     <Compile Include="Controllers\API\HotelMastersController.cs" />
     <Compile Include="Controllers\API\ImportController.cs" />
     <Compile Include="Controllers\API\InAppNotificationsController.cs" />

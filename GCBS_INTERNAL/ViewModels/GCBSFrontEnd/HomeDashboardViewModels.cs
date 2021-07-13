@@ -53,4 +53,10 @@ namespace GCBS_INTERNAL.ViewModels.GCBSFrontEnd
 
     }
 
+    public class HomeAgenciesViewModel
+    {
+
+    }
+         
+    
 }

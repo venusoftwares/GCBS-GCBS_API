@@ -5,10 +5,12 @@ using IERP.Algorithum;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
+using System.Web;
 using System.Web.Http;
 using System.Web.Http.Description;
 
@@ -33,9 +35,11 @@ namespace GCBS_INTERNAL.Controllers.API.Auth
                 var userManagement = await db.UserManagement.Where(x => x.EmailId == userDetails.EmailId && x.Password == changePassword.OldPassword).FirstOrDefaultAsync();
                 if (userManagement != null)
                 {
+                    string path = HttpContext.Current.Server.MapPath("~/Template/ChangePassword.html");
+                    string text = File.ReadAllText(path);
                     userManagement.Password = changePassword.NewPassword;
                     //userManagement.Password = algorithum.RandomPassword();
-                    string htmlString = "Email:" + userManagement.EmailId + " Password:" + userManagement.Password;
+                    string htmlString = text.Replace("{Email}", userManagement.EmailId).Replace("{Password}", userManagement.Password);
                     var res = sMTPService.Email(userManagement.EmailId, "Change Password", htmlString);
                     if(res)
                     {
