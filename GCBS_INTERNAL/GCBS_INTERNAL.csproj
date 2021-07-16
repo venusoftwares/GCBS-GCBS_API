@@ -336,6 +336,8 @@
     <Compile Include="Areas\HelpPage\SampleGeneration\TextSample.cs" />
     <Compile Include="Areas\HelpPage\XmlDocumentationProvider.cs" />
     <Compile Include="Constant.cs" />
+    <Compile Include="Controllers\API\Auth\CustomerOrPartnerLoginController.cs" />
+    <Compile Include="Controllers\API\BankAccountDetailsController.cs" />
     <Compile Include="Controllers\API\ContentManagement\AboutUsContentsController.cs" />
     <Compile Include="Controllers\API\AgenciesMastersController.cs" />
     <Compile Include="Controllers\API\Auth\AdminLoginController.cs" />
@@ -380,6 +382,7 @@
     <Compile Include="Controllers\API\PartnerDetailViewController.cs" />
     <Compile Include="Controllers\API\PartnerRatingsController.cs" />
     <Compile Include="Controllers\API\PartnerTypesController.cs" />
+    <Compile Include="Controllers\API\Partner\PartnerControllController.cs" />
     <Compile Include="Controllers\API\PaymentDetailsController.cs" />
     <Compile Include="Controllers\API\PaymentGatewaysController.cs" />
     <Compile Include="Controllers\API\PayoutDetailsController.cs" />
@@ -407,6 +410,7 @@
     <Compile Include="Helper\GetAccessToken.cs" />
     <Compile Include="Models\AboutUsContent.cs" />
     <Compile Include="Models\AgenciesMaster.cs" />
+    <Compile Include="Models\BankAccountDetails.cs" />
     <Compile Include="Models\BookingDetail.cs" />
     <Compile Include="Models\CityMaster.cs" />
     <Compile Include="Models\ContactEnquiryView.cs" />

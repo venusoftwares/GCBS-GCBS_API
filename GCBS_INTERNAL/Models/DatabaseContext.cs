@@ -69,6 +69,10 @@ namespace GCBS_INTERNAL.Models
         public virtual DbSet<PrivacyAndPolicy> PrivacyAndPolicy { get; set; }
         public virtual DbSet<TermsAndConditions> TermsAndConditions { get; set; }
         public virtual DbSet<Warning18Content> Warning18Content { get; set; }
+
+
+
+        public virtual DbSet<BankAccountDetails> BankAccountDetails { get; set; }
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
            

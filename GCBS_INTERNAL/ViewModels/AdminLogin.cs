@@ -17,6 +17,7 @@ namespace GCBS_INTERNAL.ViewModels
     public class AdminResponse
     {
         public string AccessToken { get; set; }
+        public string Key { get; set; }
     }
     public class ForgetPassword
     {        

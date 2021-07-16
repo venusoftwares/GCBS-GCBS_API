@@ -24,7 +24,7 @@ namespace GCBS_INTERNAL.Controllers.API
         [Route("api/Country")]
         public IQueryable<Country> GetCountry()
         {
-            return db.CountryMaster.Where(x=>x.Status).Select(x=>new Country { Id= x.Id,CountryName= x.CountryName });
+            return db.CountryMaster.Where(x=>x.Status).Select(x=>new Country { Id= x.Id,CountryName= x.CountryName, CountryCode = x.CountryCode.ToString() });
         }
      
         
@@ -144,5 +144,95 @@ namespace GCBS_INTERNAL.Controllers.API
             dropDownCommons.Add(new DropDownCommon2 { Key = Constant.OFFLINE, Value = Constant.OFFLINE });  
             return dropDownCommons;
         }
+        [HttpGet]
+        [Route("api/DropDownSexOrientation")]
+        public List<DropDownCommon> GetSexOrientation()
+        {
+            var result = db.Orientation   
+                .Where(x=>x.Status)
+                .Select(x => new DropDownCommon { Key = x.Id, Value = x.Orientation1 }).ToList();
+            return result;
+        }
+        [HttpGet]
+        [Route("api/DropDownNationality")]
+        public List<DropDownCommon> GetDropNationality()
+        {
+            var result = db.NationalityMaster
+                .Where(x => x.Status)
+                .Select(x => new DropDownCommon { Key = x.Id, Value = x.Nationality }).ToList();
+            return result;
+        }
+        [HttpGet]
+        [Route("api/DropDownLanguages")]
+        public List<Languages> GetDropLanguages()
+        {
+            var result = db.LanguageMaster
+                .Where(x => x.Status)
+                .Select(x => new Languages { ItemId = x.Id, ItemLanguage = x.Language }).ToList();
+            return result;
+        }
+        [HttpGet]
+        [Route("api/DropDowntDickSize")]
+        public List<Languages> GettDickSize()
+        {
+            var result = db.DickSize
+                .Where(x => x.Status)
+                .Select(x => new Languages { ItemId = x.Id, ItemLanguage = x.DickSize1 }).ToList();
+            return result;
+        }
+            /// <summary>
+            /// Bio information detaills drop down Get method
+            /// </summary>
+            /// <returns></returns>
+        [HttpGet]
+        [Route("api/DropDowntBioInformation")]
+        public async Task<DropDownBioInformation> GetBioInformation()
+        {
+            try
+            {
+                var userinfo = await db.UserManagement.Where(x => x.Id == userDetails.Id).FirstOrDefaultAsync();
+                DropDownBioInformation dropDownBioInformation = new DropDownBioInformation();
+                dropDownBioInformation.DickSize = await db.DickSize.Where(x => x.Status).Select(x => new DropDownCommon { Key = x.Id, Value = x.DickSize1 }).ToListAsync();
+                dropDownBioInformation.Hair = await db.Hair.Where(x => x.Status).Select(x => new DropDownCommon { Key = x.Id, Value = x.Hair1 }).ToListAsync();
+                dropDownBioInformation.Eyes = await db.Eye.Where(x => x.Status).Select(x => new DropDownCommon { Key = x.Id, Value = x.Eye1 }).ToListAsync();
+                dropDownBioInformation.Height = await db.Height.Where(x => x.Status).Select(x => new DropDownCommon { Key = x.Id, Value = x.Height1 }).ToListAsync();
+                dropDownBioInformation.Weight = await db.Weight.Where(x => x.Status).Select(x => new DropDownCommon { Key = x.Id, Value = x.Weight1 }).ToListAsync();
+                dropDownBioInformation.Tits = await db.Tit.Where(x => x.Status).Select(x => new DropDownCommon { Key = x.Id, Value = x.Tit1 }).ToListAsync();
+                dropDownBioInformation.TitType = await db.TitType.Where(x => x.Status).Select(x => new DropDownCommon { Key = x.Id, Value = x.TitType1 }).ToListAsync();
+                dropDownBioInformation.SelectedDickSize = userinfo.DickSize;
+                dropDownBioInformation.SelectedHair = userinfo.Hair;
+                dropDownBioInformation.SelectedEyes = userinfo.Eyes;
+                dropDownBioInformation.SelectedHeight = userinfo.Height;
+                dropDownBioInformation.SelectedWeight = userinfo.Weight;
+                dropDownBioInformation.SelectedTits = userinfo.Tits;
+                dropDownBioInformation.SelectedTitType = userinfo.TitType;
+                //Gender
+                dropDownBioInformation.Gender = userinfo.Gender;  
+                return dropDownBioInformation;  
+            }
+            catch(Exception ex)
+            {
+                throw ex;
+            }
+        }
+        public class DropDownBioInformation
+        {
+            public List<DropDownCommon> DickSize { get; set; }
+            public List<DropDownCommon> Hair { get; set; }
+            public List<DropDownCommon> Eyes { get; set; }
+            public List<DropDownCommon> Height { get; set; }
+            public List<DropDownCommon> Weight { get; set; }
+            public List<DropDownCommon> Tits { get; set; }   
+            public List<DropDownCommon> TitType { get; set; }
+
+            public int? SelectedDickSize { get; set; }
+            public int? SelectedHair { get; set; }
+            public int? SelectedEyes { get; set; }
+            public int? SelectedHeight { get; set; }
+            public int? SelectedWeight { get; set; }
+            public int? SelectedTits { get; set; }
+            public int? SelectedTitType { get; set; }       
+            public string Gender { get; set; }
+        }   
     }
 }

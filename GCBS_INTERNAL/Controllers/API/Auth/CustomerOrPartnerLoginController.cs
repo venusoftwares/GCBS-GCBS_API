@@ -1,11 +1,8 @@
 ﻿using GCBS_INTERNAL.Helper;
 using GCBS_INTERNAL.Models;
-using GCBS_INTERNAL.Services;
 using GCBS_INTERNAL.ViewModels;
-using IERP.Algorithum;
 using System;
 using System.Collections.Generic;
-using System.Data.Entity;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
@@ -15,15 +12,15 @@ using System.Web.Http.Description;
 
 namespace GCBS_INTERNAL.Controllers.API.Auth
 {
-    public class AdminLoginController : ApiController
+    public class CustomerOrPartnerLoginController : ApiController
     {
         public DatabaseContext db = new DatabaseContext();
         private readonly GetAccessToken getAccessToken = new GetAccessToken();
-  
+
 
         //[HttpPost]
         [ResponseType(typeof(AdminResponse))]
-        public async Task<IHttpActionResult> AdminLogin(AdminLogin adminLogin)
+        public async Task<IHttpActionResult> CustomerOrPartnerLogin(AdminLogin adminLogin)
         {
             if (!ModelState.IsValid)
             {
@@ -31,20 +28,28 @@ namespace GCBS_INTERNAL.Controllers.API.Auth
             }
             try
             {
-                var result = db.UserManagement.Where(x=>( x.Username == adminLogin.Email || x.EmailId == adminLogin.Email) && x.Password == adminLogin.Password).FirstOrDefault();
-                if(result==null)
+                var result = db.UserManagement.Where(x => x.EmailId == adminLogin.Email
+                && x.Password == adminLogin.Password).FirstOrDefault();
+                if (result == null)
                 {
                     return NotFound();
                 }
                 else
                 {
-                    return Ok(new AdminResponse { AccessToken = await getAccessToken.GetToken(result) });
+                    if (result.RoleId == 3 || result.RoleId == 9)
+                    {
+                        return Ok(new AdminResponse { AccessToken = await getAccessToken.GetToken(result), Key = result.RoleId == 3 ? "Partner" : "Customer" });
+                    }
+                    else
+                    {
+                        return Content(HttpStatusCode.InternalServerError, "Invalid Role");
+                    }  
                 }
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 throw ex;
-            }    
-        }     
+            }
+        }
     }
 }
