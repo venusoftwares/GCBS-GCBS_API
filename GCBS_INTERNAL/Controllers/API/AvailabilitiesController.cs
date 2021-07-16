@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 using System.Web.Http;
 using System.Web.Http.Description;
 using GCBS_INTERNAL.Models;
+using Newtonsoft.Json;
 
 namespace GCBS_INTERNAL.Controllers.API
 {
@@ -19,54 +20,53 @@ namespace GCBS_INTERNAL.Controllers.API
         private DatabaseContext db = new DatabaseContext();     
 
         // GET: api/Availabilities/5
-        [ResponseType(typeof(Availability))]
+        [ResponseType(typeof(RootAvailability))]
         public async Task<IHttpActionResult> GetAvailability()
         {
+            RootAvailability availability2 = new RootAvailability();
             Availability availability = await db.Availability.Where(x=>x.UserId == userDetails.Id).FirstOrDefaultAsync();
             if (availability == null)
             {
                 DateTime now = DateTime.Now;
-                return Ok(new Availability
-                {
-                    Id = 0,
-                    UserId = 0,
-                    Friday = now.TimeOfDay,
-                    Monday = now.TimeOfDay,
-                    Thursday = now.TimeOfDay,
-                    Wednesday = now.TimeOfDay,
-                    Tuesday = now.TimeOfDay,
-                    Saturday = now.TimeOfDay,
-                    Sunday = now.TimeOfDay                     
-                });
-            }    
-            return Ok(availability);
+                return Ok(availability2);
+            }
+            availability2.Availability = availability;
+            if(!String.IsNullOrEmpty(availability.Time))
+            {
+                availability2.Times = JsonConvert.DeserializeObject<List<Root>>(availability.Time);
+            }
+            else
+            {
+                availability2.Times = new List<Root>();
+            }     
+            return Ok(availability2);
         }
 
         // PUT: api/Availabilities/5
         [ResponseType(typeof(void))]
-        public async Task<IHttpActionResult> PutAvailability(int id, Availability availability)
+        public async Task<IHttpActionResult> PutAvailability(int id, RootAvailability rootAvailability)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            if (id != availability.Id)
+            if (id != rootAvailability.Availability.Id)
             {
                 return BadRequest();
             }
             using (var d = new DatabaseContext())
             {
                 var re = await d.Availability.FindAsync(id);
-                availability.CreatedBy = re.CreatedBy;
-                availability.CreatedOn = re.CreatedOn;
-                availability.UserId = userDetails.Id;
+                rootAvailability.Availability.CreatedBy = re.CreatedBy;
+                rootAvailability.Availability.CreatedOn = re.CreatedOn;
+                rootAvailability.Availability.UserId = userDetails.Id;
+                rootAvailability.Availability.Time = JsonConvert.SerializeObject(rootAvailability.Times);
                 d.Dispose();
             }
-            availability.UpdatedBy = userDetails.Id;
-            availability.UpdatedOn = DateTime.Now;
-            db.Entry(availability).State = EntityState.Modified;
-
+            rootAvailability.Availability.UpdatedBy = userDetails.Id;
+            rootAvailability.Availability.UpdatedOn = DateTime.Now;
+            db.Entry(rootAvailability.Availability).State = EntityState.Modified;   
             try
             {
                 await db.SaveChangesAsync();
@@ -88,19 +88,20 @@ namespace GCBS_INTERNAL.Controllers.API
 
         // POST: api/Availabilities
         [ResponseType(typeof(Availability))]
-        public async Task<IHttpActionResult> PostAvailability(Availability availability)
+        public async Task<IHttpActionResult> PostAvailability(RootAvailability rootAvailability)
         {
-            availability.CreatedBy = userDetails.Id;
-            availability.CreatedOn = DateTime.Now;
+            rootAvailability.Availability.CreatedBy = userDetails.Id;
+            rootAvailability.Availability.CreatedOn = DateTime.Now;
+            rootAvailability.Availability.Time = JsonConvert.SerializeObject(rootAvailability.Times);
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
-            availability.UserId = userDetails.Id;
-            db.Availability.Add(availability);
+            rootAvailability.Availability.UserId = userDetails.Id;
+            db.Availability.Add(rootAvailability.Availability);
             await db.SaveChangesAsync();
 
-            return CreatedAtRoute("DefaultApi", new { id = availability.Id }, availability);
+            return CreatedAtRoute("DefaultApi", new { id = rootAvailability.Availability.Id }, rootAvailability.Availability);
         }
 
        

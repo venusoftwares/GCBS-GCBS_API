@@ -9,23 +9,9 @@ namespace GCBS_INTERNAL.Models
     [Table("Availability")]
     public partial class Availability
     {
-        public int Id { get; set; }
-
+        public int Id { get; set; }      
         public int UserId { get; set; }     
-        public TimeSpan Sunday { get; set; }
-
-        public TimeSpan Monday { get; set; }
-
-        public TimeSpan Tuesday { get; set; }
-
-        public TimeSpan Wednesday { get; set; }
-
-        public TimeSpan Thursday { get; set; }
-
-        public TimeSpan Friday { get; set; }
-
-        public TimeSpan Saturday { get; set; }
-
+        public string Time { get; set; }  
         public DateTime CreatedOn { get; set; }
 
         public int CreatedBy { get; set; }
@@ -33,5 +19,21 @@ namespace GCBS_INTERNAL.Models
         public DateTime? UpdatedOn { get; set; }
 
         public int? UpdatedBy { get; set; }
+    }
+    public class Time
+    {
+        public List<string> StartTime { get; set; }
+        public List<string> EndTime { get; set; }
+    }
+
+    public class Root
+    {
+        public string Day { get; set; }
+        public List<Time> Time { get; set; }
+    }
+    public class RootAvailability
+    {
+        public Availability Availability { get; set; }
+        public List<Root> Times { get; set; }
     }
 }
