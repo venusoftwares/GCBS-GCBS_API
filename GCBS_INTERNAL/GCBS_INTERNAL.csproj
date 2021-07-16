@@ -384,6 +384,7 @@
     <Compile Include="Controllers\API\PartnerRatingsController.cs" />
     <Compile Include="Controllers\API\PartnerTypesController.cs" />
     <Compile Include="Controllers\API\Partner\PartnerControllController.cs" />
+    <Compile Include="Controllers\API\Partner\PartnerMyServiceController.cs" />
     <Compile Include="Controllers\API\PaymentDetailsController.cs" />
     <Compile Include="Controllers\API\PaymentGatewaysController.cs" />
     <Compile Include="Controllers\API\PayoutDetailsController.cs" />
@@ -447,6 +448,7 @@
     <Compile Include="Models\PrivacyAndPolicy.cs" />
     <Compile Include="Models\RoleMaster.cs" />
     <Compile Include="Models\RolePermissionMaster.cs" />
+    <Compile Include="Models\ServiceDurartionPrice.cs" />
     <Compile Include="Models\ServicesMaster.cs" />
     <Compile Include="Models\ServiceTypes.cs" />
     <Compile Include="Controllers\API\ServiceTypesController.cs" />
