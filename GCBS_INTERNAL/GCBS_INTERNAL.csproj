@@ -383,6 +383,7 @@
     <Compile Include="Controllers\API\PartnerDetailViewController.cs" />
     <Compile Include="Controllers\API\PartnerRatingsController.cs" />
     <Compile Include="Controllers\API\PartnerTypesController.cs" />
+    <Compile Include="Controllers\API\Partner\PartnerCommonController.cs" />
     <Compile Include="Controllers\API\Partner\PartnerControllController.cs" />
     <Compile Include="Controllers\API\Partner\PartnerMyServiceController.cs" />
     <Compile Include="Controllers\API\PaymentDetailsController.cs" />
@@ -475,6 +476,7 @@
     <Compile Include="ViewModels\AdminLogin.cs" />
     <Compile Include="ViewModels\DropDownCommon.cs" />
     <Compile Include="ViewModels\GCBSFrontEnd\HomeDashboardViewModels.cs" />
+    <Compile Include="ViewModels\GCBSFrontEnd\PartnerCommon.cs" />
     <Compile Include="ViewModels\MenuItems.cs" />
     <Compile Include="ViewModels\PartnerDetailsViewModel.cs" />
   </ItemGroup>
