@@ -11,12 +11,14 @@ using System.Web;
 using System.Web.Http;
 using System.Web.Http.Description;
 using GCBS_INTERNAL.Models;
+using GCBS_INTERNAL.Provider;
 using GCBS_INTERNAL.Services;
 using log4net;
 
 namespace GCBS_INTERNAL.Controllers.API
 {
-    [Authorize]
+    // [CustomAuthorize]    
+    [CustomAuthorize]
     public class AgenciesMastersController : BaseApiController
     {
         private DatabaseContext db = new DatabaseContext();

@@ -31,13 +31,18 @@ namespace GCBS_INTERNAL.Controllers.API.Auth
             }
             try
             {
-                var result = db.UserManagement.Where(x=>( x.Username == adminLogin.Email || x.EmailId == adminLogin.Email) && x.Password == adminLogin.Password).FirstOrDefault();
+                var result = db.UserManagement.Where(x=>x.EmailId == adminLogin.Email && x.Password == adminLogin.Password).FirstOrDefault();
                 if(result==null)
                 {
                     return NotFound();
                 }
                 else
                 {
+                    result.LastLogin = DateTime.Now;
+                    result.LastActivateTime = DateTime.Now.AddMinutes(Constant.ExpireTime);
+                    result.OnlineStatus = true;
+                    db.Entry(result).State = EntityState.Modified;
+                    await db.SaveChangesAsync();
                     return Ok(new AdminResponse { AccessToken = await getAccessToken.GetToken(result) });
                 }
             }

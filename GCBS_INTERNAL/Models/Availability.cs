@@ -22,8 +22,8 @@ namespace GCBS_INTERNAL.Models
     }
     public class Time
     {
-        public List<string> StartTime { get; set; }
-        public List<string> EndTime { get; set; }
+        public string StartTime { get; set; }
+        public string EndTime { get; set; }
     }
 
     public class Root

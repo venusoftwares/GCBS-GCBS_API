@@ -13,10 +13,10 @@ using System.Threading.Tasks;
 using System.Web;
 using System.Web.Http;
 using System.Web.Http.Description;
-
+using GCBS_INTERNAL.Provider;
 namespace GCBS_INTERNAL.Controllers.API.Auth
 {
-    [Authorize]
+     [CustomAuthorize]
     public class ChangePasswordController : BaseApiController
     {
         private readonly SMTPService sMTPService = new SMTPService();

@@ -10,11 +10,11 @@ using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
 using System.Web.Http;
-using System.Web.Http.Description;   
-
+using System.Web.Http.Description;
+using GCBS_INTERNAL.Provider;
 namespace GCBS_INTERNAL.Controllers.API
 {
-    [Authorize]
+     [CustomAuthorize]
     public class RolePermissionMastersController : BaseApiController
     {
         private DatabaseContext db = new DatabaseContext();

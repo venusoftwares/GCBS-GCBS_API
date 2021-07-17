@@ -11,10 +11,10 @@ using System.Web.Http;
 using System.Web.Http.Description;
 using GCBS_INTERNAL.Models;
 using Newtonsoft.Json;
-
+using GCBS_INTERNAL.Provider;
 namespace GCBS_INTERNAL.Controllers.API
 {
-    [Authorize]
+     [CustomAuthorize]
     public class AvailabilitiesController : BaseApiController
     {
         private DatabaseContext db = new DatabaseContext();     
@@ -28,6 +28,8 @@ namespace GCBS_INTERNAL.Controllers.API
             if (availability == null)
             {
                 DateTime now = DateTime.Now;
+                availability2.Availability = new Availability { Id = 0, UserId = 0 };
+                availability2.Times = RooleeRoot();
                 return Ok(availability2);
             }
             availability2.Availability = availability;
@@ -37,11 +39,23 @@ namespace GCBS_INTERNAL.Controllers.API
             }
             else
             {
-                availability2.Times = new List<Root>();
+                availability2.Times = RooleeRoot();
             }     
             return Ok(availability2);
         }
 
+        private List<Root> RooleeRoot()
+        {
+            List<Root> list = new List<Root>();
+            list.Add(new Root { Day = "Sunday", Time = new List<Time>() });
+            list.Add(new Root { Day = "Monday", Time = new List<Time>() });
+            list.Add(new Root { Day = "Tuesday", Time = new List<Time>() });
+            list.Add(new Root { Day = "Wednesday", Time = new List<Time>() });
+            list.Add(new Root { Day = "Thursday", Time = new List<Time>() });
+            list.Add(new Root { Day = "Friday", Time = new List<Time>() });
+            list.Add(new Root { Day = "Saturday", Time = new List<Time>() });
+            return list;
+        }
         // PUT: api/Availabilities/5
         [ResponseType(typeof(void))]
         public async Task<IHttpActionResult> PutAvailability(int id, RootAvailability rootAvailability)

@@ -3,6 +3,7 @@ using GCBS_INTERNAL.Models;
 using GCBS_INTERNAL.ViewModels;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
@@ -38,6 +39,11 @@ namespace GCBS_INTERNAL.Controllers.API.Auth
                 {
                     if (result.RoleId == 3 || result.RoleId == 9)
                     {
+                        result.LastLogin = DateTime.Now;
+                        result.LastActivateTime = DateTime.Now.AddMinutes(Constant.ExpireTime);
+                        result.OnlineStatus = true;
+                        db.Entry(result).State = EntityState.Modified;
+                        await db.SaveChangesAsync();
                         return Ok(new AdminResponse { AccessToken = await getAccessToken.GetToken(result), Key = result.RoleId == 3 ? "Partner" : "Customer" });
                     }
                     else

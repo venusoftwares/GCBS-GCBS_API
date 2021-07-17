@@ -11,10 +11,10 @@ using System.Web.Http;
 using System.Web.Http.Description;
 using GCBS_INTERNAL.Models;
 using GCBS_INTERNAL.Services;
-
+using GCBS_INTERNAL.Provider;
 namespace GCBS_INTERNAL.Controllers.API
 {
-    [Authorize]
+     [CustomAuthorize]
     public class UserManagementsController : BaseApiController
     {
         private DatabaseContext db = new DatabaseContext();
@@ -42,7 +42,7 @@ namespace GCBS_INTERNAL.Controllers.API
             return Ok(userManagementViewModel);
         }
 
-        [Authorize]
+         [CustomAuthorize]
         // PUT: api/UserManagements/5
         [ResponseType(typeof(void))]
         public async Task<IHttpActionResult> PutUserManagement(int id,UserManagementViewModel userManagementViewModel)

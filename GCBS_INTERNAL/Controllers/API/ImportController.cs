@@ -9,10 +9,10 @@ using System.Net;
 using System.Net.Http;
 using System.Web;
 using System.Web.Http;
-
+using GCBS_INTERNAL.Provider;
 namespace GCBS_INTERNAL.Controllers.API
 {
-    [Authorize]
+     [CustomAuthorize]
     public class ImportController : BaseApiController
     {
         private DatabaseContext db = new DatabaseContext();

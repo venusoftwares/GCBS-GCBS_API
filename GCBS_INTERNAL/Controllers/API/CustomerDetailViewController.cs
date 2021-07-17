@@ -7,10 +7,10 @@ using System.Net.Http;
 using System.Web.Http;
 using System.Data.Entity;
 using GCBS_INTERNAL.ViewModels;
-
+using GCBS_INTERNAL.Provider;
 namespace GCBS_INTERNAL.Controllers.API
 {
-    [Authorize]
+     [CustomAuthorize]
     public class CustomerDetailViewController  : BaseApiController
     {
         private DatabaseContext db = new DatabaseContext();

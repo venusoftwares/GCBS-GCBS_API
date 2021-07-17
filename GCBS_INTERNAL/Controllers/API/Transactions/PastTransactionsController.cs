@@ -8,10 +8,10 @@ using System.Threading.Tasks;
 using System.Web.Http;
 using System.Web.Http.Description;  
 using System.Data.Entity;
-
+using GCBS_INTERNAL.Provider;
 namespace GCBS_INTERNAL.Controllers.API.Transactions
 {
-    [Authorize]
+     [CustomAuthorize]
     public class PastTransactionsController : BaseApiController
     {
         //(Service Status completed or cancelled) and Partner status pending

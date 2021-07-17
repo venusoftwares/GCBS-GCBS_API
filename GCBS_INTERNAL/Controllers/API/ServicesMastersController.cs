@@ -10,10 +10,11 @@ using System.Threading.Tasks;
 using System.Web.Http;
 using System.Web.Http.Description;
 using GCBS_INTERNAL.Models;
+using GCBS_INTERNAL.Provider;
 
 namespace GCBS_INTERNAL.Controllers.API
 {
-    [Authorize]
+    [CustomAuthorize]
     public class ServicesMastersController : BaseApiController
     {
         private DatabaseContext db = new DatabaseContext();

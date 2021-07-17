@@ -28,6 +28,10 @@ namespace GCBS_INTERNAL
         public const string CUSTOMER_FOLDER_TYPE = "Customer";
         public const string AGENCIES_FOLDER_TYPE = "Agencies";
         public const string HOTEL_FOLDER_TYPE = "Hotels";
-        public const string SITE_BANNER_FOLDER_TYPE = "SiteBanner";        
+        public const string SITE_BANNER_FOLDER_TYPE = "SiteBanner";
+
+        public const int PARTNER_ROLE_ID = 3;
+        public const int CUSTOMER_ROLE_ID = 9;
+        public const int ExpireTime = 15;
     }
 }

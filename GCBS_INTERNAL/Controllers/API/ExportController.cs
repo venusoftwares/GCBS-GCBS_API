@@ -12,10 +12,10 @@ using System.Text;
 using System.Web;
 using System.Web.Http;
 using System.Web.Http.Description;
-
+using GCBS_INTERNAL.Provider;
 namespace GCBS_INTERNAL.Controllers.API
 {
-    [Authorize]
+     [CustomAuthorize]
     public class ExportController : BaseApiController
     {
         private DatabaseContext db = new DatabaseContext();

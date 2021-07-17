@@ -2,18 +2,18 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
-using System.Data.Entity.Infrastructure;
+using System.Data.Entity.Infrastructure;                                                                       using GCBS_INTERNAL.Models;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
 using System.Web.Http;
 using System.Web.Http.Description;
-using GCBS_INTERNAL.Models;
+using GCBS_INTERNAL.Provider;
 
 namespace GCBS_INTERNAL.Controllers.API
 {
-    [Authorize]
+     [CustomAuthorize]
     public class PaymentGatewaysController : BaseApiController
     {
         private DatabaseContext db = new DatabaseContext();

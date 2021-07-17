@@ -9,10 +9,10 @@ using System.Threading.Tasks;
 using System.Web.Http;
 using System.Data.Entity;
 using log4net;
-
+using GCBS_INTERNAL.Provider;
 namespace GCBS_INTERNAL.Controllers.API.Partner
 {
-    [Authorize]
+     [CustomAuthorize]
     public class PartnerMyServiceController : BaseApiController
     {
         private readonly DatabaseContext db = new DatabaseContext();
