@@ -17,14 +17,17 @@ namespace GCBS_INTERNAL.Provider
             var userDetails = JsonConvert.DeserializeObject<UserManagement>(response);
             using (var db = new DatabaseContext())
             {
-                var user = db.UserManagement.Find(userDetails.Id);
-                if (DateTime.Now <= user.LastActivateTime)
+                if(userDetails!=null)
                 {
-                    user.LastActivateTime = DateTime.Now.AddMinutes(Constant.ExpireTime);
-                    db.Entry(user).State = EntityState.Modified;
-                    db.SaveChanges();
-                    return;
-                }
+                    var user = db.UserManagement.Find(userDetails.Id);
+                    if (DateTime.Now <= user.LastActivateTime)
+                    {
+                        user.LastActivateTime = DateTime.Now.AddMinutes(Constant.ExpireTime);
+                        db.Entry(user).State = EntityState.Modified;
+                        db.SaveChanges();
+                        return;
+                    }
+                }   
                 HandleUnauthorizedRequest(actionContext);
             }   
         }
