@@ -60,6 +60,7 @@ namespace GCBS_INTERNAL.Controllers.API
         [ResponseType(typeof(void))]
         public async Task<IHttpActionResult> PutAvailability(int id, RootAvailability rootAvailability)
         {
+            List<Root> list = new List<Root>();
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
@@ -69,13 +70,28 @@ namespace GCBS_INTERNAL.Controllers.API
             {
                 return BadRequest();
             }
+            foreach(var a in rootAvailability.Times)
+            {
+                List<Time> times = new List<Time>();
+                int i = 1;
+                foreach(var b in a.Time)
+                {
+                    times.Add(b); 
+                    if(i==3)
+                    {
+                        break;
+                    }
+                    i++;
+                }
+                list.Add(new Root { Day = a.Day, Time = times });
+            }
             using (var d = new DatabaseContext())
             {
                 var re = await d.Availability.FindAsync(id);
                 rootAvailability.Availability.CreatedBy = re.CreatedBy;
                 rootAvailability.Availability.CreatedOn = re.CreatedOn;
                 rootAvailability.Availability.UserId = userDetails.Id;
-                rootAvailability.Availability.Time = JsonConvert.SerializeObject(rootAvailability.Times);
+                rootAvailability.Availability.Time = JsonConvert.SerializeObject(list);
                 d.Dispose();
             }
             rootAvailability.Availability.UpdatedBy = userDetails.Id;
@@ -104,9 +120,25 @@ namespace GCBS_INTERNAL.Controllers.API
         [ResponseType(typeof(Availability))]
         public async Task<IHttpActionResult> PostAvailability(RootAvailability rootAvailability)
         {
+            List<Root> list = new List<Root>();
             rootAvailability.Availability.CreatedBy = userDetails.Id;
             rootAvailability.Availability.CreatedOn = DateTime.Now;
-            rootAvailability.Availability.Time = JsonConvert.SerializeObject(rootAvailability.Times);
+            foreach (var a in rootAvailability.Times)
+            {
+                List<Time> times = new List<Time>();
+                int i = 1;
+                foreach (var b in a.Time)
+                {
+                    times.Add(b);  
+                    if (i == 3)
+                    {
+                        break;
+                    }
+                    i++;
+                }
+                list.Add(new Root { Day = a.Day, Time = times });
+            }
+            rootAvailability.Availability.Time = JsonConvert.SerializeObject(list);
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
