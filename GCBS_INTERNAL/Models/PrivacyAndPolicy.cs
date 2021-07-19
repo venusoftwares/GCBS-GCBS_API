@@ -8,8 +8,7 @@ namespace GCBS_INTERNAL.Models
 
     [Table("PrivacyAndPolicy")]
     public partial class PrivacyAndPolicy
-    {
-        [DatabaseGenerated(DatabaseGeneratedOption.None)]
+    {    
         public int Id { get; set; }
 
         [Required]

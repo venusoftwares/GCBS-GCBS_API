@@ -8,8 +8,7 @@ namespace GCBS_INTERNAL.Models
 
     [Table("AboutUsContent")]
     public partial class AboutUsContent
-    {
-        [DatabaseGenerated(DatabaseGeneratedOption.None)]
+    {               
         public int Id { get; set; }
 
         [Required]

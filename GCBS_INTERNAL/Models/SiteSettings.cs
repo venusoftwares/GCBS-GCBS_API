@@ -15,9 +15,10 @@ namespace GCBS_INTERNAL.Models
 
         [StringLength(50)]
         public string Phone { get; set; }
-
-        [StringLength(50)]
+        public string logo { get; set; }
         public string ContactAddress { get; set; }
+        public string Address1 { get; set; }
+        public string Address2 { get; set; }
 
         public DateTime? CreatedOn { get; set; }
 

@@ -57,7 +57,12 @@ namespace GCBS_INTERNAL.Models
         public int? Height { get; set; }
         public int? Eyes { get; set; }
         public int? Hair { get; set; }
-        public int? DickSize { get; set; }       
+        public int? DickSize { get; set; }  
+        public bool? Smoking { get; set; }
+        public bool? Drinking { get; set; }
+        public string Meeting { get; set; }  
+        public bool? ServiceTypeInCall { get; set; }
+        public bool? ServiceTypeOutCall { get; set; }   
         public DateTime CreatedOn { get; set; }
 
         public DateTime? UpdatedOn { get; set; }
@@ -90,7 +95,8 @@ namespace GCBS_INTERNAL.Models
     {
         public UserManagement userManagement { get; set; }
         public int Age { get; set; }
-        public List<Languages> Languages { get; set; }   
+        public List<Languages> Languages { get; set; }
+        public List<Languages> Meetings { get; set; }
     }
     public class Languages
     {
@@ -99,6 +105,14 @@ namespace GCBS_INTERNAL.Models
 
         [JsonProperty("item_text")]
         public string ItemLanguage { get; set; }
+    }
+    public class Meetings
+    {
+        [JsonProperty("item_id")]
+        public int ItemId { get; set; }
+
+        [JsonProperty("item_text")]
+        public string ItemMeeting { get; set; }
     }
     public class UserMasterVisible
     {
@@ -114,7 +128,12 @@ namespace GCBS_INTERNAL.Models
         public int? SelectedHeight { get; set; }
         public int? SelectedWeight { get; set; }
         public int? SelectedTits { get; set; }
-        public int? SelectedTitType { get; set; }
+        public int? SelectedTitType { get; set; }    
+        public bool? SelectedSmoking { get; set; }
+        public bool? SelectedDrinking { get; set; }
+        public string SelectedMeeting { get; set; }
+        public bool? SelectedServiceTypeInCall { get; set; }
+        public bool? SelectedServiceTypeOutCall { get; set; }
     }
   
 }

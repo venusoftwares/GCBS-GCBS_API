@@ -18,8 +18,7 @@ namespace GCBS_INTERNAL.Controllers.API.Auth
     public class AdminLoginController : ApiController
     {
         public DatabaseContext db = new DatabaseContext();
-        private readonly GetAccessToken getAccessToken = new GetAccessToken();
-  
+        private readonly GetAccessToken getAccessToken = new GetAccessToken();    
 
         //[HttpPost]
         [ResponseType(typeof(AdminResponse))]
@@ -37,12 +36,13 @@ namespace GCBS_INTERNAL.Controllers.API.Auth
                     return NotFound();
                 }
                 else
-                {
+                {    
                     result.LastLogin = DateTime.Now;
                     result.LastActivateTime = DateTime.Now.AddMinutes(Constant.ExpireTime);
                     result.OnlineStatus = true;
                     db.Entry(result).State = EntityState.Modified;
                     await db.SaveChangesAsync();
+                    result.Image = null;
                     return Ok(new AdminResponse { AccessToken = await getAccessToken.GetToken(result) });
                 }
             }

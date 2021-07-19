@@ -8,7 +8,7 @@ namespace GCBS_INTERNAL.Models
 
     public partial class TermsAndConditions
     {
-        [DatabaseGenerated(DatabaseGeneratedOption.None)]
+        
         public int Id { get; set; }
 
         [Required]

@@ -14,7 +14,7 @@ using GCBS_INTERNAL.Services;
 using GCBS_INTERNAL.Provider;
 namespace GCBS_INTERNAL.Controllers.API
 {
-     [CustomAuthorize]
+    [CustomAuthorize]
     public class UserManagementsController : BaseApiController
     {
         private DatabaseContext db = new DatabaseContext();
@@ -41,13 +41,12 @@ namespace GCBS_INTERNAL.Controllers.API
             userManagementViewModel.imageBase64 = imgser.EditGetFiles(userDetails.Id, common.FolderForRole(userManagement.RoleId));  
             return Ok(userManagementViewModel);
         }
-
-         [CustomAuthorize]
+            
         // PUT: api/UserManagements/5
         [ResponseType(typeof(void))]
         public async Task<IHttpActionResult> PutUserManagement(int id,UserManagementViewModel userManagementViewModel)
         {     
-            if (userDetails.Id != userManagementViewModel.UserManagements.Id)
+            if (id != userManagementViewModel.UserManagements.Id)
             {
                 return BadRequest();
             }
@@ -59,6 +58,7 @@ namespace GCBS_INTERNAL.Controllers.API
                 userManagement.Name = userManagementViewModel.UserManagements.Name;
                 userManagement.Username = userManagementViewModel.UserManagements.Username;
                 userManagement.MobileNo = userManagementViewModel.UserManagements.MobileNo;
+                userManagement.EmailId = userManagementViewModel.UserManagements.EmailId;
                 userManagement.CreatedBy = re.CreatedBy;
                 userManagement.CreatedOn = re.CreatedOn;
                 userManagement.Status = re.Status;

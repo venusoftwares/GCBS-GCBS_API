@@ -27,6 +27,7 @@ namespace GCBS_INTERNAL.Controllers.API.Partner
                 {
                     UserManagementPartnerProfile userManagementPartnerProfile = new UserManagementPartnerProfile();
                     List<Languages> languages = new List<Languages>();
+                    List<Languages> meetings = new List<Languages>();
                     var us = await db.UserManagement.FindAsync(userDetails.Id);
                     userManagementPartnerProfile.userManagement = us;
                     const char Separator = '|';
@@ -35,10 +36,25 @@ namespace GCBS_INTERNAL.Controllers.API.Partner
                         foreach (var language in us.Languages.Split(Separator))
                         {
                             var lan = await db.LanguageMaster.FindAsync(Convert.ToInt32(language));
-                            languages.Add(new Languages { ItemId = lan.Id, ItemLanguage = lan.Language });
+                            if(lan.Status)
+                            {
+                                languages.Add(new Languages { ItemId = lan.Id, ItemLanguage = lan.Language });
+                            }    
+                        }
+                    }
+                    if (us.Meeting != null)
+                    {
+                        foreach (var meeting in us.Meeting.Split(Separator))
+                        {
+                            var lan = await db.Meeting.FindAsync(Convert.ToInt32(meeting));
+                            if (lan.Status)
+                            {
+                                meetings.Add(new Languages { ItemId = lan.Id, ItemLanguage = lan.Meeting1 });
+                            }
                         }
                     }
                     userManagementPartnerProfile.Languages = languages;
+                    userManagementPartnerProfile.Meetings = meetings;
                     userManagementPartnerProfile.Age = (DateTime.Now.Year - Convert.ToDateTime(us.DateOfBirth).Year);
                     log.Info("[GetPartnerMyProfile] End");
                     return Ok(userManagementPartnerProfile);
@@ -94,7 +110,12 @@ namespace GCBS_INTERNAL.Controllers.API.Partner
                         userManagement.Weight = dbusermangement.Weight;
                         userManagement.Hair = dbusermangement.Hair;
                         userManagement.Eyes = dbusermangement.Eyes;
-
+                        userManagement.Smoking = dbusermangement.Smoking;
+                        userManagement.Drinking = dbusermangement.Drinking;
+                        userManagement.Meeting = dbusermangement.Meeting;
+                        userManagement.ServiceTypeInCall = dbusermangement.ServiceTypeInCall;
+                        userManagement.ServiceTypeOutCall = dbusermangement.ServiceTypeOutCall; 
+                        userManagement.Image = dbusermangement.Image;    
                         userManagement.Status = dbusermangement.Status;
                         userManagement.CreatedBy = dbusermangement.CreatedBy;
                         userManagement.CreatedOn = dbusermangement.CreatedOn;
