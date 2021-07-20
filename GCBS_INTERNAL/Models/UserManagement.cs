@@ -1,5 +1,6 @@
 namespace GCBS_INTERNAL.Models
 {
+    using GCBS_INTERNAL.ViewModels.GCBSFrontEnd;
     using Newtonsoft.Json;
     using System;
     using System.Collections.Generic;
