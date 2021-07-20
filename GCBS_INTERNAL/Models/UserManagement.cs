@@ -96,7 +96,7 @@ namespace GCBS_INTERNAL.Models
         public UserManagement userManagement { get; set; }
         public int Age { get; set; }
         public List<Languages> Languages { get; set; }
-        public List<Languages> Meetings { get; set; }
+   
     }
     public class Languages
     {
@@ -131,7 +131,7 @@ namespace GCBS_INTERNAL.Models
         public int? SelectedTitType { get; set; }    
         public bool? SelectedSmoking { get; set; }
         public bool? SelectedDrinking { get; set; }
-        public string SelectedMeeting { get; set; }
+        public List<Languages> SelectedMeetings { get; set; }
         public bool? SelectedServiceTypeInCall { get; set; }
         public bool? SelectedServiceTypeOutCall { get; set; }
     }

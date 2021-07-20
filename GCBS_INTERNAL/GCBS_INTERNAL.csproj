@@ -337,8 +337,13 @@
     <Compile Include="Areas\HelpPage\XmlDocumentationProvider.cs" />
     <Compile Include="Constant.cs" />
     <Compile Include="Controllers\API\Auth\CustomerOrPartnerLoginController.cs" />
+    <Compile Include="Controllers\API\Auth\CustomerSignUpController.cs" />
+    <Compile Include="Controllers\API\Auth\EmailCheckerController.cs" />
+    <Compile Include="Controllers\API\Auth\MobileCountryCodeController.cs" />
+    <Compile Include="Controllers\API\Auth\PartnerSignUpController.cs" />
     <Compile Include="Controllers\API\AvailabilitiesController.cs" />
     <Compile Include="Controllers\API\BankAccountDetailsController.cs" />
+    <Compile Include="Controllers\API\CommonLogoController.cs" />
     <Compile Include="Controllers\API\ContentManagement\AboutUsContentsController.cs" />
     <Compile Include="Controllers\API\AgenciesMastersController.cs" />
     <Compile Include="Controllers\API\Auth\AdminLoginController.cs" />

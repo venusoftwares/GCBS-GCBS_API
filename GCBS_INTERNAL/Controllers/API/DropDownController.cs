@@ -15,7 +15,7 @@ namespace GCBS_INTERNAL.Controllers.API
      [CustomAuthorize]
     public class DropDownController : BaseApiController
     {
-
+        private const char Separator = '|';
         private readonly DatabaseContext db = new DatabaseContext();
         // GET: api/ContactEnquiryViews
         
@@ -190,6 +190,7 @@ namespace GCBS_INTERNAL.Controllers.API
         {
             try
             {
+                List<Languages> meetings = new List<Languages>();
                 var userinfo = await db.UserManagement.Where(x => x.Id == userDetails.Id).FirstOrDefaultAsync();
                 DropDownBioInformation dropDownBioInformation = new DropDownBioInformation();
                 dropDownBioInformation.DickSize = await db.DickSize.Where(x => x.Status).Select(x => new DropDownCommon { Key = x.Id, Value = x.DickSize1 }).ToListAsync();
@@ -199,6 +200,7 @@ namespace GCBS_INTERNAL.Controllers.API
                 dropDownBioInformation.Weight = await db.Weight.Where(x => x.Status).Select(x => new DropDownCommon { Key = x.Id, Value = x.Weight1 }).ToListAsync();
                 dropDownBioInformation.Tits = await db.Tit.Where(x => x.Status).Select(x => new DropDownCommon { Key = x.Id, Value = x.Tit1 }).ToListAsync();
                 dropDownBioInformation.TitType = await db.TitType.Where(x => x.Status).Select(x => new DropDownCommon { Key = x.Id, Value = x.TitType1 }).ToListAsync();
+                dropDownBioInformation.Meeting = await db.Meeting.Where(x => x.Status).Select(x => new Languages {  ItemId = x.Id,  ItemLanguage = x.Meeting1 }).ToListAsync();
                 dropDownBioInformation.SelectedDickSize = userinfo.DickSize;
                 dropDownBioInformation.SelectedHair = userinfo.Hair;
                 dropDownBioInformation.SelectedEyes = userinfo.Eyes;
@@ -206,8 +208,30 @@ namespace GCBS_INTERNAL.Controllers.API
                 dropDownBioInformation.SelectedWeight = userinfo.Weight;
                 dropDownBioInformation.SelectedTits = userinfo.Tits;
                 dropDownBioInformation.SelectedTitType = userinfo.TitType;
+                if (userinfo.Meeting != null)
+                {
+                    foreach (var meeting in userinfo.Meeting.Split(Separator))
+                    {
+                        var lan = await db.Meeting.FindAsync(Convert.ToInt32(meeting));
+                        if (lan != null)
+                        {
+                            if (lan.Status)
+                            {
+                                meetings.Add(new Languages { ItemId = lan.Id, ItemLanguage = lan.Meeting1 });
+                            }
+                        }
+
+                    }
+                }
+                dropDownBioInformation.SelectedMeeting  = meetings;
+                dropDownBioInformation.SelectedSmoking = userinfo.Smoking;
+                dropDownBioInformation.SelectedDrinking = userinfo.Drinking;
+                dropDownBioInformation.ServiceTypeInCall = userinfo.ServiceTypeInCall;
+                dropDownBioInformation.ServiceTypeOutCall = userinfo.ServiceTypeOutCall;
+
                 //Gender
-                dropDownBioInformation.Gender = userinfo.Gender;  
+                dropDownBioInformation.Gender = userinfo.Gender;
+                                                                   
                 return dropDownBioInformation;  
             }
             catch(Exception ex)
@@ -223,16 +247,22 @@ namespace GCBS_INTERNAL.Controllers.API
             public List<DropDownCommon> Height { get; set; }
             public List<DropDownCommon> Weight { get; set; }
             public List<DropDownCommon> Tits { get; set; }   
-            public List<DropDownCommon> TitType { get; set; }
-
+            public List<DropDownCommon> TitType { get; set; }    
+            public List<Languages> Meeting { get; set; }
             public int? SelectedDickSize { get; set; }
             public int? SelectedHair { get; set; }
             public int? SelectedEyes { get; set; }
             public int? SelectedHeight { get; set; }
             public int? SelectedWeight { get; set; }
             public int? SelectedTits { get; set; }
-            public int? SelectedTitType { get; set; }       
+            public int? SelectedTitType { get; set; }  
+            public bool? SelectedSmoking { get; set; }
+            public bool? SelectedDrinking { get; set; }
+            public bool? ServiceTypeInCall { get; set; }
+            public bool? ServiceTypeOutCall { get; set; }
+            public List<Languages> SelectedMeeting { get; set; }
             public string Gender { get; set; }
+       
         }   
     }
 }

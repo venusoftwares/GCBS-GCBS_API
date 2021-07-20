@@ -38,7 +38,10 @@ namespace GCBS_INTERNAL.Controllers.API.Partner
                             var lan = await db.LanguageMaster.FindAsync(Convert.ToInt32(language));
                             if(lan.Status)
                             {
-                                languages.Add(new Languages { ItemId = lan.Id, ItemLanguage = lan.Language });
+                                if (lan != null)
+                                {
+                                    languages.Add(new Languages { ItemId = lan.Id, ItemLanguage = lan.Language });
+                                }
                             }    
                         }
                     }
@@ -47,14 +50,17 @@ namespace GCBS_INTERNAL.Controllers.API.Partner
                         foreach (var meeting in us.Meeting.Split(Separator))
                         {
                             var lan = await db.Meeting.FindAsync(Convert.ToInt32(meeting));
-                            if (lan.Status)
+                            if(lan!=null)
                             {
-                                meetings.Add(new Languages { ItemId = lan.Id, ItemLanguage = lan.Meeting1 });
+                                if (lan.Status)
+                                {
+                                    meetings.Add(new Languages { ItemId = lan.Id, ItemLanguage = lan.Meeting1 });
+                                }
                             }
+                           
                         }
                     }
-                    userManagementPartnerProfile.Languages = languages;
-                    userManagementPartnerProfile.Meetings = meetings;
+                    userManagementPartnerProfile.Languages = languages; 
                     userManagementPartnerProfile.Age = (DateTime.Now.Year - Convert.ToDateTime(us.DateOfBirth).Year);
                     log.Info("[GetPartnerMyProfile] End");
                     return Ok(userManagementPartnerProfile);
@@ -163,7 +169,18 @@ namespace GCBS_INTERNAL.Controllers.API.Partner
                         userManagement.Height = userBioInformation.SelectedHeight;
                         userManagement.Weight = userBioInformation.SelectedWeight;
                         userManagement.Hair = userBioInformation.SelectedHair;
-                        userManagement.Eyes = userBioInformation.SelectedEyes;    
+                        userManagement.Eyes = userBioInformation.SelectedEyes;
+                        var list = userBioInformation.SelectedMeetings.Select(x => x.ItemId.ToString()).ToList();
+                        userManagement.Meeting = string.Join("|", list);  
+                        
+                        userManagement.Eyes = userBioInformation.SelectedEyes;
+
+                        userManagement.Smoking = userBioInformation.SelectedSmoking;
+                        userManagement.Drinking = userBioInformation.SelectedDrinking;
+
+                        userManagement.ServiceTypeInCall = userBioInformation.SelectedServiceTypeInCall;
+                        userManagement.ServiceTypeOutCall = userBioInformation.SelectedServiceTypeOutCall;
+
                         userManagement.UpdatedBy = userDetails.Id;
                         userManagement.UpdatedOn = DateTime.Now;      
                         db2.Entry(userManagement).State = EntityState.Modified;
