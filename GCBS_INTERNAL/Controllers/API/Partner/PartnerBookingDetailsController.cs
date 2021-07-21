@@ -14,8 +14,8 @@ namespace GCBS_INTERNAL.Controllers.API.Partner
     {
         public async Task<IHttpActionResult> GetPartnerBookingDetails(int id)
         {
-            
 
+            return Ok();
         }
 
     }
