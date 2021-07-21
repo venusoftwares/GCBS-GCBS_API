@@ -473,6 +473,7 @@
     <Compile Include="Models\Warning18Content.cs" />
     <Compile Include="Models\Weight.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Provider\AllowCorsJsonAttribute.cs" />
     <Compile Include="Provider\CustomAuthorizeAttribute.cs" />
     <Compile Include="Provider\OauthProvider.cs" />
     <Compile Include="Services\Common.cs" />
