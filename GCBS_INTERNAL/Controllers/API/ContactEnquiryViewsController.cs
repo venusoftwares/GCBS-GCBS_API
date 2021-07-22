@@ -13,7 +13,7 @@ using GCBS_INTERNAL.Models;
 using GCBS_INTERNAL.Provider;
 namespace GCBS_INTERNAL.Controllers.API
 {
-     [CustomAuthorize]
+    [CustomAuthorize]
     public class ContactEnquiryViewsController : ApiController
     {
         private DatabaseContext db = new DatabaseContext();

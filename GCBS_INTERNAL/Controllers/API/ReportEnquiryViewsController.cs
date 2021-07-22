@@ -10,9 +10,11 @@ using System.Threading.Tasks;
 using System.Web.Http;
 using System.Web.Http.Description;
 using GCBS_INTERNAL.Models;
+using GCBS_INTERNAL.Provider;
 
 namespace GCBS_INTERNAL.Controllers.API
 {
+    [CustomAuthorize]
     public class ReportEnquiryViewsController : ApiController
     {
         private DatabaseContext db = new DatabaseContext();
@@ -20,7 +22,7 @@ namespace GCBS_INTERNAL.Controllers.API
         // GET: api/ReportEnquiryViews
         public IQueryable<ReportEnquiryView> GetReportEnquiryView()
         {
-            return db.ReportEnquiryView;
+            return db.ReportEnquiryView.Include(x => x.PartnerManagements).Include(x => x.UserManagements);
         }
 
         // GET: api/ReportEnquiryViews/5
