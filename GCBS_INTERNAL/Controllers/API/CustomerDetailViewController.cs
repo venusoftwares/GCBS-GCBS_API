@@ -18,17 +18,17 @@ namespace GCBS_INTERNAL.Controllers.API
         {
             List<CustomerDetailsViewModel> result = new List<CustomerDetailsViewModel>();
             //Customer View 9 RoleCode
-            var list = db.UserManagement.Include(x => x.LocationMasters).Where(x => x.RoleId == 9).ToList();
+            var list = db.UserManagement.Include(x => x.CityMaster).Where(x => x.RoleId == 9).ToList();
             foreach (var a in list)
             {         
                 result.Add(new CustomerDetailsViewModel
                 {
                     //Todo Image implementation
-                    Image = "",
-                    Location = a.LocationMasters.Location + "_" + a.LocationMasters.PinCode,   
+                    Image = a.Image,
+                    Location = a.CityMaster.CityName + " " + a.PostalCode,
                     Customer = a.Id,
-                    CustomerName = a.Username,
-                    RegisterDate = a.CreatedOn.ToString("dd-MM-yyyy"),
+                    CustomerName = a.FirstName + " " + a.SecondName,
+                    RegisterDate = Convert.ToDateTime(a.DateOfSignUp).ToString("dd-MM-yyyy"),
                     Status = a.Status
                 });
             }

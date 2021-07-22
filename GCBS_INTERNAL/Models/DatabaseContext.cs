@@ -75,6 +75,9 @@ namespace GCBS_INTERNAL.Models
         public virtual DbSet<BankAccountDetails> BankAccountDetails { get; set; }       
         public virtual DbSet<Availability> Availability { get; set; }
         public virtual DbSet<ServiceDurartionPrice> ServiceDurartionPrice { get; set; }
+
+
+        public virtual DbSet<ReportEnquiryView> ReportEnquiryView { get; set; }
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
            

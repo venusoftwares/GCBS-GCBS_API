@@ -19,7 +19,7 @@ namespace GCBS_INTERNAL.Models
 
         [StringLength(250)]
         public string Description { get; set; }
-
+        public int? Status { get; set; }
         public DateTime? CreatedOn { get; set; }
 
         public DateTime? UpdatedOn { get; set; }

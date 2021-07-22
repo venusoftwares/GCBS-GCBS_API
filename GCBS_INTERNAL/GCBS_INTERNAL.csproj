@@ -398,8 +398,8 @@
     <Compile Include="Controllers\API\PayoutDetailsController.cs" />
     <Compile Include="Controllers\API\PermissionKeyValuesController.cs" />
     <Compile Include="Controllers\API\ContentManagement\PrivacyAndPoliciesController.cs" />
+    <Compile Include="Controllers\API\ReportEnquiryViewsController.cs" />
     <Compile Include="Controllers\API\RoleMastersController.cs" />
-    <Compile Include="Controllers\API\RolePermissionMastersController.cs" />
     <Compile Include="Controllers\API\ServicesMastersController.cs" />
     <Compile Include="Controllers\API\SiteBannerMastersController.cs" />
     <Compile Include="Controllers\API\SiteSettingsController.cs" />
@@ -454,6 +454,7 @@
     <Compile Include="Models\PayoutDetails.cs" />
     <Compile Include="Models\PermissionKeyValue.cs" />
     <Compile Include="Models\PrivacyAndPolicy.cs" />
+    <Compile Include="Models\ReportEnquiryView.cs" />
     <Compile Include="Models\RoleMaster.cs" />
     <Compile Include="Models\RolePermissionMaster.cs" />
     <Compile Include="Models\ServiceDurartionPrice.cs" />
