@@ -20,11 +20,19 @@ namespace GCBS_INTERNAL.Controllers.API
         private DatabaseContext db = new DatabaseContext();
 
         // GET: api/ReportEnquiryViews
-        public IQueryable<ReportEnquiryView> GetReportEnquiryView()
+        [Route("api/ReportEnquiryViews/{startDate}/{endDate}")]
+        public List<ReportEnquiryView> GetReportEnquiryView(string startDate, string endDate)
         {
-            return db.ReportEnquiryView.Include(x => x.PartnerManagements).Include(x => x.UserManagements);
+            var list = db.ReportEnquiryView
+                .Include(x => x.PartnerManagements)
+               .Include(x => x.UserManagements).ToList();
+            if (!string.IsNullOrEmpty(startDate) && !string.IsNullOrEmpty(endDate) && startDate != "empty" && endDate != "empty")
+            {
+                list = list.Where(x => x.Date >= Convert.ToDateTime(startDate) && x.Date <= Convert.ToDateTime(endDate)).ToList();
+            }
+            return list.ToList();
         }
-
+            
         // GET: api/ReportEnquiryViews/5
         [ResponseType(typeof(ReportEnquiryView))]
         public async Task<IHttpActionResult> GetReportEnquiryView(int id)
