@@ -172,6 +172,15 @@ namespace GCBS_INTERNAL.Controllers.API
             return result;
         }
         [HttpGet]
+        [Route("api/DropDownAgencies")]
+        public List<Agencies> GetDropDownAgencies()
+        {
+            var result = db.AgenciesMaster
+                .Where(x => x.Status)
+                .Select(x => new Agencies { ItemId = x.Id, ItemAgencies = x.HotelName }).ToList();
+            return result;
+        }
+        [HttpGet]
         [Route("api/DropDowntDickSize")]
         public List<Languages> GettDickSize()
         {

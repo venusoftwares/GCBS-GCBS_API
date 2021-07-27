@@ -64,6 +64,8 @@ namespace GCBS_INTERNAL.Models
         public string Meeting { get; set; }  
         public bool? ServiceTypeInCall { get; set; }
         public bool? ServiceTypeOutCall { get; set; }   
+        public bool? Party { get; set; }
+        public string Agencies { get; set; }
         public DateTime CreatedOn { get; set; }
 
         public DateTime? UpdatedOn { get; set; }
@@ -97,7 +99,7 @@ namespace GCBS_INTERNAL.Models
         public UserManagement userManagement { get; set; }
         public int Age { get; set; }
         public List<Languages> Languages { get; set; }
-   
+        public List<Agencies> Agencies { get; set; }
     }
     public class Languages
     {
@@ -114,6 +116,15 @@ namespace GCBS_INTERNAL.Models
 
         [JsonProperty("item_text")]
         public string ItemMeeting { get; set; }
+    }
+
+    public class Agencies
+    {
+        [JsonProperty("item_id")]
+        public int ItemId { get; set; }
+
+        [JsonProperty("item_text")]
+        public string ItemAgencies { get; set; }
     }
     public class UserMasterVisible
     {

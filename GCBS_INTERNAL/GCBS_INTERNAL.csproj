@@ -343,6 +343,7 @@
     <Compile Include="Controllers\API\Auth\PartnerSignUpController.cs" />
     <Compile Include="Controllers\API\AvailabilitiesController.cs" />
     <Compile Include="Controllers\API\BankAccountDetailsController.cs" />
+    <Compile Include="Controllers\API\Calender\CalenderDetailsController.cs" />
     <Compile Include="Controllers\API\CommonLogoController.cs" />
     <Compile Include="Controllers\API\ContentManagement\AboutUsContentsController.cs" />
     <Compile Include="Controllers\API\AgenciesMastersController.cs" />
@@ -423,6 +424,7 @@
     <Compile Include="Models\Availability.cs" />
     <Compile Include="Models\BankAccountDetails.cs" />
     <Compile Include="Models\BookingDetail.cs" />
+    <Compile Include="Models\CalenderDetails.cs" />
     <Compile Include="Models\CityMaster.cs" />
     <Compile Include="Models\ContactEnquiryView.cs" />
     <Compile Include="Models\CountryMaster.cs" />
@@ -445,6 +447,7 @@
     <Compile Include="Models\LocationMasters.cs" />
     <Compile Include="Models\MarginMaster.cs" />
     <Compile Include="Models\Meeting.cs" />
+    <Compile Include="Models\Model1.cs" />
     <Compile Include="Models\NationalityMaster.cs" />
     <Compile Include="Models\Orientation.cs" />
     <Compile Include="Models\PartnerRating.cs" />

@@ -27,7 +27,8 @@ namespace GCBS_INTERNAL.Controllers.API.Partner
                 {
                     UserManagementPartnerProfile userManagementPartnerProfile = new UserManagementPartnerProfile();
                     List<Languages> languages = new List<Languages>();
-                    List<Languages> meetings = new List<Languages>();
+                    //List<Languages> meetings = new List<Languages>();
+                    List<Agencies> agencies = new List<Agencies>();
                     var us = await db.UserManagement.FindAsync(userDetails.Id);
                     userManagementPartnerProfile.userManagement = us;
                     const char Separator = '|';
@@ -36,31 +37,50 @@ namespace GCBS_INTERNAL.Controllers.API.Partner
                         foreach (var language in us.Languages.Split(Separator))
                         {
                             var lan = await db.LanguageMaster.FindAsync(Convert.ToInt32(language));
-                            if(lan.Status)
-                            {
-                                if (lan != null)
-                                {
-                                    languages.Add(new Languages { ItemId = lan.Id, ItemLanguage = lan.Language });
-                                }
-                            }    
-                        }
-                    }
-                    if (us.Meeting != null)
-                    {
-                        foreach (var meeting in us.Meeting.Split(Separator))
-                        {
-                            var lan = await db.Meeting.FindAsync(Convert.ToInt32(meeting));
                             if(lan!=null)
                             {
                                 if (lan.Status)
                                 {
-                                    meetings.Add(new Languages { ItemId = lan.Id, ItemLanguage = lan.Meeting1 });
+                                    if (lan != null)
+                                    {
+                                        languages.Add(new Languages { ItemId = lan.Id, ItemLanguage = lan.Language });
+                                    }
                                 }
-                            }
-                           
+                            }  
                         }
                     }
-                    userManagementPartnerProfile.Languages = languages; 
+                    //if (us.Meeting != null)
+                    //{
+                    //    foreach (var meeting in us.Meeting.Split(Separator))
+                    //    {
+                    //        var lan = await db.Meeting.FindAsync(Convert.ToInt32(meeting));
+                    //        if(lan!=null)
+                    //        {
+                    //            if (lan.Status)
+                    //            {
+                    //                meetings.Add(new Languages { ItemId = lan.Id, ItemLanguage = lan.Meeting1 });
+                    //            }
+                    //        }
+                           
+                    //    }
+                    //}
+                    if (us.Agencies != null)
+                    {
+                        foreach (var agencis in us.Agencies.Split(Separator))
+                        {
+                            var age = await db.AgenciesMaster.FindAsync(Convert.ToInt32(agencis));
+                            if (age != null)
+                            {
+                                if (age.Status)
+                                {
+                                    agencies.Add(new Agencies { ItemId = age.Id, ItemAgencies = age.HotelName });
+                                }
+                            }
+
+                        }
+                    }    
+                    userManagementPartnerProfile.Languages = languages;
+                    userManagementPartnerProfile.Agencies = agencies;
                     userManagementPartnerProfile.Age = (DateTime.Now.Year - Convert.ToDateTime(us.DateOfBirth).Year);
                     log.Info("[GetPartnerMyProfile] End");
                     return Ok(userManagementPartnerProfile);
@@ -95,8 +115,16 @@ namespace GCBS_INTERNAL.Controllers.API.Partner
                         userManagement.SecondName = dbusermangement.SecondName;
 
                         var list = userManagementPartnerProfile.Languages.Select(x => x.ItemId.ToString()).ToList();
-                        userManagement.Languages = string.Join("|", list);
-
+                        if(list!=null)
+                        {
+                            userManagement.Languages = string.Join("|", list);
+                        }   
+                        var age = userManagementPartnerProfile.Agencies.Select(x => x.ItemId.ToString()).ToList();
+                        if(age!=null)
+                        {
+                            userManagement.Agencies = string.Join("|", age);
+                        }
+                            
                         userManagement.Password = dbusermangement.Password;
                         userManagement.Id = dbusermangement.Id;
                         userManagement.Username = dbusermangement.Username;
@@ -171,8 +199,10 @@ namespace GCBS_INTERNAL.Controllers.API.Partner
                         userManagement.Hair = userBioInformation.SelectedHair;
                         userManagement.Eyes = userBioInformation.SelectedEyes;
                         var list = userBioInformation.SelectedMeetings.Select(x => x.ItemId.ToString()).ToList();
-                        userManagement.Meeting = string.Join("|", list);  
-                        
+                        if(list!=null)
+                        {
+                            userManagement.Meeting = string.Join("|", list);
+                        }        
                         userManagement.Eyes = userBioInformation.SelectedEyes;
 
                         userManagement.Smoking = userBioInformation.SelectedSmoking;
