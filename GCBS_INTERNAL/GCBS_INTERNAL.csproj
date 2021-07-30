@@ -345,6 +345,7 @@
     <Compile Include="Controllers\API\BankAccountDetailsController.cs" />
     <Compile Include="Controllers\API\Calender\CalenderDetailsController.cs" />
     <Compile Include="Controllers\API\CommonLogoController.cs" />
+    <Compile Include="Controllers\API\Commons\CommonDropController.cs" />
     <Compile Include="Controllers\API\ContentManagement\AboutUsContentsController.cs" />
     <Compile Include="Controllers\API\AgenciesMastersController.cs" />
     <Compile Include="Controllers\API\Auth\AdminLoginController.cs" />
@@ -398,6 +399,7 @@
     <Compile Include="Controllers\API\Partner\PartnerCommonController.cs" />
     <Compile Include="Controllers\API\Partner\PartnerControllController.cs" />
     <Compile Include="Controllers\API\Partner\PartnerDetailPageController.cs" />
+    <Compile Include="Controllers\API\Partner\PartnerMyProfilePageController.cs" />
     <Compile Include="Controllers\API\Partner\PartnerMyServiceController.cs" />
     <Compile Include="Controllers\API\PaymentDetailsController.cs" />
     <Compile Include="Controllers\API\PaymentGatewaysController.cs" />

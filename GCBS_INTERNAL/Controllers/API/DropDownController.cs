@@ -274,12 +274,12 @@ namespace GCBS_INTERNAL.Controllers.API
        
         }
         [HttpGet]
-        [Route("api/DropDownContactEnquiryType")]
-        public IQueryable<DropDownCommon> DropDownContactEnquiryType()
+        [Route("api/DropDownReportType")]
+        public IQueryable<DropDownCommon> DropDownReportType()
         {
-            var result = db.ContactEnquiryTypes
+            var result = db.ReportType
                 .Where(x => x.Status)
-                .Select(x => new DropDownCommon { Key = x.Id, Value = x.ContactEnquiryType1 });
+                .Select(x => new DropDownCommon { Key = x.Id, Value = x.ReportType1 });
             return result;
         }
 
