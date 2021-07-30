@@ -354,6 +354,8 @@
     <Compile Include="Controllers\API\BookingDetailsController.cs" />
     <Compile Include="Controllers\API\CityMastersController.cs" />
     <Compile Include="Controllers\API\ContactEnquiryViewsController.cs" />
+    <Compile Include="Controllers\API\ContentManagement\BookingTermsController.cs" />
+    <Compile Include="Controllers\API\ContentManagement\RefundTermsController.cs" />
     <Compile Include="Controllers\API\CountryMastersController.cs" />
     <Compile Include="Controllers\API\CustomerDetailViewController.cs" />
     <Compile Include="Controllers\API\CustomerTransactionsController.cs" />
@@ -362,6 +364,9 @@
     <Compile Include="Controllers\API\DurationMastersController.cs" />
     <Compile Include="Controllers\API\EmailSettingsController.cs" />
     <Compile Include="Controllers\API\EnquiryDetailsController.cs" />
+    <Compile Include="Controllers\API\EnquiryType\ContactEnquiryTypesController.cs" />
+    <Compile Include="Controllers\API\EnquiryType\ReportTypesController.cs" />
+    <Compile Include="Controllers\API\EnquiryType\SupportEnquiryTypesController.cs" />
     <Compile Include="Controllers\API\ExportController.cs" />
     <Compile Include="Controllers\API\ContentManagement\HomePageContentsController.cs" />
     <Compile Include="Controllers\API\GCBS_FrontEnd\HomeAgenciesController.cs" />
@@ -424,8 +429,10 @@
     <Compile Include="Models\Availability.cs" />
     <Compile Include="Models\BankAccountDetails.cs" />
     <Compile Include="Models\BookingDetail.cs" />
+    <Compile Include="Models\BookingTerms.cs" />
     <Compile Include="Models\CalenderDetails.cs" />
     <Compile Include="Models\CityMaster.cs" />
+    <Compile Include="Models\ContactEnquiryType.cs" />
     <Compile Include="Models\ContactEnquiryView.cs" />
     <Compile Include="Models\CountryMaster.cs" />
     <Compile Include="Models\CustomerTransactions.cs" />
@@ -457,7 +464,9 @@
     <Compile Include="Models\PayoutDetails.cs" />
     <Compile Include="Models\PermissionKeyValue.cs" />
     <Compile Include="Models\PrivacyAndPolicy.cs" />
+    <Compile Include="Models\RefundTerm.cs" />
     <Compile Include="Models\ReportEnquiryView.cs" />
+    <Compile Include="Models\ReportType.cs" />
     <Compile Include="Models\RoleMaster.cs" />
     <Compile Include="Models\RolePermissionMaster.cs" />
     <Compile Include="Models\ServiceDurartionPrice.cs" />
@@ -468,6 +477,7 @@
     <Compile Include="Models\SiteSettings.cs" />
     <Compile Include="Models\SmsSettings.cs" />
     <Compile Include="Models\StateMaster.cs" />
+    <Compile Include="Models\SupportEnquiryType.cs" />
     <Compile Include="Models\SupportEnquiryView.cs" />
     <Compile Include="Models\TaxSettings.cs" />
     <Compile Include="Models\TermsAndConditions.cs" />

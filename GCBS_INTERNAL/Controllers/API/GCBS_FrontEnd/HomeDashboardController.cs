@@ -61,6 +61,18 @@ namespace GCBS_INTERNAL.Controllers.API.GCBS_FrontEnd
                         Title = x.Title,
                         Body = x.Body
                     }).FirstOrDefault();
+                homeDashboardViewModels.BookingTerm = db.BookingTerms.Where(x => x.Id == 1)
+                    .Select(x => new BookingTermss
+                    {
+                        Title = x.Title,
+                        Body = x.Body
+                    }).FirstOrDefault();
+                homeDashboardViewModels.RefundTerm = db.RefundTerms.Where(x => x.Id == 1)
+                   .Select(x => new RefundTerms
+                   {
+                       Title = x.Title,
+                       Body = x.Body
+                   }).FirstOrDefault();
                 log.Info("End");
                 return Ok(homeDashboardViewModels);
             }

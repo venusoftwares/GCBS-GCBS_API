@@ -44,7 +44,7 @@ namespace GCBS_INTERNAL.Controllers.API.Partner
             catch (Exception ex)
             {
                 log.Error("Sending failed", ex);
-                return Content(HttpStatusCode.InternalServerError, "Something went wrong try again");
+                return Content(HttpStatusCode.InternalServerError, ex.Message);
             } 
         }
         [HttpGet]
@@ -70,7 +70,7 @@ namespace GCBS_INTERNAL.Controllers.API.Partner
             catch (Exception ex)
             {
                 log.Error("Sending failed", ex);
-                return Content(HttpStatusCode.InternalServerError, "Something went wrong try again");
+                return Content(HttpStatusCode.InternalServerError, ex.Message);
             }
         }
 
@@ -81,14 +81,14 @@ namespace GCBS_INTERNAL.Controllers.API.Partner
             try
             {     
                 log.Info("Called");
-                var result = await db.ServiceDurartionPrice.Include(x => x.DurationMaster).Include(x => x.ServicesMaster).ToListAsync();
+                var result = await db.ServiceDurartionPrice.Where(X=>X.UserId == userDetails.Id).Include(x => x.DurationMaster).Include(x => x.ServicesMaster).ToListAsync();
                 log.Info("End");
                 return Ok(result);
             }
             catch (Exception ex)
             {
                 log.Error("Sending failed", ex);
-                return Content(HttpStatusCode.InternalServerError, "Something went wrong try again");
+                return Content(HttpStatusCode.InternalServerError, ex.Message);
             }
         }
         [HttpPost]
@@ -100,7 +100,7 @@ namespace GCBS_INTERNAL.Controllers.API.Partner
                 log.Info("Called");
                 using (var d = new DatabaseContext())
                 {
-                    if(!d.ServiceDurartionPrice.Any(x=>x.ServiceId== serviceDurartionPrice.ServiceId && x.DurationId== serviceDurartionPrice.DurationId))
+                    if(!d.ServiceDurartionPrice.Any(x=>x.ServiceId== serviceDurartionPrice.ServiceId && x.DurationId== serviceDurartionPrice.DurationId && x.UserId == userDetails.Id))
                     {
                         serviceDurartionPrice.CreatedBy = userDetails.Id;
                         serviceDurartionPrice.CreatedOn = DateTime.Now;
@@ -116,7 +116,7 @@ namespace GCBS_INTERNAL.Controllers.API.Partner
             catch (Exception ex)
             {
                 log.Error("Sending failed", ex);
-                return Content(HttpStatusCode.InternalServerError, "Something went wrong try again");
+                return Content(HttpStatusCode.InternalServerError, ex.Message);
             }
         }
         [HttpPut]
@@ -148,7 +148,7 @@ namespace GCBS_INTERNAL.Controllers.API.Partner
             catch (Exception ex)
             {
                 log.Error("Sending failed", ex);
-                return Content(HttpStatusCode.InternalServerError, "Something went wrong try again");
+                return Content(HttpStatusCode.InternalServerError, ex.Message);
             }
         }
     }

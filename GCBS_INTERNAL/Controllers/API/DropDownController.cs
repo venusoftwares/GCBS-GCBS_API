@@ -272,6 +272,26 @@ namespace GCBS_INTERNAL.Controllers.API
             public List<Languages> SelectedMeeting { get; set; }
             public string Gender { get; set; }
        
-        }   
+        }
+        [HttpGet]
+        [Route("api/DropDownContactEnquiryType")]
+        public IQueryable<DropDownCommon> DropDownContactEnquiryType()
+        {
+            var result = db.ContactEnquiryTypes
+                .Where(x => x.Status)
+                .Select(x => new DropDownCommon { Key = x.Id, Value = x.ContactEnquiryType1 });
+            return result;
+        }
+
+        [HttpGet]
+        [Route("api/DropDownSupportEnquiryType")]
+        public IQueryable<DropDownCommon> DropDownSupportEnquiryType()
+        {
+            var result = db.SupportEnquiryTypes
+                .Where(x => x.Status)
+                .Select(x => new DropDownCommon { Key = x.Id, Value = x.SupportEnquiryType1 });
+            return result;
+        }
+
     }
 }

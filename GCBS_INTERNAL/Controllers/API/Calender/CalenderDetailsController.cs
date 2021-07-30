@@ -10,10 +10,11 @@ using System.Threading.Tasks;
 using System.Web.Http;
 using System.Web.Http.Description;
 using GCBS_INTERNAL.Models;
+using GCBS_INTERNAL.Provider;
 
 namespace GCBS_INTERNAL.Controllers.API.Calender
 {
-    [Authorize]
+    [CustomAuthorize]
     public class CalenderDetailsController : BaseApiController
     {
         private DatabaseContext db = new DatabaseContext();
@@ -53,7 +54,15 @@ namespace GCBS_INTERNAL.Controllers.API.Calender
             {
                 return BadRequest();
             }
-
+            using (var d = new DatabaseContext())
+            {
+                var re = await d.CalenderDetails.FindAsync(id);
+                calenderDetails.CreatedBy = re.CreatedBy;
+                calenderDetails.CreatedOn = re.CreatedOn;    
+                d.Dispose();
+            }
+            calenderDetails.UpdatedBy = userDetails.Id;
+            calenderDetails.UpdatedOn = DateTime.Now;
             db.Entry(calenderDetails).State = EntityState.Modified;
 
             try
@@ -83,6 +92,8 @@ namespace GCBS_INTERNAL.Controllers.API.Calender
             {              
                 return BadRequest(ModelState);
             }
+            calenderDetails.CreatedOn = DateTime.Now;
+            calenderDetails.CreatedBy = userDetails.Id;
             calenderDetails.UserId = userDetails.Id;
             db.CalenderDetails.Add(calenderDetails);
             await db.SaveChangesAsync();

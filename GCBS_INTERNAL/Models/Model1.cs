@@ -16,12 +16,12 @@ namespace GCBS_INTERNAL.Models
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<CalenderDetails>()
+            modelBuilder.Entity<RefundTerm>()
                 .Property(e => e.Title)
                 .IsUnicode(false);
 
-            modelBuilder.Entity<CalenderDetails>()
-                .Property(e => e.cssClass)
+            modelBuilder.Entity<RefundTerm>()
+                .Property(e => e.Body)
                 .IsUnicode(false);
         }
     }

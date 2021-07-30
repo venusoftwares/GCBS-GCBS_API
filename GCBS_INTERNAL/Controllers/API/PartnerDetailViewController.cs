@@ -21,11 +21,19 @@ namespace GCBS_INTERNAL.Controllers.API
             var list = db.UserManagement.Include(x => x.CityMaster).Where(x => x.RoleId == 3).ToList();
             foreach(var a in list)
             {
-                result.Add(new PartnerDetailsViewModel
+                string city = "";
+                if (a.CityMaster != null)
                 {
-                    //Todo Image implementation
+                    city = a.CityMaster.CityName + " " + a.PostalCode;
+                }
+                else
+                {
+                    city =Convert.ToString(a.PostalCode);
+                }
+                result.Add(new PartnerDetailsViewModel
+                {      
                     Image = a.Image,           
-                    Location = a.CityMaster.CityName+" "+a.PostalCode,
+                    Location = city,
                     Partner = a.Id,
                     PartnerName= a.FirstName + " "+a.SecondName,
                     RegisterDate = Convert.ToDateTime(a.DateOfSignUp).ToString("dd-MM-yyyy"),                    

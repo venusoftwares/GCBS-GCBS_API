@@ -78,6 +78,16 @@ namespace GCBS_INTERNAL.Models
 
         public virtual DbSet<CalenderDetails> CalenderDetails { get; set; }
         public virtual DbSet<ReportEnquiryView> ReportEnquiryView { get; set; }
+
+
+        public virtual DbSet<ContactEnquiryType> ContactEnquiryTypes { get; set; }
+        public virtual DbSet<SupportEnquiryType> SupportEnquiryTypes { get; set; }
+
+        //2021-07-30 - 3 Tables
+        public virtual DbSet<ReportType> ReportType { get; set; }        
+        public virtual DbSet<BookingTerms> BookingTerms { get; set; }   
+        public virtual DbSet<RefundTerm> RefundTerms { get; set; }
+
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
            
