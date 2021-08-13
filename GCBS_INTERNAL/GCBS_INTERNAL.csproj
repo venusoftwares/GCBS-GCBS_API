@@ -420,6 +420,7 @@
     <Compile Include="Controllers\API\Transactions\PastTransactionsController.cs" />
     <Compile Include="Controllers\API\UserManagementsController.cs" />
     <Compile Include="Controllers\API\ContentManagement\Warning18ContentController.cs" />
+    <Compile Include="Controllers\API\Utilities\RolePermissionMastersController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ValuesController.cs" />
     <Compile Include="Global.asax.cs">
