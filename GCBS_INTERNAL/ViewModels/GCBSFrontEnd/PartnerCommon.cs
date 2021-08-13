@@ -1,4 +1,5 @@
-﻿using System;
+﻿using GCBS_INTERNAL.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -18,5 +19,14 @@ namespace GCBS_INTERNAL.ViewModels.GCBSFrontEnd
     {
         public string PrimaryImage { get; set; }
         public List<string> SecondaryImage { get; set; }
+    }
+
+    public class PartnerDetails
+    {
+        public BioInformationMyProfile myProfile { get; set; }
+        public List<ServiceOffered> serviceOffereds { get; set; }   
+        public ServiceProvider serviceProviders { get; set; }  
+        public List<Root> ServiceAvailability { get; set; }
+
     }
 }

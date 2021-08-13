@@ -8,8 +8,7 @@ namespace GCBS_INTERNAL.Models
 
     [Table("DisclaimerContent")]
     public partial class DisclaimerContent
-    {
-        [DatabaseGenerated(DatabaseGeneratedOption.None)]
+    {               
         public int Id { get; set; }
 
         [Required]

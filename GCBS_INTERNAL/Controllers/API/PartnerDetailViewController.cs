@@ -18,17 +18,25 @@ namespace GCBS_INTERNAL.Controllers.API
         {
             List<PartnerDetailsViewModel> result = new List<PartnerDetailsViewModel>();
             //Partner View 3 RoleCode
-            var list = db.UserManagement.Include(x => x.LocationMasters).Where(x => x.RoleId == 3).ToList();
+            var list = db.UserManagement.Include(x => x.CityMaster).Where(x => x.RoleId == 3).ToList();
             foreach(var a in list)
             {
-                result.Add(new PartnerDetailsViewModel
+                string city = "";
+                if (a.CityMaster != null)
                 {
-                    //Todo Image implementation
-                    Image = "",           
-                    Location = a.LocationMasters.Location + "_"+ a.LocationMasters.PinCode,
+                    city = a.CityMaster.CityName + " " + a.PostalCode;
+                }
+                else
+                {
+                    city =Convert.ToString(a.PostalCode);
+                }
+                result.Add(new PartnerDetailsViewModel
+                {      
+                    Image = a.Image,           
+                    Location = city,
                     Partner = a.Id,
-                    PartnerName= a.Username,
-                    RegisterDate = a.CreatedOn.ToString("dd-MM-yyyy"),                    
+                    PartnerName= a.FirstName + " "+a.SecondName,
+                    RegisterDate = Convert.ToDateTime(a.DateOfSignUp).ToString("dd-MM-yyyy"),                    
                     Status = a.Status
                 });                                   
             }

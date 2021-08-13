@@ -104,12 +104,14 @@ namespace GCBS_INTERNAL.Controllers.API.GCBS_FrontEnd
                     .ToListAsync();
                 foreach (var a in res)
                 {
+                    List<string> img = new List<string>();
+                    img.Add(a.Image);
                     // First or default 
-                    var path = imgser.GetFiles(a.Id, Constant.SERVICE_PROVIDER_FOLDER_TYPE);  
+                    //var path = imgser.GetFiles(a.Id, Constant.SERVICE_PROVIDER_FOLDER_TYPE);  
                     list.Add(new UserManagementViewModel
                     {
                         UserManagements = a,
-                        imageBase64 = path,
+                        imageBase64 = img,
                         Age = (DateTime.Now.Year - Convert.ToDateTime(a.DateOfBirth).Year) 
 
                     });

@@ -35,4 +35,54 @@ namespace GCBS_INTERNAL.ViewModels
         public string Message { get; set; }    
     }
 
+    public class PartnerSignUp
+    {
+        [Required]
+        public string FirstName { get; set; }
+        [Required]
+        public string SecondName { get; set; }
+        [Required]
+        public string NickName { get; set; }
+        [Required]
+        public string Gender { get; set; }
+        [Required]
+        public DateTime Dob { get; set; }
+        [Required]
+        public string MobileCountryCode { get; set; }
+        [Required]
+        public string MobileNumber { get; set; }
+        [Required]
+        public string Email { get; set; }
+        [Required]
+        public string Password { get; set; }
+    }
+    public class CustomerSignUp
+    {
+        [Required]
+        public string FirstName { get; set; }
+        [Required]
+        public string SecondName { get; set; }
+        [Required]
+        public string NickName { get; set; }
+        [Required]
+        public string Gender { get; set; }
+        [Required]
+        public DateTime Dob { get; set; }
+        [Required]
+        public string MobileCountryCode { get; set; }
+        [Required]
+        public string MobileNumber { get; set; }
+        [Required]
+        public string Email { get; set; }
+        [Required]
+        public string Password { get; set; }
+    }
+
+    public class EmailResponse
+    {
+        public string Message
+        {
+            get; set;
+        }
+    }
 }

@@ -47,13 +47,13 @@ namespace GCBS_INTERNAL.Controllers.API
         private List<Root> RooleeRoot()
         {
             List<Root> list = new List<Root>();
-            list.Add(new Root { Day = "Sunday", Time = new List<Time>() });
-            list.Add(new Root { Day = "Monday", Time = new List<Time>() });
-            list.Add(new Root { Day = "Tuesday", Time = new List<Time>() });
-            list.Add(new Root { Day = "Wednesday", Time = new List<Time>() });
-            list.Add(new Root { Day = "Thursday", Time = new List<Time>() });
-            list.Add(new Root { Day = "Friday", Time = new List<Time>() });
-            list.Add(new Root { Day = "Saturday", Time = new List<Time>() });
+            list.Add(new Root { Day = "Sunday", Time = new List<Time>() { new Time {  StartTime = "09:00 AM", EndTime = "10:00 PM"} } });
+            list.Add(new Root { Day = "Monday", Time = new List<Time>() { new Time { StartTime = "09:00 AM", EndTime = "10:00 PM" } } });
+            list.Add(new Root { Day = "Tuesday", Time = new List<Time>() { new Time { StartTime = "09:00 AM", EndTime = "10:00 PM" } } });
+            list.Add(new Root { Day = "Wednesday", Time = new List<Time>() { new Time { StartTime = "09:00 AM", EndTime = "10:00 PM" } } });
+            list.Add(new Root { Day = "Thursday", Time = new List<Time>() { new Time { StartTime = "09:00 AM", EndTime = "10:00 PM" } } });
+            list.Add(new Root { Day = "Friday", Time = new List<Time>() { new Time { StartTime = "09:00 AM", EndTime = "10:00 PM" } } });
+            list.Add(new Root { Day = "Saturday", Time = new List<Time>() { new Time { StartTime = "09:00 AM", EndTime = "10:00 PM" } } });
             return list;
         }
         // PUT: api/Availabilities/5

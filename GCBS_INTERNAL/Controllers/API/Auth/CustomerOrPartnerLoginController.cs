@@ -1,6 +1,7 @@
 ﻿using GCBS_INTERNAL.Helper;
 using GCBS_INTERNAL.Models;
 using GCBS_INTERNAL.ViewModels;
+using log4net;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
@@ -17,7 +18,7 @@ namespace GCBS_INTERNAL.Controllers.API.Auth
     {
         public DatabaseContext db = new DatabaseContext();
         private readonly GetAccessToken getAccessToken = new GetAccessToken();
-
+        private static readonly ILog log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
         //[HttpPost]
         [ResponseType(typeof(AdminResponse))]
@@ -38,12 +39,13 @@ namespace GCBS_INTERNAL.Controllers.API.Auth
                 else
                 {
                     if (result.RoleId == 3 || result.RoleId == 9)
-                    {
+                    {      
                         result.LastLogin = DateTime.Now;
                         result.LastActivateTime = DateTime.Now.AddMinutes(Constant.ExpireTime);
                         result.OnlineStatus = true;
                         db.Entry(result).State = EntityState.Modified;
                         await db.SaveChangesAsync();
+                        result.Image = null;
                         return Ok(new AdminResponse { AccessToken = await getAccessToken.GetToken(result), Key = result.RoleId == 3 ? "Partner" : "Customer" });
                     }
                     else
@@ -54,7 +56,8 @@ namespace GCBS_INTERNAL.Controllers.API.Auth
             }
             catch (Exception ex)
             {
-                throw ex;
+                log.Error("CustomerOrPartnerLogin failed", ex);
+                return Content(HttpStatusCode.InternalServerError, "Something went wrong try again");
             }
         }
     }

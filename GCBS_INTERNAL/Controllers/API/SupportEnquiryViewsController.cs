@@ -11,17 +11,18 @@ using System.Web.Http;
 using System.Web.Http.Description;
 using GCBS_INTERNAL.Models;
 using GCBS_INTERNAL.Provider;
+
 namespace GCBS_INTERNAL.Controllers.API
 {
-     [CustomAuthorize]
-    public class SupportEnquiryViewsController : BaseApiController
+    [CustomAuthorize]
+    public class SupportEnquiryViewsController : ApiController
     {
         private DatabaseContext db = new DatabaseContext();
 
         // GET: api/SupportEnquiryViews
         public IQueryable<SupportEnquiryView> GetSupportEnquiryView()
         {
-            return db.SupportEnquiryView;
+            return db.SupportEnquiryView.Include(x=>x.PartnerManagements).Include(x=>x.UserManagements);
         }
 
         // GET: api/SupportEnquiryViews/5

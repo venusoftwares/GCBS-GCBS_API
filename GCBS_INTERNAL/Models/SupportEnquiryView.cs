@@ -19,12 +19,18 @@ namespace GCBS_INTERNAL.Models
 
         public int PartnerId { get; set; }
 
-        public DateTime? CreatedOn { get; set; }
+        public int? Status { get; set; }
+        public DateTime CreatedOn { get; set; }
 
         public DateTime? UpdatedOn { get; set; }
 
-        public int? CreatedBy { get; set; }
+        public int CreatedBy { get; set; }
 
         public int? UpdatedBy { get; set; }
+
+        [ForeignKey("PartnerId")]
+        public UserManagement PartnerManagements { get; set; }
+        [ForeignKey("UserId")]
+        public UserManagement UserManagements { get; set; }
     }
 }
