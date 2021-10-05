@@ -343,6 +343,7 @@
     <Compile Include="Controllers\API\Auth\PartnerSignUpController.cs" />
     <Compile Include="Controllers\API\AvailabilitiesController.cs" />
     <Compile Include="Controllers\API\BankAccountDetailsController.cs" />
+    <Compile Include="Controllers\API\BookingController.cs" />
     <Compile Include="Controllers\API\Calender\CalenderDetailsController.cs" />
     <Compile Include="Controllers\API\CommonLogoController.cs" />
     <Compile Include="Controllers\API\Commons\CommonDropController.cs" />
@@ -433,6 +434,8 @@
     <Compile Include="Models\BankAccountDetails.cs" />
     <Compile Include="Models\BookingDetail.cs" />
     <Compile Include="Models\BookingTerms.cs" />
+    <Compile Include="Models\Booking\CustomerBooking.cs" />
+    <Compile Include="Models\Booking\Model1.cs" />
     <Compile Include="Models\CalenderDetails.cs" />
     <Compile Include="Models\CityMaster.cs" />
     <Compile Include="Models\ContactEnquiryType.cs" />
@@ -499,6 +502,7 @@
     <Compile Include="Services\SMTPService.cs" />
     <Compile Include="Startup.cs" />
     <Compile Include="ViewModels\AdminLogin.cs" />
+    <Compile Include="ViewModels\Booking.cs" />
     <Compile Include="ViewModels\DropDownCommon.cs" />
     <Compile Include="ViewModels\GCBSFrontEnd\HomeDashboardViewModels.cs" />
     <Compile Include="ViewModels\GCBSFrontEnd\BioInformationMyProfile.cs" />

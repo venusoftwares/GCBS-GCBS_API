@@ -1,3 +1,4 @@
+using GCBS_INTERNAL.Models.Booking;
 using System;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Data.Entity;
@@ -88,6 +89,8 @@ namespace GCBS_INTERNAL.Models
         public virtual DbSet<BookingTerms> BookingTerms { get; set; }   
         public virtual DbSet<RefundTerm> RefundTerms { get; set; }
 
+
+        public virtual DbSet<CustomerBooking> CustomerBooking { get; set; }
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
            
