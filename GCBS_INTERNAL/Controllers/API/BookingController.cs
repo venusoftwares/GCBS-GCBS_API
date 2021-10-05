@@ -48,6 +48,15 @@ namespace GCBS_INTERNAL.Controllers.API
             return Ok(time);
         }
 
+        [Route("api/PartnerId/{partnerId}/customerBookingServiceTypes")]
+        public async Task<IHttpActionResult> CustomerBookingServiceTypes(int partnerId)
+        {
+            var result =await db.ServiceTypes
+                   .Where(x => x.Visible)
+                   .Select(x => new DropDownCommon { Key = x.Id, Value = x.ServiceType }).ToListAsync();
+            return Ok(result);
+        }
+
         [Route("api/submitCustomerBooking")]
         public async Task<IHttpActionResult> SubmitCustomerBooking(CustomerBooking customerBooking)
         {
@@ -170,6 +179,41 @@ namespace GCBS_INTERNAL.Controllers.API
                 throw ex;
             }
         }
+        [Route("api/CustomerCompletedBookingList")]
+        public async Task<IHttpActionResult> CustomerCompletedBookingList()
+        {
+            try
+            {
+
+
+                log.Debug("CustomerCompletedBookingList");
+
+                var list = await db.CustomerBooking
+                    .Where(x => x.CustomerId == userDetails.Id
+                     && x.CustomerStatus == Constant.CUSTOMER_BOOKING_STATUS_COMPLETED).ToListAsync();
+
+
+
+                log.Debug($"CustomerCompletedBookingList" + JsonConvert.SerializeObject(list));
+
+                return Ok(list.Select(x =>
+               new BookingList
+               {
+                   Id = x.Id,
+                   Amount = x.TotalPrice.ToString(),
+                   BookingDate = x.DateTime,
+                   BookingTime = x.TimeSlot,
+                   Location = x.ServiceLocation,
+                   Status = "Completed"
+
+               }));
+            }
+            catch (Exception ex)
+            {
+                log.Error("CustomerCompletedBookingList" + ex.Message);
+                throw ex;
+            }
+        }
         [Route("api/CustomerRejectedBookingList")]
         public async Task<IHttpActionResult> CustomerRejectedBookingList()
         {
@@ -280,6 +324,41 @@ namespace GCBS_INTERNAL.Controllers.API
             catch (Exception ex)
             {
                 log.Error("PartnerClosedBookingList" + ex.Message);
+                throw ex;
+            }
+        }
+        [Route("api/PartnerCompletedBookingList")]
+        public async Task<IHttpActionResult> PartnerCompletedBookingList()
+        {
+            try
+            {
+
+
+                log.Debug("PartnerCompletedBookingList");
+
+                var list = await db.CustomerBooking
+                    .Where(x => x.ProviderId == userDetails.Id
+                    && x.PartnerStatus == Constant.PARTNER_BOOKING_STATUS_COMPLETED).ToListAsync();
+
+
+
+                log.Debug($"PartnerCompletedBookingList" + JsonConvert.SerializeObject(list));
+
+                return Ok(list.Select(x =>
+               new BookingList
+               {
+                   Id = x.Id,
+                   Amount = x.PartnerPrice.ToString(),
+                   BookingDate = x.DateTime,
+                   BookingTime = x.TimeSlot,
+                   Location = x.ServiceLocation,
+                   Status = "Completed"
+
+               }));
+            }
+            catch (Exception ex)
+            {
+                log.Error("PartnerCompletedBookingList" + ex.Message);
                 throw ex;
             }
         }

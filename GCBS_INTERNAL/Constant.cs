@@ -39,11 +39,13 @@ namespace GCBS_INTERNAL
         public const int CUSTOMER_BOOKING_STATUS_BOOKED = 1;
         public const int PARTNER_BOOKING_STATUS_OPENED = 1;
         public const int PARTNER_BOOKING_STATUS_CLOSED = 2;
-        public const int PARTNER_BOOKING_STATUS_REJECTED = 3;
+        public const int PARTNER_BOOKING_STATUS_COMPLETED = 3;
+        public const int PARTNER_BOOKING_STATUS_REJECTED = 4;
 
         public const int CUSTOMER_BOOKING_STATUS_OPENED = 1;
         public const int CUSTOMER_BOOKING_STATUS_CLOSED = 2;
-        public const int CUSTOMER_BOOKING_STATUS_REJECTED = 3;
+        public const int CUSTOMER_BOOKING_STATUS_COMPLETED = 3;
+        public const int CUSTOMER_BOOKING_STATUS_REJECTED = 4;
 
          
 
