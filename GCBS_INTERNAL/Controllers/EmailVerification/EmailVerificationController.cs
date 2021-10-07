@@ -30,6 +30,7 @@ namespace GCBS_INTERNAL.Controllers.EmailVerification
                 int userID = Convert.ToInt32(userid);
 
                 var userDetails =  db.UserManagement.Find(userID);
+                userDetails.Status = true;
 
                 db.Entry(userDetails).State = EntityState.Modified;
 

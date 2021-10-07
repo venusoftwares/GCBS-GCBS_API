@@ -31,7 +31,7 @@ namespace GCBS_INTERNAL.Controllers.API.Auth
             try
             {
                 var result = db.UserManagement.Where(x => x.EmailId == adminLogin.Email
-                && x.Password == adminLogin.Password).FirstOrDefault();
+                && x.Password == adminLogin.Password && x.Status == true).FirstOrDefault();
                 if (result == null)
                 {
                     return NotFound();
