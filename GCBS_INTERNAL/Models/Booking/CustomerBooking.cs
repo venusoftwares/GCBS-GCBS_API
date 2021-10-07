@@ -53,5 +53,10 @@ namespace GCBS_INTERNAL.Models.Booking
         public DateTime? UpdatedOn { get; set; }
 
         public int? UpdatedBy { get; set; }
+
+        [ForeignKey("ProviderId")]
+        public UserManagement UserManagement { get; set; }
+        [ForeignKey("CustomerId")]
+        public UserManagement CustomerManagement { get; set; }
     }
 }

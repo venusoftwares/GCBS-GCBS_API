@@ -45,16 +45,26 @@ namespace GCBS_INTERNAL.Controllers.API
                     }
                 } 
             }  
-            return Ok(time);
+            return Ok(new { Key = time});
         }
 
         [Route("api/PartnerId/{partnerId}/customerBookingServiceTypes")]
         public async Task<IHttpActionResult> CustomerBookingServiceTypes(int partnerId)
         {
-            var result =await db.ServiceTypes
+            var result =await db.ServicesMasters
                    .Where(x => x.Visible)
-                   .Select(x => new DropDownCommon { Key = x.Id, Value = x.ServiceType }).ToListAsync();
+                   .Select(x => new DropDownCommon { Key = x.Id, Value = x.Service }).ToListAsync();
             return Ok(result);
+        }
+
+        [Route("api/PartnerId/{partnerId}/ServiceTypeId/{serviceTypeId}/DurationId/{DurationId}/ServicesPrice")]
+        public async Task<IHttpActionResult> CustomerBookingServiceTypes(int partnerId, int serviceTypeId, int DurationId)
+        {
+            var result = await db.ServiceDurartionPrice
+                   .Where(x => x.UserId == partnerId && x.ServiceId == serviceTypeId && x.DurationId == DurationId)
+                   .Select(x => x.Price).DefaultIfEmpty(0).SumAsync();
+                  
+            return Ok(new { Key = result });
         }
 
         [Route("api/submitCustomerBooking")]
@@ -120,6 +130,7 @@ namespace GCBS_INTERNAL.Controllers.API
                 log.Debug("CustomerOpenBookingList");
 
                 var list = await db.CustomerBooking
+                    .Include(x => x.UserManagement)
                     .Where(x => x.CustomerId == userDetails.Id
                     && x.CustomerStatus == Constant.CUSTOMER_BOOKING_STATUS_OPENED).ToListAsync(); 
 
@@ -134,7 +145,9 @@ namespace GCBS_INTERNAL.Controllers.API
                    BookingDate = x.DateTime,
                    BookingTime = x.TimeSlot,
                    Location = x.ServiceLocation,
-                   Status = "Opened"
+                   Status = "Opened",
+                   Image = x.UserManagement.Image,
+                   ServiceType = x.ServiceType
 
                }));
             }
@@ -154,6 +167,7 @@ namespace GCBS_INTERNAL.Controllers.API
                 log.Debug("CustomerClosedBookingList");
 
                 var list = await db.CustomerBooking
+                  .Include(x => x.UserManagement)
                     .Where(x => x.CustomerId == userDetails.Id
                     && x.CustomerStatus == Constant.CUSTOMER_BOOKING_STATUS_CLOSED).ToListAsync();
 
@@ -169,7 +183,9 @@ namespace GCBS_INTERNAL.Controllers.API
                    BookingDate = x.DateTime,
                    BookingTime = x.TimeSlot,
                    Location = x.ServiceLocation,
-                   Status = "Closed"
+                   Status = "Closed",
+                   Image = x.UserManagement.Image,
+                   ServiceType = x.ServiceType
 
                }));
             }
@@ -189,6 +205,7 @@ namespace GCBS_INTERNAL.Controllers.API
                 log.Debug("CustomerCompletedBookingList");
 
                 var list = await db.CustomerBooking
+                    .Include(x => x.UserManagement)
                     .Where(x => x.CustomerId == userDetails.Id
                      && x.CustomerStatus == Constant.CUSTOMER_BOOKING_STATUS_COMPLETED).ToListAsync();
 
@@ -204,7 +221,9 @@ namespace GCBS_INTERNAL.Controllers.API
                    BookingDate = x.DateTime,
                    BookingTime = x.TimeSlot,
                    Location = x.ServiceLocation,
-                   Status = "Completed"
+                   Status = "Completed",
+                   Image = x.UserManagement.Image,
+                   ServiceType = x.ServiceType
 
                }));
             }
@@ -224,6 +243,7 @@ namespace GCBS_INTERNAL.Controllers.API
                 log.Debug("CustomerRejectedBookingList");
 
                 var list = await db.CustomerBooking
+                    .Include(x => x.UserManagement)
                     .Where(x => x.CustomerId == userDetails.Id
                      && x.CustomerStatus == Constant.CUSTOMER_BOOKING_STATUS_REJECTED).ToListAsync();
 
@@ -239,7 +259,9 @@ namespace GCBS_INTERNAL.Controllers.API
                    BookingDate = x.DateTime,
                    BookingTime = x.TimeSlot,
                    Location = x.ServiceLocation,
-                   Status = "Rejected"
+                   Status = "Rejected",
+                   Image = x.UserManagement.Image,
+                   ServiceType = x.ServiceType
 
                }));
             }
@@ -267,6 +289,7 @@ namespace GCBS_INTERNAL.Controllers.API
                 log.Debug("PartnerOpenBookingList");
 
                 var list = await db.CustomerBooking
+                    .Include(x => x.CustomerManagement)
                     .Where(x => x.ProviderId == userDetails.Id 
                     && x.PartnerStatus == Constant.PARTNER_BOOKING_STATUS_OPENED).ToListAsync();
 
@@ -282,7 +305,9 @@ namespace GCBS_INTERNAL.Controllers.API
                    BookingDate = x.DateTime,
                    BookingTime = x.TimeSlot, 
                    Location = x.ServiceLocation,
-                   Status = "Opened"
+                   Status = "Opened",
+                   Image = x.CustomerManagement.Image,
+                   ServiceType = x.ServiceType
 
                }));
             }
@@ -302,6 +327,7 @@ namespace GCBS_INTERNAL.Controllers.API
                 log.Debug("PartnerClosedBookingList");
 
                 var list = await db.CustomerBooking
+                   .Include(x => x.CustomerManagement)
                     .Where(x => x.ProviderId == userDetails.Id
                     && x.PartnerStatus == Constant.PARTNER_BOOKING_STATUS_CLOSED).ToListAsync();
 
@@ -317,7 +343,9 @@ namespace GCBS_INTERNAL.Controllers.API
                    BookingDate = x.DateTime,
                    BookingTime = x.TimeSlot,
                    Location = x.ServiceLocation,
-                   Status = "Closed"
+                   Status = "Closed",
+                   Image = x.CustomerManagement.Image,
+                   ServiceType = x.ServiceType
 
                }));
             }
@@ -337,6 +365,7 @@ namespace GCBS_INTERNAL.Controllers.API
                 log.Debug("PartnerCompletedBookingList");
 
                 var list = await db.CustomerBooking
+                   .Include(x => x.CustomerManagement)
                     .Where(x => x.ProviderId == userDetails.Id
                     && x.PartnerStatus == Constant.PARTNER_BOOKING_STATUS_COMPLETED).ToListAsync();
 
@@ -352,7 +381,9 @@ namespace GCBS_INTERNAL.Controllers.API
                    BookingDate = x.DateTime,
                    BookingTime = x.TimeSlot,
                    Location = x.ServiceLocation,
-                   Status = "Completed"
+                   Status = "Completed",
+                   Image = x.CustomerManagement.Image,
+                   ServiceType = x.ServiceType
 
                }));
             }
@@ -372,6 +403,7 @@ namespace GCBS_INTERNAL.Controllers.API
                 log.Debug("PartnerRejectedBookingList");
 
                 var list = await db.CustomerBooking
+                    .Include(x => x.CustomerManagement)
                     .Where(x => x.ProviderId == userDetails.Id
                     && x.PartnerStatus == Constant.PARTNER_BOOKING_STATUS_REJECTED).ToListAsync();
 
@@ -387,7 +419,9 @@ namespace GCBS_INTERNAL.Controllers.API
                    BookingDate = x.DateTime,
                    BookingTime = x.TimeSlot,
                    Location = x.ServiceLocation,
-                   Status = "Rejected"
+                   Status = "Rejected",
+                   Image = x.CustomerManagement.Image,
+                   ServiceType = x.ServiceType
 
                }));
             }
@@ -399,6 +433,41 @@ namespace GCBS_INTERNAL.Controllers.API
         }
 
         #endregion
+
+        [Route("api/id/{id}/PartnerOrCustomerCancelBooking")]
+
+        public  async Task<IHttpActionResult> PartnerRejectBooking(int id)
+        {
+            CustomerBooking customerBooking = await db.CustomerBooking.FindAsync(id);
+
+            customerBooking.PartnerStatus = Constant.PARTNER_BOOKING_STATUS_REJECTED;
+            customerBooking.CustomerStatus = Constant.CUSTOMER_BOOKING_STATUS_REJECTED;
+            customerBooking.UpdatedBy = userDetails.Id;
+            customerBooking.UpdatedOn = DateTime.Now;
+            db.Entry(customerBooking).State = EntityState.Modified;
+            await db.SaveChangesAsync();
+
+            return StatusCode(HttpStatusCode.NoContent);
+        }
+        
+
+        [Route("api/id/{id}/PartnerOrCustomerCompletedBooking")]
+
+        public async Task<IHttpActionResult> PartnerCompletedBooking(int id)
+        {
+            CustomerBooking customerBooking = await db.CustomerBooking.FindAsync(id);
+
+            customerBooking.PartnerStatus = Constant.PARTNER_BOOKING_STATUS_COMPLETED;
+            customerBooking.CustomerStatus = Constant.CUSTOMER_BOOKING_STATUS_COMPLETED;
+            customerBooking.UpdatedBy = userDetails.Id;
+            customerBooking.UpdatedOn = DateTime.Now;
+            db.Entry(customerBooking).State = EntityState.Modified;
+            await db.SaveChangesAsync();
+
+            return StatusCode(HttpStatusCode.NoContent);
+        }
+        
+
         public class BookingList
         {
             public int Id { get; set; }
@@ -408,6 +477,8 @@ namespace GCBS_INTERNAL.Controllers.API
             public string Amount { get; set; }
             public string Location { get; set; }
             public string Status { get; set; }
+            public string Image { get; set; }
+            public string ServiceType { get; set; }
         }
     }
 }

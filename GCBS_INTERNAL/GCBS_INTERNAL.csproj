@@ -336,6 +336,7 @@
     <Compile Include="Areas\HelpPage\SampleGeneration\TextSample.cs" />
     <Compile Include="Areas\HelpPage\XmlDocumentationProvider.cs" />
     <Compile Include="Constant.cs" />
+    <Compile Include="Controllers\API\Admin\AdminBookingDetailsController.cs" />
     <Compile Include="Controllers\API\Auth\CustomerOrPartnerLoginController.cs" />
     <Compile Include="Controllers\API\Auth\CustomerSignUpController.cs" />
     <Compile Include="Controllers\API\Auth\EmailCheckerController.cs" />

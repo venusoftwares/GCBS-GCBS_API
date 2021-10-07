@@ -47,7 +47,17 @@ namespace GCBS_INTERNAL
         public const int CUSTOMER_BOOKING_STATUS_COMPLETED = 3;
         public const int CUSTOMER_BOOKING_STATUS_REJECTED = 4;
 
-         
+        public const string PAYMENT_STATUS_PENDING_STR = "PENDING";
+        public const int PAYMENT_STATUS_PENDING = 1;
+
+        public const string PAYMENT_STATUS_COMPLETED_STR = "COMPLETED";
+        public const int PAYMENT_STATUS_COMPLETED = 2;
+
+        public const string PAYMENT_STATUS_REJECTED_STR = "REJECTED";
+        public const int PAYMENT_STATUS_REJECTED = 3;
+
+
+
 
     }
 }

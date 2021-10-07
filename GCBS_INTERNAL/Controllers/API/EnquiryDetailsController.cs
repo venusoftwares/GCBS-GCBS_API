@@ -13,7 +13,7 @@ using GCBS_INTERNAL.Models;
 using GCBS_INTERNAL.Provider;
 namespace GCBS_INTERNAL.Controllers.API
 {
-     [CustomAuthorize]
+    [CustomAuthorize]
     public class EnquiryDetailsController : BaseApiController
     {
         private DatabaseContext db = new DatabaseContext();
@@ -22,26 +22,25 @@ namespace GCBS_INTERNAL.Controllers.API
         [ResponseType(typeof(EnquiryViewModel))]
         public async Task< IHttpActionResult> PostEnquiryDetails(EnquiryViewModel enquiryViewModel)
         {
-            var res = await db.EnquiryDetails
-                .Include(x => x.UserManagements)
-                .Include(x => x.PartnerManagements)
-                .Include(x => x.servicesMasters)
+            var res = await db.CustomerBooking
+                .Include(x => x.CustomerManagement)
+                .Include(x => x.UserManagement) 
                 .Select(x => new EnquiryViewModel
                 {
                     Id = x.Id,
-                    Email = x.UserManagements.EmailId,
-                    Service = x.servicesMasters.Service,
-                    ServicePartner = x.PartnerManagements.Username+"_"+ x.PartnerId,
-                    ServicePartnerId = x.PartnerId,
-                    Username = x.UserManagements.Username+"_"+x.UserId,
-                    UserId = x.UserId,
-                    ServiceStatus = x.ServiceStatus,
-                    ServiceStatusToString = x.ServiceStatus == 1 ? "Active" : x.ServiceStatus == 2 ? "Completed" : x.ServiceStatus == 3 ? "Cancel" : "None",
-                    PaymentStatus = x.PaymentStatus,
-                    PaymentStatusToString = x.PaymentStatus == 1 ? "Active" : x.PaymentStatus == 2 ? "Completed" : x.PaymentStatus == 3 ? "Cancel" : "None",
-                    ServiceId = x.ServiceId,
-                    Mobile = x.UserManagements.MobileNo,
-                    ServiceDate = x.ServiceDate
+                    Email = x.CustomerManagement.EmailId,
+                    Service = x.ServiceType,
+                    ServicePartner = x.UserManagement.Username+"_"+ x.ProviderId,
+                    ServicePartnerId = x.Id,
+                    Username = x.CustomerManagement.Username+"_"+x.CustomerId,
+                    UserId = x.CustomerId,
+                    ServiceStatus = x.PartnerStatus,
+                    ServiceStatusToString = x.PartnerStatus == 1 ? "Open" : x.PartnerStatus == 2 ? "Completed" : x.PartnerStatus == 3 ? "Closed" : x.PartnerStatus ==4? "Rejected" : "",
+                    PaymentStatus =x.Status,
+                    PaymentStatusToString = x.Status == 1 ? Constant.PAYMENT_STATUS_PENDING_STR : x.Status == 2 ? Constant.PAYMENT_STATUS_COMPLETED_STR : x.Status == 3 ? Constant.PAYMENT_STATUS_REJECTED_STR : "None",                    
+                    Mobile = x.CustomerManagement.MobileNo,
+                    ServiceDate = x.DateTime,
+                    PartnerStatus = x.PartnerStatus
                 }).ToListAsync();
 
             if (enquiryViewModel != null)
