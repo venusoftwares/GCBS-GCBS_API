@@ -423,6 +423,7 @@
     <Compile Include="Controllers\API\UserManagementsController.cs" />
     <Compile Include="Controllers\API\ContentManagement\Warning18ContentController.cs" />
     <Compile Include="Controllers\API\Utilities\RolePermissionMastersController.cs" />
+    <Compile Include="Controllers\EmailVerification\EmailVerificationController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ValuesController.cs" />
     <Compile Include="Global.asax.cs">
@@ -549,6 +550,7 @@
     <Content Include="Scripts\jquery-3.4.1.slim.js" />
     <Content Include="Scripts\jquery-3.4.1.slim.min.js" />
     <Content Include="Scripts\modernizr-2.8.3.js" />
+    <Content Include="Template\EmailVerification.html" />
     <Content Include="Template\ForgetPassword.html" />
     <Content Include="Template\ChangePassword.html" />
     <Content Include="Template\LocationTemp.html" />
@@ -573,6 +575,7 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Controllers\API\Base\" />
+    <Folder Include="Views\EmailVerification\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff2" />
