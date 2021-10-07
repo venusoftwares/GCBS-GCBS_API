@@ -63,7 +63,7 @@ namespace GCBS_INTERNAL.Controllers.API.Auth
                 string htmlString = text
 
                     .Replace("{Email}", userManagement.EmailId)
-                    .Replace("{url}", $"{urlLink}/EmailVerification/token?code={userid}");
+                    .Replace("{url}", $"{urlLink}EmailVerification/token?code={userid}");
 
                 var res = sMTPService.Email(userManagement.EmailId, "Welcome to Golden Circle", htmlString);
 
