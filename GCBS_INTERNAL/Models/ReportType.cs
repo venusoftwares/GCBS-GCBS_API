@@ -15,8 +15,7 @@ namespace GCBS_INTERNAL.Models
         [Required]
         [StringLength(50)]
         public string ReportType1 { get; set; }
-
-        public bool Status { get; set; }
+         
 
         public DateTime CreatedOn { get; set; }
 

@@ -13,7 +13,8 @@ using System.Web.Mvc;
 namespace GCBS_INTERNAL.Controllers.EmailVerification
 {
     public class EmailVerificationController : Controller
-    { private static readonly ILog log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+    {
+        private static readonly ILog log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
         public string FrontEndUrl = ConfigurationManager.AppSettings["FrontEndUrl"];
 
         private readonly Algorithum algorithum = new Algorithum();

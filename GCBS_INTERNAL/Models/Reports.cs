@@ -6,18 +6,16 @@ namespace GCBS_INTERNAL.Models
     using System.ComponentModel.DataAnnotations.Schema;
     using System.Data.Entity.Spatial;
 
-    [Table("ReportEnquiryView")]
-    public partial class ReportEnquiryView
+    [Table("Reports")]
+    public partial class Reports
     {
-        public int Id { get; set; }
-
-        public int TicketNo { get; set; }
+        public int Id { get; set; } 
 
         public DateTime Date { get; set; }
 
-        public int UserId { get; set; }
+        public int ReportFrom { get; set; }
 
-        public int PartnerId { get; set; }
+        public int ReportTo { get; set; }
 
         public string Description { get; set; }
 
@@ -29,11 +27,7 @@ namespace GCBS_INTERNAL.Models
 
         public int CreatedBy { get; set; }
 
-        public int? UpdatedBy { get; set; }
-
-        [ForeignKey("PartnerId")]
-        public UserManagement PartnerManagements { get; set; }
-        [ForeignKey("UserId")]
-        public UserManagement UserManagements { get; set; }
+        public int? UpdatedBy { get; set; } 
+        
     }
 }
