@@ -25,7 +25,7 @@ namespace GCBS_INTERNAL.Provider
                         user.LastActivateTime = DateTime.Now.AddMinutes(Constant.ExpireTime);
                         db.Entry(user).State = EntityState.Modified;
                         db.SaveChanges();
-                        return;
+                        return;//
                     }
                 }   
                 HandleUnauthorizedRequest(actionContext);
