@@ -23,6 +23,7 @@ namespace GCBS_INTERNAL.Controllers.API
     {
         private DatabaseContext db = new DatabaseContext();
         public ImageServices imgser = new ImageServices();
+         private static readonly ILog log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
        
         // GET: api/AgenciesMasters
         public IHttpActionResult GetAgenciesMaster()
@@ -112,8 +113,9 @@ namespace GCBS_INTERNAL.Controllers.API
                     }
                 }
             }
-            catch (DbUpdateConcurrencyException)
+            catch (DbUpdateConcurrencyException ex)
             {
+                log.Error(ex.Message);
                 if (!AgenciesMasterExists(id))
                 {
                     return NotFound();
@@ -123,7 +125,7 @@ namespace GCBS_INTERNAL.Controllers.API
                     throw;
                 }
             }
-
+           
             return StatusCode(HttpStatusCode.NoContent);
         }
 
@@ -177,6 +179,7 @@ namespace GCBS_INTERNAL.Controllers.API
             }
             catch(Exception ex)
             {
+                log.Error(ex.Message);
                 throw ex;
             }
         }

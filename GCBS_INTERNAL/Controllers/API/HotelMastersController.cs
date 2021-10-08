@@ -12,6 +12,8 @@ using System.Web.Http.Description;
 using GCBS_INTERNAL.Models;
 using GCBS_INTERNAL.Services;
 using GCBS_INTERNAL.Provider;
+using log4net;
+
 namespace GCBS_INTERNAL.Controllers.API
 {
      [CustomAuthorize]
@@ -19,6 +21,7 @@ namespace GCBS_INTERNAL.Controllers.API
     {
         private DatabaseContext db = new DatabaseContext();
         public ImageServices imgser = new ImageServices();
+        private static readonly ILog log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
         // GET: api/HotelMasters
         public List<HotelMasterView> GetHotelMaster()
@@ -99,8 +102,9 @@ namespace GCBS_INTERNAL.Controllers.API
                     }
                 }
             }
-            catch (DbUpdateConcurrencyException)
+            catch (DbUpdateConcurrencyException ex)
             {
+                log.Error(ex.Message);
                 if (!HotelMasterExists(id))
                 {
                     return NotFound();

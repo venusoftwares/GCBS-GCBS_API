@@ -11,12 +11,15 @@ using System.Web.Http;
 using System.Web.Http.Description;
 using GCBS_INTERNAL.Models;
 using GCBS_INTERNAL.Provider;
+using log4net;
+
 namespace GCBS_INTERNAL.Controllers.API
 {
      [CustomAuthorize]
     public class MarginMastersController : BaseApiController
     {
         private DatabaseContext db = new DatabaseContext();
+        private static readonly ILog log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
         // GET: api/MarginMasters
         public IQueryable<MarginMaster> GetMarginMaster()
@@ -57,8 +60,9 @@ namespace GCBS_INTERNAL.Controllers.API
             {
                 await db.SaveChangesAsync();
             }
-            catch (DbUpdateConcurrencyException)
+            catch (DbUpdateConcurrencyException ex)
             {
+                log.Error(ex.Message);
                 if (!MarginMasterExists(id))
                 {
                     return NotFound();
@@ -117,6 +121,7 @@ namespace GCBS_INTERNAL.Controllers.API
             }
             catch(Exception ex)
             {
+                log.Error(ex.Message);
                 throw ex;
             }
            

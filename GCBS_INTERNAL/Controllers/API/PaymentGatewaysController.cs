@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 using System.Web.Http;
 using System.Web.Http.Description;
 using GCBS_INTERNAL.Provider;
+using log4net;
 
 namespace GCBS_INTERNAL.Controllers.API
 {
@@ -17,6 +18,7 @@ namespace GCBS_INTERNAL.Controllers.API
     public class PaymentGatewaysController : BaseApiController
     {
         private DatabaseContext db = new DatabaseContext();
+        private static readonly ILog log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
         // GET: api/PaymentGateways
         public IQueryable<PaymentGateway> GetPaymentGateway()
@@ -57,8 +59,9 @@ namespace GCBS_INTERNAL.Controllers.API
             {
                 await db.SaveChangesAsync();
             }
-            catch (DbUpdateConcurrencyException)
+            catch (DbUpdateConcurrencyException ex)
             {
+                log.Error(ex.Message);
                 if (!PaymentGatewayExists(id))
                 {
                     return NotFound();

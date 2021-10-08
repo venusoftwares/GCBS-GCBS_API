@@ -10,6 +10,8 @@ using System.Threading.Tasks;
 using System.Web.Http;
 using System.Web.Http.Description;
 using GCBS_INTERNAL.Provider;
+using log4net;
+
 namespace GCBS_INTERNAL.Controllers.API
 {
      [CustomAuthorize]
@@ -17,9 +19,11 @@ namespace GCBS_INTERNAL.Controllers.API
     {
         private const char Separator = '|';
         private readonly DatabaseContext db = new DatabaseContext();
+        private static readonly ILog log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+
         // GET: api/ContactEnquiryViews
-        
-         
+
+
         [HttpGet]
         [Route("api/Country")]
         public IQueryable<Country> GetCountry()
@@ -245,6 +249,7 @@ namespace GCBS_INTERNAL.Controllers.API
             }
             catch(Exception ex)
             {
+                log.Error(ex.Message);
                 throw ex;
             }
         }

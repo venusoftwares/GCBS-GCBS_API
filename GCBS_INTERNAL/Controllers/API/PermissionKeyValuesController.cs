@@ -11,12 +11,15 @@ using System.Web.Http;
 using System.Web.Http.Description;
 using GCBS_INTERNAL.Models;
 using GCBS_INTERNAL.Provider;
+using log4net;
+
 namespace GCBS_INTERNAL.Controllers.API
 {
      [CustomAuthorize]
     public class PermissionKeyValuesController : BaseApiController
     {
         private DatabaseContext db = new DatabaseContext();
+        private static readonly ILog log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
         // GET: api/PermissionKeyValues
         public IQueryable<PermissionKeyValue> GetPermissionKeyValue()

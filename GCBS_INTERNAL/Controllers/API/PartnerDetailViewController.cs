@@ -8,12 +8,15 @@ using System.Net.Http;
 using System.Web.Http;
 using System.Data.Entity;
 using GCBS_INTERNAL.Provider;
+using log4net;
+
 namespace GCBS_INTERNAL.Controllers.API
 {
      [CustomAuthorize]
     public class PartnerDetailViewController : BaseApiController
     {
         private DatabaseContext db = new DatabaseContext();
+        private static readonly ILog log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
         public List<PartnerDetailsViewModel> GetPartnerDetailView()
         {
             List<PartnerDetailsViewModel> result = new List<PartnerDetailsViewModel>();

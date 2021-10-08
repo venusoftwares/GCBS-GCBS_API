@@ -11,14 +11,17 @@ using System.Web.Http;
 using System.Web.Http.Description;
 using GCBS_INTERNAL.Models;
 using GCBS_INTERNAL.Provider;
+using log4net;
+
 namespace GCBS_INTERNAL.Controllers.API
 {
      [CustomAuthorize]
     public class TaxSettingsController : BaseApiController
     {
         private DatabaseContext db = new DatabaseContext();
+        private static readonly ILog log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
-    
+
         // GET: api/TaxSettings/5
         [ResponseType(typeof(TaxSettings))]
         public async Task<IHttpActionResult> GetTaxSettings()
@@ -60,8 +63,9 @@ namespace GCBS_INTERNAL.Controllers.API
             {
                 await db.SaveChangesAsync();
             }
-            catch (DbUpdateConcurrencyException)
+            catch (DbUpdateConcurrencyException ex)
             {
+                log.Error(ex.Message);
                 if (!TaxSettingsExists(id))
                 {
                     return NotFound();
