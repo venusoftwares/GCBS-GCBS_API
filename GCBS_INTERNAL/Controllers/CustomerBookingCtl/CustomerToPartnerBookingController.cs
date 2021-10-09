@@ -19,7 +19,7 @@ namespace GCBS_INTERNAL.Controllers.CustomerBookingCtl
     {
         private DatabaseContext db = new DatabaseContext();
         [HttpGet]
-        [Route("api/GetBookingListOgTimesView")]
+        [Route("api/partnerId/{partnerId}/GetBookingListOgTimesView")]
         public async Task<IHttpActionResult> GetBookingListOgTimesView(int partnerId)
         {
             try
