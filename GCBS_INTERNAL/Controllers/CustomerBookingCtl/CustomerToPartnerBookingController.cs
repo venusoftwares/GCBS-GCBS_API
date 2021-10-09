@@ -11,16 +11,56 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using System.Web.Http;
 
-namespace GCBS_INTERNAL.Controllers.Calender
+namespace GCBS_INTERNAL.Controllers.CustomerBookingCtl
 {
-
-    public class CalenderViewController : BaseApiController
+    [CustomAuthorize]
+    
+    public class CustomerToPartnerBookingController : BaseApiController
     {
         private DatabaseContext db = new DatabaseContext();
-      
-        [CustomAuthorize]
-       
-        public async Task<IHttpActionResult> GetProviderCalenderView()
+        [HttpGet]
+        [Route("api/GetBookingListOgTimesView")]
+        public async Task<IHttpActionResult> GetBookingListOgTimesView(int partnerId)
+        {
+            try
+            {
+                BookingResponse bookingResponse = new BookingResponse();
+
+                var basePrices =await  db.PartnerBasePrice
+                    .Include(x=>x.DurationAndBasePrice)
+                    .Where(x => x.UserId == partnerId)
+                    .ToListAsync();
+
+                bookingResponse.BasePrices = basePrices.Select(x => new BasePrices 
+                { 
+
+                    BasePrice = x.BasePrice, 
+                    Minutes = x.DurationAndBasePrice.Minutes, 
+                    Time = x.DurationAndBasePrice.DurationOrTime 
+
+                }).ToList();
+
+                var additionalPrice = await db.PartnerAdditionalPrice.Where(x => x.UserId == partnerId).ToListAsync();
+
+                bookingResponse.AdditionalPrices = additionalPrice.Select(x => new AdditionalPrices
+                {
+
+                     AdditionalPrice = x.AdditionalPrice,
+                     ServiceType = x.ServiceType
+
+                }).ToList();
+
+                bookingResponse.CalenderDetails = await GetCalenderDetailsAsync(partnerId); 
+
+                return Ok(bookingResponse);
+            }
+            catch(Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        private async Task<List<CalenderDetails>> GetCalenderDetailsAsync(int partnerId)
         {
             try
             {
@@ -32,42 +72,50 @@ namespace GCBS_INTERNAL.Controllers.Calender
 
                 DateTime EndDate = StartDate.AddMonths(3);
 
-                while(StartDate <= EndDate)
+                while (StartDate <= EndDate)
                 {
+
                     dateTimes.Add(StartDate);
+
                     StartDate = StartDate.AddDays(1);
+
                 }
 
-                var unavailableDate = db.UnAvailableDates.Where(x => x.UserId == userDetails.Id).ToList();
+                var unavailableDate = db.UnAvailableDates.Where(x => x.UserId == partnerId).ToList();
 
-                var availbaleDate =await GetAvailableDateAsync(userDetails.Id);
+                var availbaleDate = await GetAvailableDateAsync(partnerId);
 
-                foreach(var date in dateTimes)
+                foreach (var date in dateTimes)
                 {
 
                     var dayOfWeek = date.Date.DayOfWeek.ToString().ToUpper();
 
                     var available = availbaleDate.Times.Where(x => x.Day.ToUpper() == dayOfWeek && x.Available).ToList();
 
-                    if(!unavailableDate.Any(x=>x.Date == date))
+                    if (!unavailableDate.Any(x => x.Date == date))
                     {
+
                         foreach (var list in available)
                         {
-                            foreach(var time in list.Time)
+
+                            foreach (var time in list.Time)
                             {
+
                                 DateTime startDate = Convert.ToDateTime($"{date.ToString("yyyy-MM-dd")} {time.StartTime}");
+
                                 DateTime endDate = Convert.ToDateTime($"{date.ToString("yyyy-MM-dd")} {time.EndTime}");
 
-                                calenderDetails.Add(new CalenderDetails { Date = date, cssClass = "", Title = $"{time.StartTime} To {time.EndTime}", Start = startDate,End = endDate });
+                                calenderDetails.Add(new CalenderDetails { Date = date, cssClass = "", Title = $"{time.StartTime} To {time.EndTime}", Start = startDate, End = endDate });
 
                             }
-                           
+
+
                         }
+
                     }
                 }
 
-                return Ok(calenderDetails);
-
+                return calenderDetails;
             }
             catch(Exception ex)
             {
@@ -92,7 +140,7 @@ namespace GCBS_INTERNAL.Controllers.Calender
 
             RootAvailability availability2 = new RootAvailability();
 
-            Availability availability = await db.Availability.Where(x => x.UserId == userDetails.Id).FirstOrDefaultAsync();
+            Availability availability = await db.Availability.Where(x => x.UserId == id).FirstOrDefaultAsync();
 
             if (availability == null)
             {
@@ -123,20 +171,45 @@ namespace GCBS_INTERNAL.Controllers.Calender
             return availability2;
         }
 
-        public class CalenderDetails
-        {            
+        private class BookingResponse
+        {
+            public List<BasePrices> BasePrices { get; set; }
+            public List<AdditionalPrices> AdditionalPrices { get; set; }
+            public List<CalenderDetails> CalenderDetails { get; set; }
+
+        }
+
+        private class BasePrices
+        {
+            public string Time { get; set; }
+
+            public decimal BasePrice { get; set; }
+
+            public decimal Minutes { get; set; }
+
+        }
+
+        private class AdditionalPrices
+        {
+            public string ServiceType { get; set; }
+            public decimal AdditionalPrice { get; set; }
+
+        }
+
+        private class CalenderDetails
+        {
             public DateTime Date { get; set; }
 
             [JsonProperty("start")]
             public DateTime Start { get; set; }
             [JsonProperty("end")]
-            public DateTime End { get; set; } 
-            
+            public DateTime End { get; set; }
+
             [JsonProperty("title")]
-            public string Title { get; set; } 
-            
+            public string Title { get; set; }
+
             [JsonProperty("cssClass")]
-            public string cssClass { get; set; } 
+            public string cssClass { get; set; }
         }
     }
 }

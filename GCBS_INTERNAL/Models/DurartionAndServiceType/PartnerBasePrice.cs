@@ -24,5 +24,8 @@ namespace GCBS_INTERNAL.Models.DurartionAndServiceType
         public DateTime? UpdateAt { get; set; }
 
         public int? UpdateBy { get; set; }
+
+        [ForeignKey("DurationId")]
+        public DurationAndBasePrice DurationAndBasePrice { get; set; }
     }
 }

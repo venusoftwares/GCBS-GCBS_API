@@ -422,6 +422,7 @@
     <Compile Include="Controllers\API\Utilities\RolePermissionMastersController.cs" />
     <Compile Include="Controllers\Available\UnAvailableController.cs" />
     <Compile Include="Controllers\Calender\CalenderViewController.cs" />
+    <Compile Include="Controllers\CustomerBookingCtl\CustomerToPartnerBookingController.cs" />
     <Compile Include="Controllers\DurarionAndService\DurationAndBasePricesController.cs" />
     <Compile Include="Controllers\DurarionAndService\PartnerAdditionalPricesController.cs" />
     <Compile Include="Controllers\DurarionAndService\PartnerBasePricesController.cs" />
