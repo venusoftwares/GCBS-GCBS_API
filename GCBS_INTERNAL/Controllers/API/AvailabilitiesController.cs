@@ -17,8 +17,9 @@ namespace GCBS_INTERNAL.Controllers.API
     [CustomAuthorize]
     public class AvailabilitiesController : BaseApiController
     {
-        private DatabaseContext db = new DatabaseContext();     
-
+        private DatabaseContext db = new DatabaseContext();
+        [HttpGet]
+        [Route("api/Availabilities")]
         // GET: api/Availabilities/5
         [ResponseType(typeof(Availability))]
         public async Task<IHttpActionResult> GetAvailability()
@@ -57,7 +58,7 @@ namespace GCBS_INTERNAL.Controllers.API
             return Ok(availability2);
         }
 
-        public List<Root> RooleeRoot()
+        private List<Root> RooleeRoot()
         {
             return new List<Root>
             {
@@ -70,6 +71,8 @@ namespace GCBS_INTERNAL.Controllers.API
                 new Root { Day = "Saturday", Time = new List<Time>() { new Time { StartTime = "09:00 AM", EndTime = "10:00 PM", Minutes = 540 } } }
             }; 
         }
+        [HttpPut]
+        [Route("api/Availabilities/{id}")]
         // PUT: api/Availabilities/5
         [ResponseType(typeof(void))]
         public async Task<IHttpActionResult> PutAvailability(int id, RootAvailability rootAvailability)
@@ -137,7 +140,9 @@ namespace GCBS_INTERNAL.Controllers.API
         }
 
         // POST: api/Availabilities
-        [ResponseType(typeof(Availability))]
+        [HttpPost]
+        [Route("api/Availabilities")]
+        [ResponseType(typeof(RootAvailability))]
         public async Task<IHttpActionResult> PostAvailability(RootAvailability rootAvailability)
         {
             List<Root> list = new List<Root>();
@@ -173,7 +178,7 @@ namespace GCBS_INTERNAL.Controllers.API
             db.Availability.Add(rootAvailability.Availability);
             await db.SaveChangesAsync();
 
-            return CreatedAtRoute("DefaultApi", new { id = rootAvailability.Availability.Id }, rootAvailability.Availability);
+            return Ok(rootAvailability);
         }
 
        

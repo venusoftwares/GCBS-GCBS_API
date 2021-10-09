@@ -422,6 +422,10 @@
     <Compile Include="Controllers\API\Utilities\RolePermissionMastersController.cs" />
     <Compile Include="Controllers\Available\UnAvailableController.cs" />
     <Compile Include="Controllers\Calender\CalenderViewController.cs" />
+    <Compile Include="Controllers\DurarionAndService\DurationAndBasePricesController.cs" />
+    <Compile Include="Controllers\DurarionAndService\PartnerAdditionalPricesController.cs" />
+    <Compile Include="Controllers\DurarionAndService\PartnerBasePricesController.cs" />
+    <Compile Include="Controllers\DurarionAndService\PartnerServiceTypesController.cs" />
     <Compile Include="Controllers\EmailVerification\EmailVerificationController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\Report\ReportsController.cs" />
@@ -449,6 +453,10 @@
     <Compile Include="Models\DatabaseContext.cs" />
     <Compile Include="Models\DickSize.cs" />
     <Compile Include="Models\DisclaimerContent.cs" />
+    <Compile Include="Models\DurartionAndServiceType\DurationAndBasePrice.cs" />
+    <Compile Include="Models\DurartionAndServiceType\PartnerAdditionalPrice.cs" />
+    <Compile Include="Models\DurartionAndServiceType\PartnerBasePrice.cs" />
+    <Compile Include="Models\DurartionAndServiceType\PartnerServiceType.cs" />
     <Compile Include="Models\DurationMaster.cs" />
     <Compile Include="Models\EmailSettings.cs" />
     <Compile Include="Models\EnquiryDetails.cs" />

@@ -79,7 +79,8 @@ namespace GCBS_INTERNAL.Controllers.API.Partner
                 {
                     if (!String.IsNullOrEmpty(availability.Time))
                     {
-                        roots = JsonConvert.DeserializeObject<List<Root>>(availability.Time);
+                        var list = JsonConvert.DeserializeObject<List<Root>>(availability.Time);
+                        roots = list.Where(x => x.Available).ToList();
                     }     
                 }
                

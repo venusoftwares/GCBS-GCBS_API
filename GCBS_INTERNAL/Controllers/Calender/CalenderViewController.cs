@@ -57,7 +57,7 @@ namespace GCBS_INTERNAL.Controllers.Calender
                                 DateTime startDate = Convert.ToDateTime($"{date.ToString("yyyy-MM-dd")} {time.StartTime}");
                                 DateTime endDate = Convert.ToDateTime($"{date.ToString("yyyy-MM-dd")} {time.EndTime}");
 
-                                calenderDetails.Add(new CalenderDetails { Date = date, cssClass = "", Title = "Available", Start = startDate,End = endDate });
+                                calenderDetails.Add(new CalenderDetails { Date = date, cssClass = "", Title = $"{time.StartTime} To {time.EndTime}", Start = startDate,End = endDate });
 
                             }
                            
