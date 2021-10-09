@@ -420,6 +420,8 @@
     <Compile Include="Controllers\API\Transactions\PastTransactionsController.cs" />
     <Compile Include="Controllers\API\UserManagementsController.cs" />
     <Compile Include="Controllers\API\Utilities\RolePermissionMastersController.cs" />
+    <Compile Include="Controllers\Available\UnAvailableController.cs" />
+    <Compile Include="Controllers\Calender\CalenderViewController.cs" />
     <Compile Include="Controllers\EmailVerification\EmailVerificationController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\Report\ReportsController.cs" />
@@ -432,6 +434,7 @@
     <Compile Include="Models\AboutUsContent.cs" />
     <Compile Include="Models\AgenciesMaster.cs" />
     <Compile Include="Models\Availability.cs" />
+    <Compile Include="Models\Available\UnAvailableDates.cs" />
     <Compile Include="Models\BankAccountDetails.cs" />
     <Compile Include="Models\BookingDetail.cs" />
     <Compile Include="Models\BookingTerms.cs" />

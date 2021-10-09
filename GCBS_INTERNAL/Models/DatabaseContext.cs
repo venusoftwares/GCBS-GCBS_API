@@ -1,3 +1,4 @@
+using GCBS_INTERNAL.Models.Available;
 using GCBS_INTERNAL.Models.Booking;
 using GCBS_INTERNAL.Models.Support;
 using System;
@@ -93,6 +94,8 @@ namespace GCBS_INTERNAL.Models
         public virtual DbSet<SupportTable> Support { get; set; }
         public virtual DbSet<SupportType> SupportType { get; set; }
         public virtual DbSet<CustomerBooking> CustomerBooking { get; set; }
+        public virtual DbSet<UnAvailableDates> UnAvailableDates { get; set; }
+
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
            
