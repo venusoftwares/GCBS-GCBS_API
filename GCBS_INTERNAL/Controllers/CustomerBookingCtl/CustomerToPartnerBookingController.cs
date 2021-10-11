@@ -54,7 +54,7 @@ namespace GCBS_INTERNAL.Controllers.CustomerBookingCtl
 
                 }).ToList();
 
-                bookingResponse.CalenderDetails = await GetCalenderDetailsAsync(partnerId);
+                bookingResponse.CalenderDetails = await GetCalenderDetailsAsync(partnerId, bookingResponse.BasePrices[0].Id);
 
                 return Ok(bookingResponse);
             }
@@ -207,6 +207,8 @@ namespace GCBS_INTERNAL.Controllers.CustomerBookingCtl
 
                 List<DateTime> dateTimes = new List<DateTime>();
 
+                DateTime currentDate = DateTime.Now;
+
                 DateTime StartDate = DateTime.Now.Date;
 
                 DateTime EndDate = StartDate.AddMonths(3);
@@ -263,9 +265,13 @@ namespace GCBS_INTERNAL.Controllers.CustomerBookingCtl
 
                                 string timeSlot = $"{startDate.ToString("hh:mm tt")} To {endDate.ToString("hh:mm tt")}";
 
-                                if (!customerBookingDetails.Any(x => x.DateTime == date && x.TimeSlot == timeSlot && x.PartnerStatus == Constant.PARTNER_BOOKING_STATUS_OPENED))
+                                bool cj = customerBookingDetails.Any(x => x.DateTime == date && x.TimeSlot == timeSlot);
+
+                                bool check = customerBookingDetails.Any(x => x.DateTime == date && x.TimeSlot == timeSlot && x.PartnerStatus == Constant.PARTNER_BOOKING_STATUS_OPENED);
+
+                                if (!check)
                                 {
-                                    if ((minutes <= (decimal)min) || duration != null)
+                                    if (((minutes <= (decimal)min) || duration != null ) && currentDate < startDate)
                                     {
                                         if(!calenderDetails.Any(x=>x.Date == date && x.Title == timeSlot && x.Start == startDate && x.End == endDate))
                                         {
@@ -335,7 +341,14 @@ namespace GCBS_INTERNAL.Controllers.CustomerBookingCtl
             }
             return availability2;
         }
-
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                db.Dispose();
+            }
+            base.Dispose(disposing);
+        }
         private class BookingResponse
         {
             public List<BasePrices> BasePrices { get; set; }
