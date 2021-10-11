@@ -28,7 +28,6 @@ namespace GCBS_INTERNAL.Controllers.API.Transactions
                  {
                      Id = x.Id,
                      Email = x.CustomerManagement.EmailId,
-                     Service = x.ServiceType,
                      ServicePartner = x.UserManagement.Username + "_" + x.ProviderId,
                      ServicePartnerId = x.Id,
                      Username = x.CustomerManagement.Username + "_" + x.CustomerId,

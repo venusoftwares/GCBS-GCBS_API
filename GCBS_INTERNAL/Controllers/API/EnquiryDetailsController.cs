@@ -28,8 +28,7 @@ namespace GCBS_INTERNAL.Controllers.API
                 .Select(x => new EnquiryViewModel
                 {
                     Id = x.Id,
-                    Email = x.CustomerManagement.EmailId,
-                    Service = x.ServiceType,
+                    Email = x.CustomerManagement.EmailId,                   
                     ServicePartner = x.UserManagement.Username+"_"+ x.ProviderId,
                     ServicePartnerId = x.Id,
                     Username = x.CustomerManagement.Username+"_"+x.CustomerId,

@@ -11,12 +11,6 @@ namespace GCBS_INTERNAL.Models.Booking
     {
         public int Id { get; set; }
 
-        public string ServiceLocation { get; set; }
-
-        public string ServiceArea { get; set; }
-
-        public string HouseOrHotel { get; set; }
-
         public DateTime DateTime { get; set; }
 
         [Required]
@@ -25,30 +19,30 @@ namespace GCBS_INTERNAL.Models.Booking
         [Required]
         public string TimeSlot { get; set; }
 
+        [Required]
+        public string Json { get; set; }
+
         public decimal BasePrice { get; set; }
 
-        [Required]
-        public string ServiceType { get; set; }
-
-        public decimal ServicePrice { get; set; }
+        public decimal AdditionalPrice { get; set; }
 
         public decimal TotalPrice { get; set; }
-        public decimal PartnerPrice { get; set; }
-        public decimal AdminPrice { get; set; }
-        
-        public string Notes { get; set; }
 
-        public int CustomerId { get; set; } 
+        public decimal PartnerPrice { get; set; }
+
+        public int CustomerId { get; set; }
 
         public int ProviderId { get; set; }
 
         public int Status { get; set; }
-        public int PartnerStatus { get; set; }
-        public int CustomerStatus { get; set; }
-        
-        public DateTime CreatedOn { get; set; }
 
-        public int CreatedBy { get; set; }
+        public int PartnerStatus { get; set; }
+
+        public int CustomerStatus { get; set; }
+
+        public DateTime? CreatedOn { get; set; }
+
+        public int? CreatedBy { get; set; }
 
         public DateTime? UpdatedOn { get; set; }
 
@@ -56,7 +50,10 @@ namespace GCBS_INTERNAL.Models.Booking
 
         [ForeignKey("ProviderId")]
         public UserManagement UserManagement { get; set; }
+
         [ForeignKey("CustomerId")]
         public UserManagement CustomerManagement { get; set; }
+
+        
     }
 }

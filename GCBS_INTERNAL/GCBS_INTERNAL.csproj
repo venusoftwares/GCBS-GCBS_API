@@ -444,7 +444,6 @@
     <Compile Include="Models\BookingDetail.cs" />
     <Compile Include="Models\BookingTerms.cs" />
     <Compile Include="Models\Booking\CustomerBooking.cs" />
-    <Compile Include="Models\Booking\Model1.cs" />
     <Compile Include="Models\CalenderDetails.cs" />
     <Compile Include="Models\CityMaster.cs" />
     <Compile Include="Models\ContactEnquiryType.cs" />

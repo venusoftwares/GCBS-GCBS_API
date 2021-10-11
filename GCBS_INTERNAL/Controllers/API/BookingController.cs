@@ -98,11 +98,7 @@ namespace GCBS_INTERNAL.Controllers.API
 
                 var marginMaster =await db.MarginMaster.Where(x => x.Status).FirstOrDefaultAsync();
 
-                var margin = marginMaster.CommissionPer;
-
-                customerBooking.AdminPrice = (totalAmount * (decimal)margin) / 100;
-
-                customerBooking.PartnerPrice = totalAmount - ((totalAmount * (decimal)margin) / 100); 
+                var margin = marginMaster.CommissionPer; 
 
                 db.CustomerBooking.Add(customerBooking);
 
@@ -144,10 +140,8 @@ namespace GCBS_INTERNAL.Controllers.API
                    Amount = x.TotalPrice.ToString(),
                    BookingDate = x.DateTime,
                    BookingTime = x.TimeSlot,
-                   Location = x.ServiceLocation,
                    Status = "Opened",
-                   Image = x.UserManagement.Image,
-                   ServiceType = x.ServiceType
+                   Image = x.UserManagement.Image
 
                }));
             }
@@ -182,10 +176,9 @@ namespace GCBS_INTERNAL.Controllers.API
                    Amount = x.TotalPrice.ToString(),
                    BookingDate = x.DateTime,
                    BookingTime = x.TimeSlot,
-                   Location = x.ServiceLocation,
                    Status = "Closed",
                    Image = x.UserManagement.Image,
-                   ServiceType = x.ServiceType
+                
 
                }));
             }
@@ -220,10 +213,8 @@ namespace GCBS_INTERNAL.Controllers.API
                    Amount = x.TotalPrice.ToString(),
                    BookingDate = x.DateTime,
                    BookingTime = x.TimeSlot,
-                   Location = x.ServiceLocation,
                    Status = "Completed",
-                   Image = x.UserManagement.Image,
-                   ServiceType = x.ServiceType
+                   Image = x.UserManagement.Image
 
                }));
             }
@@ -258,10 +249,8 @@ namespace GCBS_INTERNAL.Controllers.API
                    Amount = x.TotalPrice.ToString(),
                    BookingDate = x.DateTime,
                    BookingTime = x.TimeSlot,
-                   Location = x.ServiceLocation,
                    Status = "Rejected",
-                   Image = x.UserManagement.Image,
-                   ServiceType = x.ServiceType
+                   Image = x.UserManagement.Image
 
                }));
             }
@@ -303,11 +292,9 @@ namespace GCBS_INTERNAL.Controllers.API
                    Id = x.Id,
                    Amount = x.PartnerPrice.ToString(),
                    BookingDate = x.DateTime,
-                   BookingTime = x.TimeSlot, 
-                   Location = x.ServiceLocation,
+                   BookingTime = x.TimeSlot,
                    Status = "Opened",
-                   Image = x.CustomerManagement.Image,
-                   ServiceType = x.ServiceType
+                   Image = x.CustomerManagement.Image
 
                }));
             }
@@ -342,10 +329,8 @@ namespace GCBS_INTERNAL.Controllers.API
                    Amount = x.PartnerPrice.ToString(),
                    BookingDate = x.DateTime,
                    BookingTime = x.TimeSlot,
-                   Location = x.ServiceLocation,
                    Status = "Closed",
-                   Image = x.CustomerManagement.Image,
-                   ServiceType = x.ServiceType
+                   Image = x.CustomerManagement.Image
 
                }));
             }
@@ -380,10 +365,8 @@ namespace GCBS_INTERNAL.Controllers.API
                    Amount = x.PartnerPrice.ToString(),
                    BookingDate = x.DateTime,
                    BookingTime = x.TimeSlot,
-                   Location = x.ServiceLocation,
                    Status = "Completed",
-                   Image = x.CustomerManagement.Image,
-                   ServiceType = x.ServiceType
+                   Image = x.CustomerManagement.Image
 
                }));
             }
@@ -418,10 +401,8 @@ namespace GCBS_INTERNAL.Controllers.API
                    Amount = x.PartnerPrice.ToString(),
                    BookingDate = x.DateTime,
                    BookingTime = x.TimeSlot,
-                   Location = x.ServiceLocation,
                    Status = "Rejected",
-                   Image = x.CustomerManagement.Image,
-                   ServiceType = x.ServiceType
+                   Image = x.CustomerManagement.Image
 
                }));
             }
