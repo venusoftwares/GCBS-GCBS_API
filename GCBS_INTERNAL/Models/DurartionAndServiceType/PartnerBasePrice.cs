@@ -17,6 +17,8 @@ namespace GCBS_INTERNAL.Models.DurartionAndServiceType
 
         public decimal BasePrice { get; set; }
 
+        public bool Status { get; set; }
+
         public DateTime CreatedAt { get; set; }
 
         public int CreatedBy { get; set; }

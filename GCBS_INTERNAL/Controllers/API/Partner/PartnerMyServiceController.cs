@@ -12,7 +12,7 @@ using log4net;
 using GCBS_INTERNAL.Provider;
 namespace GCBS_INTERNAL.Controllers.API.Partner
 {
-     [CustomAuthorize]
+    [CustomAuthorize]
     public class PartnerMyServiceController : BaseApiController
     {
         private readonly DatabaseContext db = new DatabaseContext();
@@ -45,7 +45,7 @@ namespace GCBS_INTERNAL.Controllers.API.Partner
             {
                 log.Error("Sending failed", ex);
                 return Content(HttpStatusCode.InternalServerError, ex.Message);
-            } 
+            }
         }
         [HttpGet]
         [Route("api/DropDownPartnerDuration/{ServiceId}")]
@@ -54,11 +54,11 @@ namespace GCBS_INTERNAL.Controllers.API.Partner
             try
             {
                 log.Info("Called");
-                List<DropDownCommon> dropDownCommons = new List<DropDownCommon>();  
-                var duration = await db.DurationMaster.Where(x => x.Status).Select(x => new DropDownCommon { Key = x.Id, Value = x.Duration }).ToListAsync();  
+                List<DropDownCommon> dropDownCommons = new List<DropDownCommon>();
+                var duration = await db.DurationMaster.Where(x => x.Status).Select(x => new DropDownCommon { Key = x.Id, Value = x.Duration }).ToListAsync();
                 var serviceDuration = await db.ServiceDurartionPrice.Where(x => x.UserId == userDetails.Id && x.ServiceId == ServiceId).ToListAsync();
                 foreach (var dur in duration)
-                {   
+                {
                     if (!serviceDuration.Any(x => x.DurationId == dur.Key))
                     {
                         dropDownCommons.Add(dur);
@@ -79,9 +79,9 @@ namespace GCBS_INTERNAL.Controllers.API.Partner
         public async Task<IHttpActionResult> GetPartnerMyService()
         {
             try
-            {     
+            {
                 log.Info("Called");
-                var result = await db.ServiceDurartionPrice.Where(X=>X.UserId == userDetails.Id).Include(x => x.DurationMaster).Include(x => x.ServicesMaster).ToListAsync();
+                var result = await db.ServiceDurartionPrice.Where(X => X.UserId == userDetails.Id).Include(x => x.DurationMaster).Include(x => x.ServicesMaster).ToListAsync();
                 log.Info("End");
                 return Ok(result);
             }
@@ -100,7 +100,7 @@ namespace GCBS_INTERNAL.Controllers.API.Partner
                 log.Info("Called");
                 using (var d = new DatabaseContext())
                 {
-                    if(!d.ServiceDurartionPrice.Any(x=>x.ServiceId== serviceDurartionPrice.ServiceId && x.DurationId== serviceDurartionPrice.DurationId && x.UserId == userDetails.Id))
+                    if (!d.ServiceDurartionPrice.Any(x => x.ServiceId == serviceDurartionPrice.ServiceId && x.DurationId == serviceDurartionPrice.DurationId && x.UserId == userDetails.Id))
                     {
                         serviceDurartionPrice.CreatedBy = userDetails.Id;
                         serviceDurartionPrice.CreatedOn = DateTime.Now;
@@ -109,7 +109,7 @@ namespace GCBS_INTERNAL.Controllers.API.Partner
                         await db.SaveChangesAsync();
                     }
                     d.Dispose();
-                }      
+                }
                 log.Info("End");
                 return Ok();
             }
@@ -130,18 +130,18 @@ namespace GCBS_INTERNAL.Controllers.API.Partner
                 using (var d = new DatabaseContext())
                 {
                     var re = await d.ServiceDurartionPrice.FindAsync(serviceDurationPriceVisible.Id);
-                    serviceDurartionPrice = re;      
+                    serviceDurartionPrice = re;
                     d.Dispose();
                 }
                 serviceDurartionPrice.Price = serviceDurationPriceVisible.Price;
                 serviceDurartionPrice.Status = serviceDurationPriceVisible.Status;
                 serviceDurartionPrice.UpdatedBy = userDetails.Id;
                 serviceDurartionPrice.UpdatedOn = DateTime.Now;
-                if(userDetails.Id == serviceDurartionPrice.UserId)
+                if (userDetails.Id == serviceDurartionPrice.UserId)
                 {
                     db.Entry(serviceDurartionPrice).State = EntityState.Modified;
                     await db.SaveChangesAsync();
-                }   
+                }
                 log.Info("End");
                 return StatusCode(HttpStatusCode.NoContent);
             }

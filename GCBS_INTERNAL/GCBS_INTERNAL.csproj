@@ -429,6 +429,7 @@
     <Compile Include="Controllers\DurarionAndService\PartnerServiceTypesController.cs" />
     <Compile Include="Controllers\EmailVerification\EmailVerificationController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\Partner\PartnerBaseAndAdditionalController.cs" />
     <Compile Include="Controllers\Report\ReportsController.cs" />
     <Compile Include="Controllers\Support\SupportController.cs" />
     <Compile Include="Controllers\ValuesController.cs" />
