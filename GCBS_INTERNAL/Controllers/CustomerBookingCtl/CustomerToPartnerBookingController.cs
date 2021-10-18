@@ -32,7 +32,7 @@ namespace GCBS_INTERNAL.Controllers.CustomerBookingCtl
 
                 var basePrices = await db.PartnerBasePrice
                     .Include(x => x.DurationAndBasePrice)
-                    .Where(x => x.UserId == partnerId)
+                    .Where(x => x.UserId == partnerId && x.Status)
                     .ToListAsync();
 
                 bookingResponse.BasePrices = basePrices.Select(x => new BasePrices
@@ -44,7 +44,7 @@ namespace GCBS_INTERNAL.Controllers.CustomerBookingCtl
 
                 }).ToList();
 
-                var additionalPrice = await db.PartnerAdditionalPrice.Where(x => x.UserId == partnerId).ToListAsync();
+                var additionalPrice = await db.PartnerAdditionalPrice.Where(x => x.UserId == partnerId && x.Status).ToListAsync();
 
                 bookingResponse.AdditionalPrices = additionalPrice.Select(x => new AdditionalPrices
                 {
@@ -140,22 +140,38 @@ namespace GCBS_INTERNAL.Controllers.CustomerBookingCtl
                     CustomerBooking customerBooking = new CustomerBooking()
                     {
 
+                        //ProviderId = partnerId,
+                        //AdditionalPrice = additionalPrice,
+                        //BasePrice = basePrices,
+                        //CreatedBy = userDetails.Id,
+                        //PartnerPrice = 0,
+                        //PartnerStatus = 0,
+                        //TimeSlot = bookingRequest.TimeSlot,
+                        //TotalPrice = Total,
+                        //Status = Constant.CUSTOMER_BOOKING_STATUS_BOOKED,
+                        //CustomerStatus = Constant.CUSTOMER_BOOKING_STATUS_BOOKED,
+                        //CustomerId = userDetails.Id,
+                        //CreatedOn = DateTime.Now,
+                        //DateTime = bookingRequest.date,
+                        //Durarion = duration,
+                        //Json = JsonConvert.SerializeObject(jsonReponse),
+
                         ProviderId = partnerId,
                         AdditionalPrice = additionalPrice,
                         BasePrice = basePrices,
                         CreatedBy = userDetails.Id,
-                        PartnerPrice = 0,
-                        PartnerStatus = 0,
+                        PartnerPrice = basePrices + additionalPrice,
+                        PartnerStatus = Constant.CUSTOMER_BOOKING_STATUS_OPENED,
                         TimeSlot = bookingRequest.TimeSlot,
                         TotalPrice = Total,
-                        Status = Constant.CUSTOMER_BOOKING_STATUS_BOOKED,
-                        CustomerStatus = Constant.CUSTOMER_BOOKING_STATUS_BOOKED,
+                        Status = Constant.CUSTOMER_BOOKING_STATUS_OPENED,
+                        CustomerStatus = Constant.CUSTOMER_BOOKING_STATUS_OPENED,
                         CustomerId = userDetails.Id,
                         CreatedOn = DateTime.Now,
                         DateTime = bookingRequest.date,
                         Durarion = duration,
                         Json = JsonConvert.SerializeObject(jsonReponse),
-                        
+
 
                     };
 
