@@ -291,7 +291,10 @@ namespace GCBS_INTERNAL.Controllers.CustomerBookingCtl
                                     {
                                         if(!calenderDetails.Any(x=>x.Date == date && x.Title == timeSlot && x.Start == startDate && x.End == endDate))
                                         {
-                                            calenderDetails.Add(new CalenderDetails { Date = date, cssClass = "", Title = timeSlot, Start = startDate, End = endDate });
+                                            if(minutes <= (decimal)min)
+                                            {
+                                                calenderDetails.Add(new CalenderDetails { Date = date, cssClass = "", Title = timeSlot, Start = startDate, End = endDate });
+                                            } 
                                         } 
                                     }
                                 }  
