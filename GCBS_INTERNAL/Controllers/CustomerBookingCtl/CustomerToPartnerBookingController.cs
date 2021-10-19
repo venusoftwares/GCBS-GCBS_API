@@ -87,12 +87,12 @@ namespace GCBS_INTERNAL.Controllers.CustomerBookingCtl
         }
         [HttpPost]
         [Route("api/partnerId/{partnerId}/durationId/{durationId}/GetCalenderViewFromDuration")]
-        public async Task<IHttpActionResult> GetBookingTotal(int partnerId,int durationId)
+        public async Task<IHttpActionResult> GetBookingTotal(int partnerId, int durationId)
         {
             try
-            { 
+            {
 
-                return Ok( await GetCalenderDetailsAsync(partnerId, durationId));
+                return Ok(await GetCalenderDetailsAsync(partnerId, durationId));
             }
             catch (Exception ex)
             {
@@ -215,7 +215,7 @@ namespace GCBS_INTERNAL.Controllers.CustomerBookingCtl
         }
 
 
-        private async Task<List<CalenderDetails>> GetCalenderDetailsAsync(int partnerId,int timeDuraionId=0)
+        private async Task<List<CalenderDetails>> GetCalenderDetailsAsync(int partnerId, int timeDuraionId = 0)
         {
             try
             {
@@ -240,14 +240,14 @@ namespace GCBS_INTERNAL.Controllers.CustomerBookingCtl
 
                 decimal minutes = 0;
 
-                var duration = await db.DurationAndBasePrice.FindAsync(timeDuraionId); 
+                var duration = await db.DurationAndBasePrice.FindAsync(timeDuraionId);
 
-                if(duration!=null)
+                if (duration != null)
                 {
                     minutes = (duration.Hour * 60) + duration.Minutes;
                 }
 
-                
+
 
                 var unavailableDate = db.UnAvailableDates.Where(x => x.UserId == partnerId).ToList();
 
@@ -287,17 +287,33 @@ namespace GCBS_INTERNAL.Controllers.CustomerBookingCtl
 
                                 if (!check)
                                 {
-                                    if (((minutes <= (decimal)min) || duration != null ) && currentDate < startDate)
+                                    if (((minutes <= (decimal)min) || duration != null) && currentDate < startDate)
                                     {
-                                        if(!calenderDetails.Any(x=>x.Date == date && x.Title == timeSlot && x.Start == startDate && x.End == endDate))
+                                        if (!calenderDetails.Any(x => x.Date == date && x.Title == timeSlot && x.Start == startDate && x.End == endDate))
                                         {
-                                            if(minutes <= (decimal)min)
+                                            if (minutes <= (decimal)min)
                                             {
-                                                calenderDetails.Add(new CalenderDetails { Date = date, cssClass = "", Title = timeSlot, Start = startDate, End = endDate });
-                                            } 
-                                        } 
+                                                DateTime STime = startDate;
+                                                DateTime ETime = startDate;
+                                                var div = (int)min / (int)minutes;
+                                                for (int i = 0; i < div; i++)
+                                                {
+                                                    if(ETime <= endDate)
+                                                    {
+                                                        ETime = ETime.AddMinutes((int)minutes);
+                                                        string timeSlot2 = $"{STime.ToString("hh:mm tt")} To {ETime.ToString("hh:mm tt")}";
+                                                        bool check2 = customerBookingDetails.Any(x => x.DateTime == date && x.TimeSlot == timeSlot2 && x.PartnerStatus == Constant.PARTNER_BOOKING_STATUS_OPENED);
+                                                        if (!check2)
+                                                        {
+                                                            calenderDetails.Add(new CalenderDetails { Date = date, cssClass = "", Title = timeSlot2, Start = STime, End = ETime });
+                                                        }
+                                                        STime = ETime;
+                                                    } 
+                                                } 
+                                            }
+                                        }
                                     }
-                                }  
+                                }
 
                             }
                         }
