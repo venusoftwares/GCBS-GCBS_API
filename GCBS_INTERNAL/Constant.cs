@@ -58,6 +58,11 @@ namespace GCBS_INTERNAL
         public const string PAYMENT_STATUS_REJECTED_STR = "REJECTED";
         public const int PAYMENT_STATUS_REJECTED = 3;
 
+        /// <summary>
+        /// Booking time intervel minutes
+        /// </summary>
+        public const int BOOKING_TIME_INTERVEL = 30;
+
 
 
 

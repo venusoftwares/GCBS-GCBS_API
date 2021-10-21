@@ -307,6 +307,7 @@ namespace GCBS_INTERNAL.Controllers.CustomerBookingCtl
                                                         {
                                                             calenderDetails.Add(new CalenderDetails { Date = date, cssClass = "", Title = timeSlot2, Start = STime, End = ETime });
                                                         }
+                                                        ETime = ETime.AddMinutes(Constant.BOOKING_TIME_INTERVEL);
                                                         STime = ETime;
                                                     } 
                                                 } 
