@@ -40,7 +40,8 @@ namespace GCBS_INTERNAL.Controllers.CustomerBookingCtl
                     Id = x.id,
                     BasePrice = x.BasePrice,
                     Minutes = x.DurationAndBasePrice.Minutes,
-                    Time = x.DurationAndBasePrice.DurationOrTime
+                    Time = x.DurationAndBasePrice.DurationOrTime,
+                    TimeDurationId = x.DurationId
 
                 }).ToList();
 
@@ -54,7 +55,8 @@ namespace GCBS_INTERNAL.Controllers.CustomerBookingCtl
 
                 }).ToList();
 
-                bookingResponse.CalenderDetails = await GetCalenderDetailsAsync(partnerId, bookingResponse.BasePrices[0].Id);
+                bookingResponse.CalenderDetails = new List<CalenderDetails>();
+                //await GetCalenderDetailsAsync(partnerId, bookingResponse.BasePrices[0].TimeDurationId);
 
                 return Ok(bookingResponse);
             }
@@ -298,7 +300,7 @@ namespace GCBS_INTERNAL.Controllers.CustomerBookingCtl
                                                 var div = (int)min / (int)minutes;
                                                 for (int i = 0; i < div; i++)
                                                 {
-                                                    if(ETime <= endDate)
+                                                    if (ETime <= endDate)
                                                     {
                                                         ETime = ETime.AddMinutes((int)minutes);
                                                         string timeSlot2 = $"{STime.ToString("hh:mm tt")} To {ETime.ToString("hh:mm tt")}";
@@ -309,8 +311,8 @@ namespace GCBS_INTERNAL.Controllers.CustomerBookingCtl
                                                         }
                                                         ETime = ETime.AddMinutes(Constant.BOOKING_TIME_INTERVEL);
                                                         STime = ETime;
-                                                    } 
-                                                } 
+                                                    }
+                                                }
                                             }
                                         }
                                     }
@@ -401,6 +403,8 @@ namespace GCBS_INTERNAL.Controllers.CustomerBookingCtl
             public decimal BasePrice { get; set; }
 
             public decimal Minutes { get; set; }
+
+            public int TimeDurationId { get; set; }
 
         }
 
