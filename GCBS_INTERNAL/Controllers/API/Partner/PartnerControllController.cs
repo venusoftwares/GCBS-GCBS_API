@@ -32,7 +32,7 @@ namespace GCBS_INTERNAL.Controllers.API.Partner
                     var us = await db.UserManagement.FindAsync(userDetails.Id);
                     userManagementPartnerProfile.userManagement = us;
                     const char Separator = '|';
-                    if (us.Languages != null)
+                    if (!string.IsNullOrEmpty(us.Languages))
                     {
                         foreach (var language in us.Languages.Split(Separator))
                         {
@@ -64,7 +64,7 @@ namespace GCBS_INTERNAL.Controllers.API.Partner
                            
                     //    }
                     //}
-                    if (us.Agencies != null)
+                    if(!string.IsNullOrEmpty(us.Agencies))
                     {
                         foreach (var agencis in us.Agencies.Split(Separator))
                         {
