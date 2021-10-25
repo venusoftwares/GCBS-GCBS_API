@@ -242,7 +242,9 @@ namespace GCBS_INTERNAL.Controllers.CustomerBookingCtl
 
                 decimal minutes = 0;
 
-                var duration = await db.DurationAndBasePrice.FindAsync(timeDuraionId);
+                var partner = await db.PartnerBasePrice.FindAsync(timeDuraionId);
+
+                var duration = await db.DurationAndBasePrice.FindAsync(partner.DurationId);
 
                 if (duration != null)
                 {
