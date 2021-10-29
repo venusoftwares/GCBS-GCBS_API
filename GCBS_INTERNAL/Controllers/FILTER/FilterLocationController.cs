@@ -153,7 +153,7 @@ namespace GCBS_INTERNAL.Controllers.FILTER
             //Filter ESeletedEyesyes
             if (filterRequest.SeletedEyes.Count > 0)
             {
-                
+                res = res.Where(x => x.Eyes != null).ToList();
                 List<int> vs = filterRequest.SeletedEyes.Select(x => x.ItemId).ToList();
                 res = res.Where(x => vs.Contains((int)x.Eyes)).ToList();
             }
@@ -161,7 +161,7 @@ namespace GCBS_INTERNAL.Controllers.FILTER
             //Filter SeletedGender
             if (filterRequest.SeletedGender.Count > 0)
             {
-               
+                res = res.Where(x => x.Gender != null).ToList();
                 List<string> vs = filterRequest.SeletedGender.Select(x => x.ItemText).ToList();
                 res = res.Where(x => vs.Contains(x.Gender)).ToList();
             }
@@ -169,13 +169,15 @@ namespace GCBS_INTERNAL.Controllers.FILTER
             //Filter SeletedHairColor
             if (filterRequest.SeletedHairColor.Count > 0)
             {
-                
+                res = res.Where(x => x.Hair != null).ToList();
+
                 List<int> vs = filterRequest.SeletedHairColor.Select(x => x.ItemId).ToList();
                 res = res.Where(x => vs.Contains((int)x.Hair)).ToList();
             }
             //Filter SeletedHeight
             if (filterRequest.SeletedHeight.Count > 0)
             {
+                res = res.Where(x => x.Height != null).ToList();
                 List<int> vs = filterRequest.SeletedHeight.Select(x => x.ItemId).ToList();
                 res = res.Where(x => vs.Contains((int)x.Height)).ToList();
             }
@@ -183,7 +185,7 @@ namespace GCBS_INTERNAL.Controllers.FILTER
             //Filter SeletedOrientation
             if (filterRequest.SeletedOrientation.Count > 0)
             {
-                
+                res = res.Where(x => x.SexualOrientation != null).ToList();
                 List<int> vs = filterRequest.SeletedOrientation.Select(x => x.ItemId).ToList();
                 res = res.Where(x => vs.Contains((int)x.SexualOrientation)).ToList();
             }
@@ -193,6 +195,7 @@ namespace GCBS_INTERNAL.Controllers.FILTER
             //Filter SeletedTits
             if (filterRequest.SeletedTits.Count > 0)
             {
+                res = res.Where(x => x.Tits != null).ToList();
                 List<int> vs = filterRequest.SeletedTits.Select(x => x.ItemId).ToList();
                 res = res.Where(x => vs.Contains((int)x.Tits)).ToList();
             }
@@ -200,6 +203,7 @@ namespace GCBS_INTERNAL.Controllers.FILTER
             //Filter SeletedTitTypes
             if (filterRequest.SeletedTitTypes.Count > 0)
             {
+                res = res.Where(x => x.TitType != null).ToList();
                 List<int> vs = filterRequest.SeletedTitTypes.Select(x => x.ItemId).ToList();
                 res = res.Where(x => vs.Contains((int)x.TitType)).ToList();
             }
@@ -207,6 +211,7 @@ namespace GCBS_INTERNAL.Controllers.FILTER
             //Filter SeletedWeight
             if (filterRequest.SeletedWeight.Count > 0)
             {
+                res = res.Where(x => x.Weight != null).ToList();
                 List<int> vs = filterRequest.SeletedWeight.Select(x => x.ItemId).ToList();
                 res = res.Where(x => vs.Contains((int)x.Weight)).ToList();
             }
@@ -282,12 +287,12 @@ namespace GCBS_INTERNAL.Controllers.FILTER
                 {
                     age2 = age + 5;
                 }
-
-                DateTime dateTime = DateTime.Now.Date.AddYears(-age2);
+                DateTime todate = DateTime.Now.Date.AddYears(-age);
+                DateTime fromdate = DateTime.Now.Date.AddYears(-age2);
 
                 foreach (var list in user)
                 {
-                    if (list.DateOfBirth >= dateTime)
+                    if (list.DateOfBirth >= fromdate && list.DateOfBirth <= todate)
                     {
                         if (!userManagements.Any(x => x.Id == list.Id))
                         {
