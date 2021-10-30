@@ -24,6 +24,8 @@ namespace GCBS_INTERNAL.ViewModels.GCBSFrontEnd
     public class PartnerDetails
     {
         public BioInformationMyProfile myProfile { get; set; }
+
+        public BioInformationMyProfile2 myProfile2 { get; set; }
         public List<ServiceOffered> serviceOffereds { get; set; }   
         public ServiceProvider serviceProviders { get; set; }  
         public List<Root> ServiceAvailability { get; set; }

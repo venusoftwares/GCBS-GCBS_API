@@ -27,6 +27,8 @@ namespace GCBS_INTERNAL.Controllers.FILTER
             //var sCoord = new GeoCoordinate(11.1205, 77.3322);
 
             //var eCoord = new GeoCoordinate(11.103830, 77.391910);
+
+            Geocoder geocoder; 
             var sCoord = new GeoCoordinate(fromlat, fromlon);
 
             var eCoord = new GeoCoordinate(tolat, tolon);
@@ -55,7 +57,7 @@ namespace GCBS_INTERNAL.Controllers.FILTER
                 Gender = GetGender(),
                 HairColor = await db.Hair.Select(x => new DropDownCom { ItemId = x.Id, ItemText = x.Hair1 }).ToListAsync(),
                 Height = await db.Height.Select(x => new DropDownCom { ItemId = x.Id, ItemText = x.Height1 }).ToListAsync(),
-                Weight = await db.Height.Select(x => new DropDownCom { ItemId = x.Id, ItemText = x.Height1 }).ToListAsync(),
+                Weight = await db.Weight.Select(x => new DropDownCom { ItemId = x.Id, ItemText = x.Weight1 }).ToListAsync(),
                 Orientation = await db.Orientation.Select(x => new DropDownCom { ItemId = x.Id, ItemText = x.Orientation1 }).ToListAsync(),
                 ServiceTypes = await db.PartnerServiceType.Select(x => new DropDownCom { ItemId = x.id, ItemText = x.ServiceType }).ToListAsync(),
                 Tits = await db.Tit.Select(x => new DropDownCom { ItemId = x.Id, ItemText = x.Tit1 }).ToListAsync(),
@@ -94,7 +96,7 @@ namespace GCBS_INTERNAL.Controllers.FILTER
                     Gender = GetGender(),
                     HairColor = await db.Hair.Select(x => new DropDownCom { ItemId = x.Id, ItemText = x.Hair1 }).ToListAsync(),
                     Height = await db.Height.Select(x => new DropDownCom { ItemId = x.Id, ItemText = x.Height1 }).ToListAsync(),
-                    Weight = await db.Height.Select(x => new DropDownCom { ItemId = x.Id, ItemText = x.Height1 }).ToListAsync(),
+                    Weight = await db.Weight.Select(x => new DropDownCom { ItemId = x.Id, ItemText = x.Weight1 }).ToListAsync(),
                     Orientation = await db.Orientation.Select(x => new DropDownCom { ItemId = x.Id, ItemText = x.Orientation1 }).ToListAsync(),
                     ServiceTypes = await db.PartnerServiceType.Select(x => new DropDownCom { ItemId = x.id, ItemText = x.ServiceType }).ToListAsync(),
                     Tits = await db.Tit.Select(x => new DropDownCom { ItemId = x.Id, ItemText = x.Tit1 }).ToListAsync(),

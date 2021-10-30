@@ -47,6 +47,23 @@ namespace GCBS_INTERNAL.Controllers.API.Partner
                     Weight = userDetails.Weight,
                     Gender = userDetails.Gender
                 };
+
+                BioInformationMyProfile2 myProfile2 = new BioInformationMyProfile2()
+                {
+                    DickSize = db.DickSize.Where(x=>x.Id== userDetails.DickSize).Select(x=>x.DickSize1).FirstOrDefault(),
+                    Drinking = userDetails.Drinking == true ? "Yes" : "No",
+                    Eyes = db.Eye.Where(x => x.Id == userDetails.Eyes).Select(x => x.Eye1).FirstOrDefault(),
+                    Hair = db.Hair.Where(x => x.Id == userDetails.Hair).Select(x => x.Hair1).FirstOrDefault(),
+                    Height = db.Height.Where(x => x.Id == userDetails.Height).Select(x => x.Height1).FirstOrDefault(), 
+                    SexualOrientation = db.Orientation.Where(x => x.Id == userDetails.SexualOrientation).Select(x => x.Orientation1).FirstOrDefault(),
+                    Smoking = userDetails.Smoking == true ? "Yes" : "No",
+                    Tits = db.Tit.Where(x => x.Id == userDetails.Tits).Select(x => x.Tit1).FirstOrDefault(),
+                    TitType = db.TitType.Where(x => x.Id == userDetails.TitType).Select(x => x.TitType1).FirstOrDefault(),
+                    Weight = db.Weight.Where(x => x.Id == userDetails.Weight).Select(x => x.Weight1).FirstOrDefault(),
+                    Gender = userDetails.Gender
+                };
+
+
                 //
                 List<ServiceOffered> serviceOffereds = new List<ServiceOffered>();
 
@@ -89,6 +106,7 @@ namespace GCBS_INTERNAL.Controllers.API.Partner
 
                 partnerDetails.serviceProviders = serviceProvider;
                 partnerDetails.myProfile = myProfile;
+                partnerDetails.myProfile2 = myProfile2;
 
                 return Ok(partnerDetails);   
             }
