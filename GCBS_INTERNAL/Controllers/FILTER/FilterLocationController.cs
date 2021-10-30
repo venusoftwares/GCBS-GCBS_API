@@ -15,7 +15,7 @@ using System.Web.Http;
 
 namespace GCBS_INTERNAL.Controllers.FILTER
 {
-    [CustomAuthorize]
+    //[CustomAuthorize]
     public class FilterLocationController : BaseApiController
     {
         public DatabaseContext db = new DatabaseContext();
@@ -28,7 +28,7 @@ namespace GCBS_INTERNAL.Controllers.FILTER
 
             //var eCoord = new GeoCoordinate(11.103830, 77.391910);
 
-            Geocoder geocoder; 
+            //Geocoder geocoder; 
             var sCoord = new GeoCoordinate(fromlat, fromlon);
 
             var eCoord = new GeoCoordinate(tolat, tolon);
@@ -421,15 +421,15 @@ namespace GCBS_INTERNAL.Controllers.FILTER
 
         private async Task<FilterRequest> GetLastFilterResponseAsync()
         {
-            var response =await db.UserFilterDetails.Where(x => x.UserId == userDetails.Id).FirstOrDefaultAsync();
+            //var response =await db.UserFilterDetails.Where(x => x.UserId == userDetails.Id).FirstOrDefaultAsync();
 
-            if(response!=null)
-            {
-                FilterRequest filterResponse = JsonConvert.DeserializeObject<FilterRequest>(response.FilterJson);
-                return filterResponse;
-            }
-            else
-            {
+            //if(response!=null)
+            //{
+            //    FilterRequest filterResponse = JsonConvert.DeserializeObject<FilterRequest>(response.FilterJson);
+            //    return filterResponse;
+            //}
+            //else
+            //{
                 FilterRequest filterResponse = new FilterRequest
                 {
                     SelectedLocation = new List<DropDownCom>(),
@@ -445,7 +445,7 @@ namespace GCBS_INTERNAL.Controllers.FILTER
                     SeletedWeight = new List<DropDownCom>(),
                 };
                 return filterResponse;
-            }
+            //}
 
         }
         private async Task InsertOrUpdate(FilterRequest filterRequest)
