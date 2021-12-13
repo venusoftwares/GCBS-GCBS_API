@@ -399,6 +399,7 @@
     <Compile Include="Controllers\API\PartnerDetailViewController.cs" />
     <Compile Include="Controllers\API\PartnerRatingsController.cs" />
     <Compile Include="Controllers\API\PartnerTypesController.cs" />
+    <Compile Include="Controllers\API\Partner\CustomerMyProfilePageControllerController.cs" />
     <Compile Include="Controllers\API\Partner\PartnerBookingDetailsController.cs" />
     <Compile Include="Controllers\API\Partner\PartnerCommonController.cs" />
     <Compile Include="Controllers\API\Partner\PartnerControllController.cs" />
@@ -423,6 +424,7 @@
     <Compile Include="Controllers\API\Utilities\RolePermissionMastersController.cs" />
     <Compile Include="Controllers\Available\UnAvailableController.cs" />
     <Compile Include="Controllers\Calender\CalenderViewController.cs" />
+    <Compile Include="Controllers\Calender\CalenderViewDashboardController.cs" />
     <Compile Include="Controllers\CustomerBookingCtl\CustomerToPartnerBookingController.cs" />
     <Compile Include="Controllers\DurarionAndService\DurationAndBasePricesController.cs" />
     <Compile Include="Controllers\DurarionAndService\PartnerAdditionalPricesController.cs" />
