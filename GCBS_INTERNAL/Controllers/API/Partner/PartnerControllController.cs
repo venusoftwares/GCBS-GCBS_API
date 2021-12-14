@@ -98,9 +98,10 @@ namespace GCBS_INTERNAL.Controllers.API.Partner
             }
         }
 
-        [Route("api/getPartnerMyProfileView")]
-        public async Task<IHttpActionResult> GetPartnerMyProfileView()
+        [Route("api/getPartnerMyProfileView/{id}")]
+        public async Task<IHttpActionResult> GetPartnerMyProfileView(int? id)
         {
+            int userId = 0;
             try
             {
                 log.Info("[GetPartnerMyProfileView] Called");
@@ -112,11 +113,21 @@ namespace GCBS_INTERNAL.Controllers.API.Partner
                     List<Languages> languages = new List<Languages>();
                     //List<Languages> meetings = new List<Languages>();
                     List<Agencies> agencies = new List<Agencies>();
+
+                    if (id != null && id > 0)
+                    {
+                        userId = (int)id;
+                    }
+                    else
+                    {
+                        userId =  userDetails.Id;
+                    }
+                    
                     var us = await db.UserManagement
                         .Include(x => x.CountryMaster)
                         .Include(x => x.StateMaster)
                         .Include(x => x.CityMaster)
-                        .Where(x => x.Id == userDetails.Id)
+                        .Where(x => x.Id == userId)
                         .FirstOrDefaultAsync();
                     if(us!=null)
                     {
@@ -125,7 +136,7 @@ namespace GCBS_INTERNAL.Controllers.API.Partner
                             nationality = Convert.ToInt32(us.Nationality);
                         }
                     }
-                    if(userDetails.RoleId == 9)
+                    if(us.RoleId == 9)
                     {
                         prefix = "GC-C00";
                     }

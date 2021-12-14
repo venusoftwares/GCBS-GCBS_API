@@ -29,29 +29,29 @@ namespace GCBS_INTERNAL.Controllers.API
         }
         //Todo Date Values get drop down that availability here
         [Route("api/partnerId/{partnerId}/datetime/{dateTime}/customerDateDropDown")]
-        public async Task<IHttpActionResult> CustomerDateDropDown(int partnerId,DateTime dateTime)
+        public async Task<IHttpActionResult> CustomerDateDropDown(int partnerId, DateTime dateTime)
         {
             string time = "";
-            var getTime =await db.Availability.Where(x => x.UserId == partnerId).FirstOrDefaultAsync();
+            var getTime = await db.Availability.Where(x => x.UserId == partnerId).FirstOrDefaultAsync();
 
-            if(getTime!=null)
+            if (getTime != null)
             {
-                var list  = JsonConvert.DeserializeObject<List<Root>>(getTime.Time);
-                foreach(var i in list)
+                var list = JsonConvert.DeserializeObject<List<Root>>(getTime.Time);
+                foreach (var i in list)
                 {
-                    if(i.Day.ToUpper() == dateTime.Date.DayOfWeek.ToString().ToUpper())
+                    if (i.Day.ToUpper() == dateTime.Date.DayOfWeek.ToString().ToUpper())
                     {
                         time = $"{i.Time[0].StartTime} {i.Time[0].EndTime}";
                     }
-                } 
-            }  
-            return Ok(new { Key = time});
+                }
+            }
+            return Ok(new { Key = time });
         }
 
         [Route("api/PartnerId/{partnerId}/customerBookingServiceTypes")]
         public async Task<IHttpActionResult> CustomerBookingServiceTypes(int partnerId)
         {
-            var result =await db.ServicesMasters
+            var result = await db.ServicesMasters
                    .Where(x => x.Visible)
                    .Select(x => new DropDownCommon { Key = x.Id, Value = x.Service }).ToListAsync();
             return Ok(result);
@@ -63,7 +63,7 @@ namespace GCBS_INTERNAL.Controllers.API
             var result = await db.ServiceDurartionPrice
                    .Where(x => x.UserId == partnerId && x.ServiceId == serviceTypeId && x.DurationId == DurationId)
                    .Select(x => x.Price).DefaultIfEmpty(0).SumAsync();
-                  
+
             return Ok(new { Key = result });
         }
 
@@ -72,13 +72,13 @@ namespace GCBS_INTERNAL.Controllers.API
         {
             try
             {
-                
+
                 if (customerBooking == null)
                 {
                     return BadRequest();
                 }
 
-                log.Debug("SubmitCustomerBooking" +JsonConvert.SerializeObject(customerBooking));
+                log.Debug("SubmitCustomerBooking" + JsonConvert.SerializeObject(customerBooking));
 
                 customerBooking.CustomerId = userDetails.Id;
 
@@ -86,7 +86,7 @@ namespace GCBS_INTERNAL.Controllers.API
 
                 customerBooking.CreatedOn = DateTime.Now;
 
-                customerBooking.Status = Constant.CUSTOMER_BOOKING_STATUS_BOOKED; 
+                customerBooking.Status = Constant.CUSTOMER_BOOKING_STATUS_BOOKED;
 
                 customerBooking.PartnerStatus = Constant.PARTNER_BOOKING_STATUS_OPENED;
 
@@ -96,9 +96,9 @@ namespace GCBS_INTERNAL.Controllers.API
 
                 var totalAmount = customerBooking.TotalPrice;
 
-                var marginMaster =await db.MarginMaster.Where(x => x.Status).FirstOrDefaultAsync();
+                var marginMaster = await db.MarginMaster.Where(x => x.Status).FirstOrDefaultAsync();
 
-                var margin = marginMaster.CommissionPer; 
+                var margin = marginMaster.CommissionPer;
 
                 db.CustomerBooking.Add(customerBooking);
 
@@ -108,11 +108,11 @@ namespace GCBS_INTERNAL.Controllers.API
 
                 return Ok(customerBooking);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 log.Error("SubmitCustomerBooking" + JsonConvert.SerializeObject(customerBooking));
                 throw ex;
-            } 
+            }
         }
         #region Customer
         [Route("api/CustomerOpenBookingList")]
@@ -128,7 +128,7 @@ namespace GCBS_INTERNAL.Controllers.API
                 var list = await db.CustomerBooking
                     .Include(x => x.UserManagement)
                     .Where(x => x.CustomerId == userDetails.Id
-                    && x.CustomerStatus == Constant.CUSTOMER_BOOKING_STATUS_OPENED).ToListAsync(); 
+                    && x.CustomerStatus == Constant.CUSTOMER_BOOKING_STATUS_OPENED).ToListAsync();
 
 
                 log.Debug($"CustomerOpenBookingList" + JsonConvert.SerializeObject(list));
@@ -178,7 +178,7 @@ namespace GCBS_INTERNAL.Controllers.API
                    BookingTime = x.TimeSlot,
                    Status = "Closed",
                    Image = x.UserManagement.Image,
-                
+
 
                }));
             }
@@ -266,23 +266,23 @@ namespace GCBS_INTERNAL.Controllers.API
 
         #region Partner
 
- 
+
         [Route("api/PartnerOpenBookingList")]
-        
+
         public async Task<IHttpActionResult> PartnerOpenBookingList()
         {
             try
             {
- 
+
 
                 log.Debug("PartnerOpenBookingList");
 
                 var list = await db.CustomerBooking
                     .Include(x => x.CustomerManagement)
-                    .Where(x => x.ProviderId == userDetails.Id 
+                    .Where(x => x.ProviderId == userDetails.Id
                     && x.PartnerStatus == Constant.PARTNER_BOOKING_STATUS_OPENED).ToListAsync();
 
-               
+
 
                 log.Debug($"PartnerOpenBookingList" + JsonConvert.SerializeObject(list));
 
@@ -294,7 +294,8 @@ namespace GCBS_INTERNAL.Controllers.API
                    BookingDate = x.DateTime,
                    BookingTime = x.TimeSlot,
                    Status = "Opened",
-                   Image = x.CustomerManagement.Image
+                   Image = x.CustomerManagement.Image,
+                   UserDetailId = x.CustomerId
 
                }));
             }
@@ -417,7 +418,7 @@ namespace GCBS_INTERNAL.Controllers.API
 
         [Route("api/id/{id}/PartnerOrCustomerCancelBooking")]
 
-        public  async Task<IHttpActionResult> PartnerRejectBooking(int id)
+        public async Task<IHttpActionResult> PartnerRejectBooking(int id)
         {
             CustomerBooking customerBooking = await db.CustomerBooking.FindAsync(id);
 
@@ -430,7 +431,7 @@ namespace GCBS_INTERNAL.Controllers.API
 
             return StatusCode(HttpStatusCode.NoContent);
         }
-        
+
 
         [Route("api/id/{id}/PartnerOrCustomerCompletedBooking")]
 
@@ -447,7 +448,7 @@ namespace GCBS_INTERNAL.Controllers.API
 
             return StatusCode(HttpStatusCode.NoContent);
         }
-        
+
 
         public class BookingList
         {
@@ -460,6 +461,7 @@ namespace GCBS_INTERNAL.Controllers.API
             public string Status { get; set; }
             public string Image { get; set; }
             public string ServiceType { get; set; }
+            public int UserDetailId { get; set; }
         }
     }
 }
