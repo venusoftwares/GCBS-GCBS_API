@@ -84,7 +84,10 @@ namespace GCBS_INTERNAL.Models
         [ForeignKey("CityId")]
         public CityMaster CityMaster { get; set; }
         [ForeignKey("LocationId")]
-        public LocationMasters  LocationMasters { get; set; }            
+        public LocationMasters  LocationMasters { get; set; }       
+        
+        [ForeignKey("SexualOrientation")]
+        public Orientation Orientation { get; set; }
     }
 
     public class UserManagementViewModel   
@@ -100,6 +103,31 @@ namespace GCBS_INTERNAL.Models
         public int Age { get; set; }
         public List<Languages> Languages { get; set; }
         public List<Agencies> Agencies { get; set; }
+    }
+
+    public class UserManagementProfileView
+    {
+        public string Id { get; set; }
+        public string Images { get; set; }
+        public string FullName { get; set; }
+        public string NickName { get; set; }
+        public string SexualOrientation { get; set; }
+        public string Gender { get; set; }
+        public string DateOfBirth { get; set; }
+        public string Email { get; set; }
+        public string country { get; set; }
+        public string MobileNumber { get; set; }
+        public string Nationality { get; set; }
+        public string Agencies { get; set; }
+        public string Party { get; set; } 
+        public string Address { get; set; }
+        public string State { get; set; }
+        public string City { get; set; }
+        public string PostalCode { get; set; } 
+
+        public int Age { get; set; }
+        public string Languages { get; set; }
+
     }
     public class Languages
     {

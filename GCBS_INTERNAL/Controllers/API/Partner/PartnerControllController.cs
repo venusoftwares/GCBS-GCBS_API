@@ -11,8 +11,8 @@ using System.Web.Http;
 using GCBS_INTERNAL.Provider;
 namespace GCBS_INTERNAL.Controllers.API.Partner
 {
-    
-     [CustomAuthorize]
+
+    [CustomAuthorize]
     public class PartnerControllController : BaseApiController
     {
         private readonly DatabaseContext db = new DatabaseContext();
@@ -23,7 +23,7 @@ namespace GCBS_INTERNAL.Controllers.API.Partner
             try
             {
                 log.Info("[GetPartnerMyProfile] Called");
-                if (userDetails.RoleId == 3)
+                if (userDetails.RoleId == 3 || userDetails.RoleId == 9)
                 {
                     UserManagementPartnerProfile userManagementPartnerProfile = new UserManagementPartnerProfile();
                     List<Languages> languages = new List<Languages>();
@@ -37,7 +37,7 @@ namespace GCBS_INTERNAL.Controllers.API.Partner
                         foreach (var language in us.Languages.Split(Separator))
                         {
                             var lan = await db.LanguageMaster.FindAsync(Convert.ToInt32(language));
-                            if(lan!=null)
+                            if (lan != null)
                             {
                                 if (lan.Status)
                                 {
@@ -46,7 +46,7 @@ namespace GCBS_INTERNAL.Controllers.API.Partner
                                         languages.Add(new Languages { ItemId = lan.Id, ItemLanguage = lan.Language });
                                     }
                                 }
-                            }  
+                            }
                         }
                     }
                     //if (us.Meeting != null)
@@ -61,10 +61,10 @@ namespace GCBS_INTERNAL.Controllers.API.Partner
                     //                meetings.Add(new Languages { ItemId = lan.Id, ItemLanguage = lan.Meeting1 });
                     //            }
                     //        }
-                           
+
                     //    }
                     //}
-                    if(!string.IsNullOrEmpty(us.Agencies))
+                    if (!string.IsNullOrEmpty(us.Agencies))
                     {
                         foreach (var agencis in us.Agencies.Split(Separator))
                         {
@@ -78,7 +78,7 @@ namespace GCBS_INTERNAL.Controllers.API.Partner
                             }
 
                         }
-                    }    
+                    }
                     userManagementPartnerProfile.Languages = languages;
                     userManagementPartnerProfile.Agencies = agencies;
                     userManagementPartnerProfile.Age = (DateTime.Now.Year - Convert.ToDateTime(us.DateOfBirth).Year);
@@ -89,13 +89,136 @@ namespace GCBS_INTERNAL.Controllers.API.Partner
                 {
                     return Content(HttpStatusCode.NotAcceptable, "Error: Invalid Access");
                 }
-               
+
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 log.Error("[GetPartnerMyProfile]", ex);
                 return Content(HttpStatusCode.InternalServerError, "Something went wrong try again");
-            }     
+            }
+        }
+
+        [Route("api/getPartnerMyProfileView")]
+        public async Task<IHttpActionResult> GetPartnerMyProfileView()
+        {
+            try
+            {
+                log.Info("[GetPartnerMyProfileView] Called");
+                if (userDetails.RoleId == 3 || userDetails.RoleId == 9)
+                {
+                    int nationality = 0;
+                    string prefix = "";
+                    UserManagementProfileView userManagementProfileView = new UserManagementProfileView();
+                    List<Languages> languages = new List<Languages>();
+                    //List<Languages> meetings = new List<Languages>();
+                    List<Agencies> agencies = new List<Agencies>();
+                    var us = await db.UserManagement
+                        .Include(x => x.CountryMaster)
+                        .Include(x => x.StateMaster)
+                        .Include(x => x.CityMaster)
+                        .Where(x => x.Id == userDetails.Id)
+                        .FirstOrDefaultAsync();
+                    if(us!=null)
+                    {
+                        if(us.Nationality !=null)
+                        {
+                            nationality = Convert.ToInt32(us.Nationality);
+                        }
+                    }
+                    if(userDetails.RoleId == 9)
+                    {
+                        prefix = "GC-C00";
+                    }
+                    else
+                    {
+                        prefix = "GC-P00";
+                    }
+                    userManagementProfileView = new UserManagementProfileView
+                    {
+                        Address = us.Address,
+                        City = us.CityMaster.CityName,
+                        country = us.CountryMaster.CountryName,
+                        Email = us.EmailId,
+                        State = us.StateMaster.StateName,
+                        SexualOrientation = us.SexualOrientation == null ? "" : db.Orientation.Where(x => x.Id == us.SexualOrientation).Select(x => x.Orientation1).FirstOrDefault(),
+                        DateOfBirth = Convert.ToDateTime(us.DateOfBirth).ToString("dd-MM-yyyy"),
+                        NickName = us.Name,
+                        FullName = $"{ us.FirstName }  {us.SecondName}",
+                        MobileNumber = us.MobileNo,
+                        PostalCode = us.PostalCode.ToString(),
+                        Gender = us.Gender,
+                        Party = us.Party == null ? "No" : us.Party == true ? "Yes" : "No",
+                        Nationality = us.Nationality == null ? "" : db.NationalityMaster.Where(x => x.Id == nationality).Select(x => x.Nationality).FirstOrDefault(),
+                        Images = us.Image,
+                         Id = $"{us.FirstName} {prefix}{us.Id}"
+
+                    };
+
+                    const char Separator = '|';
+                    if (!string.IsNullOrEmpty(us.Languages))
+                    {
+                        foreach (var language in us.Languages.Split(Separator))
+                        {
+                            var lan = await db.LanguageMaster.FindAsync(Convert.ToInt32(language));
+                            if (lan != null)
+                            {
+                                if (lan.Status)
+                                {
+                                    if (lan != null)
+                                    {
+                                        languages.Add(new Languages { ItemId = lan.Id, ItemLanguage = lan.Language });
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    //if (us.Meeting != null)
+                    //{
+                    //    foreach (var meeting in us.Meeting.Split(Separator))
+                    //    {
+                    //        var lan = await db.Meeting.FindAsync(Convert.ToInt32(meeting));
+                    //        if(lan!=null)
+                    //        {
+                    //            if (lan.Status)
+                    //            {
+                    //                meetings.Add(new Languages { ItemId = lan.Id, ItemLanguage = lan.Meeting1 });
+                    //            }
+                    //        }
+
+                    //    }
+                    //}
+                    if (!string.IsNullOrEmpty(us.Agencies))
+                    {
+                        foreach (var agencis in us.Agencies.Split(Separator))
+                        {
+                            var age = await db.AgenciesMaster.FindAsync(Convert.ToInt32(agencis));
+                            if (age != null)
+                            {
+                                if (age.Status)
+                                {
+                                    agencies.Add(new Agencies { ItemId = age.Id, ItemAgencies = age.HotelName });
+                                }
+                            }
+
+                        }
+                    }
+                    userManagementProfileView.Languages = string.Join(",", languages.Select(x => x.ItemLanguage));
+                    userManagementProfileView.Agencies = string.Join(",", agencies.Select(x => x.ItemAgencies));
+                    userManagementProfileView.Age = (DateTime.Now.Year - Convert.ToDateTime(us.DateOfBirth).Year);
+                    log.Info("[GetPartnerMyProfileView] End");
+                    return Ok(userManagementProfileView);
+                }
+                else
+                {
+                    return Content(HttpStatusCode.NotAcceptable, "Error: Invalid Access");
+                }
+
+            }
+            catch (Exception ex)
+            {
+                log.Error("[GetPartnerMyProfile]", ex);
+                return Content(HttpStatusCode.InternalServerError, "Something went wrong try again");
+            }
         }
         [HttpPut]
         [Route("api/PartnerMyProfile")]
@@ -104,27 +227,27 @@ namespace GCBS_INTERNAL.Controllers.API.Partner
             try
             {
                 log.Info("[PutPartnerMyProfile] Called");
-                if (userDetails.RoleId == Constant.PARTNER_ROLE_ID)
+                if (userDetails.RoleId == Constant.PARTNER_ROLE_ID || userDetails.RoleId == Constant.CUSTOMER_ROLE_ID)
                 {
                     UserManagement userManagement = new UserManagement();
                     var dbusermangement = await db.UserManagement.FindAsync(userDetails.Id);
-                    using(var db2 = new DatabaseContext())
+                    using (var db2 = new DatabaseContext())
                     {
                         userManagement = userManagementPartnerProfile.userManagement;
                         userManagement.FirstName = dbusermangement.FirstName;
                         userManagement.SecondName = dbusermangement.SecondName;
 
                         var list = userManagementPartnerProfile.Languages.Select(x => x.ItemId.ToString()).ToList();
-                        if(list!=null)
+                        if (list != null)
                         {
                             userManagement.Languages = string.Join("|", list);
-                        }   
+                        }
                         var age = userManagementPartnerProfile.Agencies.Select(x => x.ItemId.ToString()).ToList();
-                        if(age!=null)
+                        if (age != null)
                         {
                             userManagement.Agencies = string.Join("|", age);
                         }
-                            
+
                         userManagement.Password = dbusermangement.Password;
                         userManagement.Id = dbusermangement.Id;
                         userManagement.Username = dbusermangement.Username;
@@ -148,8 +271,8 @@ namespace GCBS_INTERNAL.Controllers.API.Partner
                         userManagement.Drinking = dbusermangement.Drinking;
                         userManagement.Meeting = dbusermangement.Meeting;
                         userManagement.ServiceTypeInCall = dbusermangement.ServiceTypeInCall;
-                        userManagement.ServiceTypeOutCall = dbusermangement.ServiceTypeOutCall; 
-                        userManagement.Image = dbusermangement.Image;    
+                        userManagement.ServiceTypeOutCall = dbusermangement.ServiceTypeOutCall;
+                        userManagement.Image = dbusermangement.Image;
                         userManagement.Status = dbusermangement.Status;
                         userManagement.CreatedBy = dbusermangement.CreatedBy;
                         userManagement.CreatedOn = dbusermangement.CreatedOn;
@@ -179,7 +302,7 @@ namespace GCBS_INTERNAL.Controllers.API.Partner
 
         [HttpPut]
         [Route("api/PartnerBioInformation")]
-        public async Task<IHttpActionResult> PutPartnerBioInformation(UserBioInformation  userBioInformation)
+        public async Task<IHttpActionResult> PutPartnerBioInformation(UserBioInformation userBioInformation)
         {
             try
             {
@@ -199,10 +322,10 @@ namespace GCBS_INTERNAL.Controllers.API.Partner
                         userManagement.Hair = userBioInformation.SelectedHair;
                         userManagement.Eyes = userBioInformation.SelectedEyes;
                         var list = userBioInformation.SelectedMeetings.Select(x => x.ItemId.ToString()).ToList();
-                        if(list!=null)
+                        if (list != null)
                         {
                             userManagement.Meeting = string.Join("|", list);
-                        }        
+                        }
                         userManagement.Eyes = userBioInformation.SelectedEyes;
 
                         userManagement.Smoking = userBioInformation.SelectedSmoking;
@@ -212,7 +335,7 @@ namespace GCBS_INTERNAL.Controllers.API.Partner
                         userManagement.ServiceTypeOutCall = userBioInformation.SelectedServiceTypeOutCall;
 
                         userManagement.UpdatedBy = userDetails.Id;
-                        userManagement.UpdatedOn = DateTime.Now;      
+                        userManagement.UpdatedOn = DateTime.Now;
                         db2.Entry(userManagement).State = EntityState.Modified;
                         await db2.SaveChangesAsync();
                         db2.Dispose();

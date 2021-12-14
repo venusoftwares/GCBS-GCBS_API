@@ -399,7 +399,6 @@
     <Compile Include="Controllers\API\PartnerDetailViewController.cs" />
     <Compile Include="Controllers\API\PartnerRatingsController.cs" />
     <Compile Include="Controllers\API\PartnerTypesController.cs" />
-    <Compile Include="Controllers\API\Partner\CustomerMyProfilePageControllerController.cs" />
     <Compile Include="Controllers\API\Partner\PartnerBookingDetailsController.cs" />
     <Compile Include="Controllers\API\Partner\PartnerCommonController.cs" />
     <Compile Include="Controllers\API\Partner\PartnerControllController.cs" />
