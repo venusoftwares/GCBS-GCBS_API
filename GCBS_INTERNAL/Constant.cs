@@ -64,7 +64,7 @@ namespace GCBS_INTERNAL
         public const int BOOKING_TIME_INTERVEL = 30;
 
 
-
+        public const int MARGIN = 10;
 
     }
 }

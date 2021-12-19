@@ -119,6 +119,8 @@ namespace GCBS_INTERNAL.Controllers.CustomerBookingCtl
 
                 decimal Total = basePrices + additionalPrice;
 
+                decimal partnerPrice = (Total - ((Total * Constant.MARGIN) / 100));
+
                 log.Debug("SubmitCustomerBookingDetails" + JsonConvert.SerializeObject(bookingRequest));
 
                 var duration = await db.PartnerBasePrice
@@ -162,7 +164,8 @@ namespace GCBS_INTERNAL.Controllers.CustomerBookingCtl
                         AdditionalPrice = additionalPrice,
                         BasePrice = basePrices,
                         CreatedBy = userDetails.Id,
-                        PartnerPrice = basePrices + additionalPrice,
+                        //PartnerPrice = basePrices + additionalPrice, 
+                        PartnerPrice = partnerPrice,
                         PartnerStatus = Constant.CUSTOMER_BOOKING_STATUS_OPENED,
                         TimeSlot = bookingRequest.TimeSlot,
                         TotalPrice = Total,

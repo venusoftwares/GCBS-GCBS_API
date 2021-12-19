@@ -24,5 +24,17 @@ namespace GCBS_INTERNAL.Models
         public DateTime? UpdatedOn { get; set; }
 
         public int? UpdatedBy { get; set; }
+
+
+        public string BookingTitle { get; set; }
+        public string BookingBody { get; set; }
+        public string CustomerSignUpTitle { get; set; }
+        public string CustomerSignUpBody { get; set; }
+        public string PartnerSignUpTitle { get; set; }
+        public string PartnerSignUpBody { get; set; }
+        public string CancelTitle { get; set; }
+        public string CancelBody { get; set; }
+        public string RejectTitle { get; set; }
+        public string RejectBody { get; set; }
     }
 }
