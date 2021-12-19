@@ -119,7 +119,9 @@ namespace GCBS_INTERNAL.Controllers.CustomerBookingCtl
 
                 decimal Total = basePrices + additionalPrice;
 
-                decimal partnerPrice = (Total - ((Total * Constant.MARGIN) / 100));
+                var margin = await db.MarginMaster.Where(x => x.Status).Select(x => x.CommissionPer).FirstOrDefaultAsync();
+
+                decimal partnerPrice = (Total - ((Total * (decimal)margin) / 100));
 
                 log.Debug("SubmitCustomerBookingDetails" + JsonConvert.SerializeObject(bookingRequest));
 
