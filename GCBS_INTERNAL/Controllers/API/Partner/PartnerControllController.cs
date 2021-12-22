@@ -147,10 +147,10 @@ namespace GCBS_INTERNAL.Controllers.API.Partner
                     userManagementProfileView = new UserManagementProfileView
                     {
                         Address = us.Address,
-                        City = us.CityMaster.CityName,
-                        country = us.CountryMaster.CountryName,
+                        City = us.CityMaster == null ? "" : us.CityMaster.CityName,
+                        country = us.CountryMaster == null ? "" :  us.CountryMaster.CountryName,
                         Email = us.EmailId,
-                        State = us.StateMaster.StateName,
+                        State = us.StateMaster == null ? "" : us.StateMaster.StateName,
                         SexualOrientation = us.SexualOrientation == null ? "" : db.Orientation.Where(x => x.Id == us.SexualOrientation).Select(x => x.Orientation1).FirstOrDefault(),
                         DateOfBirth = Convert.ToDateTime(us.DateOfBirth).ToString("dd-MM-yyyy"),
                         NickName = us.Name,
