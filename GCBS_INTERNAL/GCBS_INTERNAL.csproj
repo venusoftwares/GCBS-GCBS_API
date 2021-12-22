@@ -435,7 +435,9 @@
     <Compile Include="Controllers\FILTER\SubmitFilterLocationController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\Partner\PartnerBaseAndAdditionalController.cs" />
+    <Compile Include="Controllers\Report\ReportEnquiryViewsController.cs" />
     <Compile Include="Controllers\Report\ReportsController.cs" />
+    <Compile Include="Controllers\Support\SupportEnquiryViewsController.cs" />
     <Compile Include="Controllers\Support\SupportController.cs" />
     <Compile Include="Controllers\ValuesController.cs" />
     <Compile Include="Global.asax.cs">

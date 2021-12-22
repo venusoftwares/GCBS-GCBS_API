@@ -1,10 +1,12 @@
 namespace GCBS_INTERNAL.Models.Booking
 {
+    using Newtonsoft.Json;
     using System;
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
     using System.ComponentModel.DataAnnotations.Schema;
     using System.Data.Entity.Spatial;
+    using static GCBS_INTERNAL.Controllers.CustomerBookingCtl.CustomerToPartnerBookingController;
 
     [Table("CustomerBooking")]
     public partial class CustomerBooking
@@ -22,6 +24,10 @@ namespace GCBS_INTERNAL.Models.Booking
         [Required]
         public string Json { get; set; }
 
+        public JsonReponse JsonReponse
+        {
+            get { return JsonConvert.DeserializeObject<JsonReponse>(Json); }
+        }
         public decimal BasePrice { get; set; }
 
         public decimal AdditionalPrice { get; set; }

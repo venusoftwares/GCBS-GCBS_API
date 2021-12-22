@@ -15,6 +15,7 @@ namespace GCBS_INTERNAL.Models
 
         public int ReportFrom { get; set; }
 
+        public string ReportType { get; set; }
         public int ReportTo { get; set; }
 
         public string Description { get; set; }
@@ -28,6 +29,11 @@ namespace GCBS_INTERNAL.Models
         public int CreatedBy { get; set; }
 
         public int? UpdatedBy { get; set; } 
-        
+        [ForeignKey("ReportFrom")]
+        public UserManagement userManagementFrom { get; set; }
+
+        [ForeignKey("ReportTo")]
+        public UserManagement userManagementTo { get; set; }
+
     }
 }

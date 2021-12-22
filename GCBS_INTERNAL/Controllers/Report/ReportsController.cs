@@ -71,7 +71,9 @@ namespace GCBS_INTERNAL.Controllers.Report
                     Status = 1,
                     Description = reportDetails.Description,
                     CreatedOn = DateTime.Now,
-                    Date = DateTime.Now 
+                    Date = DateTime.Now ,
+                    ReportType =reportDetails.Type
+
                 };
                 db.Reports.Add(reports);
                 await db.SaveChangesAsync();
