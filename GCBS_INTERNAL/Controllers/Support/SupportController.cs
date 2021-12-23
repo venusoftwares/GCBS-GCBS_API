@@ -30,6 +30,40 @@ namespace GCBS_INTERNAL.Controllers.Support
                 throw ex;
             }
         }
+
+        [System.Web.Http.Route("api/SumbitSupportType")]
+        [System.Web.Http.HttpPost]
+        public async Task<IHttpActionResult> SumbitSupportType(SupportType supportType)
+        {
+            try
+            {
+               
+                db.SupportType.Add(supportType);
+                await db.SaveChangesAsync();
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+        [System.Web.Http.Route("api/deleteSupportType/{id}")]
+        [System.Web.Http.HttpDelete]
+        public async Task<IHttpActionResult> DeleteSupportType(int id)
+        {
+            try
+            {
+                var list = db.SupportType.Find(id);
+                var a = db.SupportType.Remove(list);
+                await db.SaveChangesAsync();
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
         [System.Web.Http.Route("api/SubmitSupportDetails")]
         public async Task<IHttpActionResult> SubmitSupportDetails(SupportDetails supportDetails)
         {

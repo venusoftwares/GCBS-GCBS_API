@@ -58,6 +58,24 @@ namespace GCBS_INTERNAL.Controllers.Report
             }
         }
 
+        [Route("api/SumbitReportTypes")]
+        [HttpPost]
+        public async Task<IHttpActionResult> SumbitReportTypes(ReportType reportType)
+        {
+            try
+            {
+                reportType.CreatedBy = userDetails.Id;
+                reportType.CreatedOn = DateTime.Now;
+                db.ReportType.Add(reportType);
+                await db.SaveChangesAsync();
+                return Ok(reportType);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
         [Route("api/SubmitReportDetails")]
         public async Task<IHttpActionResult> SubmitSupportDetails(ReportDetails reportDetails)
         {
