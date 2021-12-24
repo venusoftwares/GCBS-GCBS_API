@@ -35,28 +35,21 @@ namespace GCBS_INTERNAL
         public const int PARTNER_ROLE_ID = 3;
         public const int CUSTOMER_ROLE_ID = 9;
         public const int ExpireTime = 15;
-
-        public const int CUSTOMER_BOOKING_STATUS_BOOKED = 0;
-      
-        public const int PARTNER_BOOKING_STATUS_OPENED = 1;
-        public const int PARTNER_BOOKING_STATUS_CLOSED = 2;
-        public const int PARTNER_BOOKING_STATUS_COMPLETED = 3;
-        public const int PARTNER_BOOKING_STATUS_REJECTED = 4;
-
-       
+         
         public const int CUSTOMER_BOOKING_STATUS_OPENED = 1;
-        public const int CUSTOMER_BOOKING_STATUS_CLOSED = 2;
+        public const int CUSTOMER_BOOKING_STATUS_CANCELED = 2;
         public const int CUSTOMER_BOOKING_STATUS_COMPLETED = 3;
         public const int CUSTOMER_BOOKING_STATUS_REJECTED = 4;
+        public const int CUSTOMER_BOOKING_STATUS_ACCEPT = 5;
 
-        public const string PAYMENT_STATUS_PENDING_STR = "PENDING";
-        public const int PAYMENT_STATUS_PENDING = 1;
 
-        public const string PAYMENT_STATUS_COMPLETED_STR = "COMPLETED";
-        public const int PAYMENT_STATUS_COMPLETED = 2;
+        public const int PAYOUT_PENDING_STATUS = 1;
+        public const string PAYOUT_PENDING_STATUS_STRING = "Pending";
 
-        public const string PAYMENT_STATUS_REJECTED_STR = "REJECTED";
-        public const int PAYMENT_STATUS_REJECTED = 3;
+        public const int PAYOUT_SUCCESS_STATUS = 2;
+        public const string PAYOUT_SUCCESS_STATUS_STRING = "Success";
+ 
+
 
         /// <summary>
         /// Booking time intervel minutes

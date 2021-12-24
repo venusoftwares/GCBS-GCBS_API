@@ -34,9 +34,9 @@ namespace GCBS_INTERNAL.Controllers.API
                     Username = x.CustomerManagement.Username+"_"+x.CustomerId,
                     UserId = x.CustomerId,
                     ServiceStatus = x.PartnerStatus,
-                    ServiceStatusToString = x.PartnerStatus == 1 ? "Open" : x.PartnerStatus == 2 ? "Completed" : x.PartnerStatus == 3 ? "Closed" : x.PartnerStatus ==4? "Rejected" : "",
+                    ServiceStatusToString = x.Status == 1 ? "Open" : x.PartnerStatus == 2 ? "Completed" : x.PartnerStatus == 3 ? "Closed" : x.PartnerStatus ==4? "Rejected" : x.PartnerStatus == 5 ? "Accepted": "" ,
                     PaymentStatus =x.Status,
-                    PaymentStatusToString = x.Status == 1 ? Constant.PAYMENT_STATUS_PENDING_STR : x.Status == 2 ? Constant.PAYMENT_STATUS_COMPLETED_STR : x.Status == 3 ? Constant.PAYMENT_STATUS_REJECTED_STR : "None",                    
+                    PaymentStatusToString = x.Status == 1 ? Constant.PAYOUT_PENDING_STATUS_STRING : x.Status == 2 ? Constant.PAYOUT_SUCCESS_STATUS_STRING : "None",                    
                     Mobile = x.CustomerManagement.MobileNo,
                     ServiceDate = x.DateTime,
                     PartnerStatus = x.PartnerStatus

@@ -1,6 +1,7 @@
 ﻿using GCBS_INTERNAL.Controllers.API;
 using GCBS_INTERNAL.Models;
 using GCBS_INTERNAL.Models.Booking;
+using GCBS_INTERNAL.Models.Payment;
 using GCBS_INTERNAL.Provider;
 using Newtonsoft.Json;
 using System;
@@ -121,7 +122,13 @@ namespace GCBS_INTERNAL.Controllers.CustomerBookingCtl
 
                 var margin = await db.MarginMaster.Where(x => x.Status).Select(x => x.CommissionPer).FirstOrDefaultAsync();
 
-                decimal partnerPrice = (Total - ((Total * (decimal)margin) / 100));
+                var tax = await db.TaxSettings.Select(x => x.Percentage).FirstOrDefaultAsync();
+
+                decimal customerTax = ((Total * tax) / 100);
+
+                decimal partnermargin = ((Total * (decimal)margin) / 100);
+
+                decimal partnerPrice = (Total - partnermargin);
 
                 log.Debug("SubmitCustomerBookingDetails" + JsonConvert.SerializeObject(bookingRequest));
 
@@ -129,9 +136,6 @@ namespace GCBS_INTERNAL.Controllers.CustomerBookingCtl
                     .Include(x => x.DurationAndBasePrice)
                    .Where(x => x.UserId == partnerId)
                    .Select(x => x.DurationAndBasePrice.DurationOrTime).FirstOrDefaultAsync();
-
-
-
 
                 if (basePrices > 0)
                 {
@@ -141,43 +145,28 @@ namespace GCBS_INTERNAL.Controllers.CustomerBookingCtl
                         basePrice = GetBasePrice(bookingRequest.TimeDurationId),
                         Date = bookingRequest.date.ToString("dd-MM-yyyy"),
                         TimeSlot = bookingRequest.TimeSlot,
-                        TotalPrices = new BookingTotalResponse { AdditionalPrice = additionalPrice, BasePrice = basePrices, Total = Total }
+                        TotalPrices = new BookingTotalResponse { AdditionalPrice = additionalPrice, BasePrice = basePrices, Total = Total },
+                        PartnerTotal = partnerPrice,
+                        CustomerTotal = Total + customerTax,
+                        Margin = partnermargin,
+                        Tax = customerTax
                     };
                     CustomerBooking customerBooking = new CustomerBooking()
                     {
-
-                        //ProviderId = partnerId,
-                        //AdditionalPrice = additionalPrice,
-                        //BasePrice = basePrices,
-                        //CreatedBy = userDetails.Id,
-                        //PartnerPrice = 0,
-                        //PartnerStatus = 0,
-                        //TimeSlot = bookingRequest.TimeSlot,
-                        //TotalPrice = Total,
-                        //Status = Constant.CUSTOMER_BOOKING_STATUS_BOOKED,
-                        //CustomerStatus = Constant.CUSTOMER_BOOKING_STATUS_BOOKED,
-                        //CustomerId = userDetails.Id,
-                        //CreatedOn = DateTime.Now,
-                        //DateTime = bookingRequest.date,
-                        //Durarion = duration,
-                        //Json = JsonConvert.SerializeObject(jsonReponse),
-
+                         
                         ProviderId = partnerId,
                         AdditionalPrice = additionalPrice,
                         BasePrice = basePrices,
-                        CreatedBy = userDetails.Id,
-                        //PartnerPrice = basePrices + additionalPrice, 
-                        PartnerPrice = partnerPrice,
-                        PartnerStatus = Constant.CUSTOMER_BOOKING_STATUS_OPENED,
+                        CreatedBy = userDetails.Id, 
+                        PartnerPrice = partnerPrice, 
                         TimeSlot = bookingRequest.TimeSlot,
                         TotalPrice = Total,
-                        Status = Constant.CUSTOMER_BOOKING_STATUS_OPENED,
-                        CustomerStatus = Constant.CUSTOMER_BOOKING_STATUS_OPENED,
+                        Status = Constant.CUSTOMER_BOOKING_STATUS_OPENED, 
                         CustomerId = userDetails.Id,
                         CreatedOn = DateTime.Now,
                         DateTime = bookingRequest.date,
                         Durarion = duration,
-                        Json = JsonConvert.SerializeObject(jsonReponse),
+                        Json = JsonConvert.SerializeObject(jsonReponse) 
 
 
                     };
@@ -186,6 +175,23 @@ namespace GCBS_INTERNAL.Controllers.CustomerBookingCtl
                     db.CustomerBooking.Add(customerBooking);
 
                     await db.SaveChangesAsync();
+
+                    PartnerPayoutDetails partnerPayoutDetails = new PartnerPayoutDetails()
+                    {
+                        BookingNo = customerBooking.Id,
+                        Amount = partnerPrice,
+                        Status = false,
+                        CreatedAt = DateTime.Now,
+                        CreatedBy = userDetails.Id,
+                        PartnerId = partnerId,
+                        ReferenceNo = "",
+
+                    };
+
+                    db.PartnerPayoutDetails.Add(partnerPayoutDetails);
+
+                    await db.SaveChangesAsync();
+
                     log.Debug($"SubmitCustomerBooking" + JsonConvert.SerializeObject(customerBooking.Id));
 
 
@@ -292,7 +298,7 @@ namespace GCBS_INTERNAL.Controllers.CustomerBookingCtl
 
                                 bool cj = customerBookingDetails.Any(x => x.DateTime == date && x.TimeSlot == timeSlot);
 
-                                bool check = customerBookingDetails.Any(x => x.DateTime == date && x.TimeSlot == timeSlot && x.PartnerStatus == Constant.PARTNER_BOOKING_STATUS_OPENED);
+                                bool check = customerBookingDetails.Any(x => x.DateTime == date && x.TimeSlot == timeSlot && !(x.Status == Constant.CUSTOMER_BOOKING_STATUS_REJECTED || x.Status ==Constant.CUSTOMER_BOOKING_STATUS_CANCELED));
 
                                 if (!check)
                                 {
@@ -311,7 +317,7 @@ namespace GCBS_INTERNAL.Controllers.CustomerBookingCtl
                                                     {
                                                         ETime = ETime.AddMinutes((int)minutes);
                                                         string timeSlot2 = $"{STime.ToString("hh:mm tt")} To {ETime.ToString("hh:mm tt")}";
-                                                        bool check2 = customerBookingDetails.Any(x => x.DateTime == date && x.TimeSlot == timeSlot2 && x.PartnerStatus == Constant.PARTNER_BOOKING_STATUS_OPENED);
+                                                        bool check2 = customerBookingDetails.Any(x => x.DateTime == date && x.TimeSlot == timeSlot2 && !(x.Status == Constant.CUSTOMER_BOOKING_STATUS_REJECTED || x.Status == Constant.CUSTOMER_BOOKING_STATUS_CANCELED));
                                                         if (!check2)
                                                         {
                                                             calenderDetails.Add(new CalenderDetails { Date = date, cssClass = "", Title = timeSlot2, Start = STime, End = ETime });
@@ -480,6 +486,10 @@ namespace GCBS_INTERNAL.Controllers.CustomerBookingCtl
             public BasePrice basePrice { get; set; }
             public List<AdditionPrice> AdditionalPrice { get; set; }
             public BookingTotalResponse TotalPrices { get; set; }
+            public decimal Tax { get; set; }
+            public decimal CustomerTotal { get; set; }
+            public decimal Margin { get; set; }
+            public decimal PartnerTotal { get; set; }
         }
     }
 }

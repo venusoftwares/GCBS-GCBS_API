@@ -488,6 +488,7 @@
     <Compile Include="Models\PartnerType.cs" />
     <Compile Include="Models\PaymentDetails.cs" />
     <Compile Include="Models\PaymentGateway.cs" />
+    <Compile Include="Models\Payment\PartnerPayoutDetails.cs" />
     <Compile Include="Models\PayoutDetails.cs" />
     <Compile Include="Models\PermissionKeyValue.cs" />
     <Compile Include="Models\PrivacyAndPolicy.cs" />

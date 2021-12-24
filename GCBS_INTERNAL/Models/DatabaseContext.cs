@@ -2,6 +2,7 @@ using GCBS_INTERNAL.Models.Available;
 using GCBS_INTERNAL.Models.Booking;
 using GCBS_INTERNAL.Models.DurartionAndServiceType;
 using GCBS_INTERNAL.Models.Filter;
+using GCBS_INTERNAL.Models.Payment;
 using GCBS_INTERNAL.Models.Support;
 using System;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -105,6 +106,8 @@ namespace GCBS_INTERNAL.Models
         public virtual DbSet<PartnerServiceType> PartnerServiceType { get; set; }
          
         public virtual DbSet<UserFilterDetails> UserFilterDetails { get; set; }
+
+        public virtual DbSet<PartnerPayoutDetails> PartnerPayoutDetails { get; set; }
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
            

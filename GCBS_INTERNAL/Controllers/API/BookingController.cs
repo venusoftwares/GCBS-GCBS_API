@@ -86,11 +86,7 @@ namespace GCBS_INTERNAL.Controllers.API
 
                 customerBooking.CreatedOn = DateTime.Now;
 
-                customerBooking.Status = Constant.CUSTOMER_BOOKING_STATUS_BOOKED;
-
-                customerBooking.PartnerStatus = Constant.PARTNER_BOOKING_STATUS_OPENED;
-
-                customerBooking.CustomerStatus = Constant.CUSTOMER_BOOKING_STATUS_OPENED;
+                customerBooking.Status = Constant.CUSTOMER_BOOKING_STATUS_OPENED;
 
                 //Price fixing 
 
@@ -115,340 +111,165 @@ namespace GCBS_INTERNAL.Controllers.API
             }
         }
         #region Customer
-        [Route("api/CustomerOpenBookingList")]
+        [Route("api/CustomerOrPartnerBookingListDetails")]
 
-        public async Task<IHttpActionResult> CustomerOpenBookingList()
+        public async Task<IHttpActionResult> CustomerOrPartnerBookingListDetails()
         {
             try
             {
+                log.Debug("CustomerOrPartnerBookingListDetails");
+                List<CustomerBooking> list = new List<CustomerBooking>();
 
-
-                log.Debug("CustomerOpenBookingList");
-
-                var list = await db.CustomerBooking
-                    .Include(x => x.UserManagement)
-                    .Where(x => x.CustomerId == userDetails.Id
-                    && x.CustomerStatus == Constant.CUSTOMER_BOOKING_STATUS_OPENED).ToListAsync();
-
-
-                log.Debug($"CustomerOpenBookingList" + JsonConvert.SerializeObject(list));
-
-                return Ok(list.Select(x =>
-               new BookingList
-               {
-                   Id = x.Id,
-                   Amount = x.TotalPrice.ToString(),
-                   BookingDate = x.DateTime,
-                   BookingTime = x.TimeSlot,
-                   Status = "Opened",
-                   Image = x.UserManagement.Image
-
-               }));
-            }
-            catch (Exception ex)
-            {
-                log.Error("CustomerOpenBookingList" + ex.Message);
-                throw ex;
-            }
-        }
-        [Route("api/CustomerClosedBookingList")]
-        public async Task<IHttpActionResult> CustomerClosedBookingList()
-        {
-            try
-            {
-
-
-                log.Debug("CustomerClosedBookingList");
-
-                var list = await db.CustomerBooking
+                if (userDetails.RoleId == 3)
+                {
+                    list = await db.CustomerBooking
                   .Include(x => x.UserManagement)
-                    .Where(x => x.CustomerId == userDetails.Id
-                    && x.CustomerStatus == Constant.CUSTOMER_BOOKING_STATUS_CLOSED).ToListAsync();
+                  .Where(x => x.ProviderId == userDetails.Id).ToListAsync();
+                }
+                else
+                {
+                    list = await db.CustomerBooking
+                 .Include(x => x.UserManagement)
+                 .Where(x => x.CustomerId == userDetails.Id).ToListAsync();
+                }
 
 
-
-                log.Debug($"CustomerClosedBookingList" + JsonConvert.SerializeObject(list));
-
-                return Ok(list.Select(x =>
+                var list2 = list.Select(x =>
                new BookingList
                {
                    Id = x.Id,
                    Amount = x.TotalPrice.ToString(),
-                   BookingDate = x.DateTime,
-                   BookingTime = x.TimeSlot,
-                   Status = "Closed",
-                   Image = x.UserManagement.Image,
-
-
-               }));
-            }
-            catch (Exception ex)
-            {
-                log.Error("CustomerClosedBookingList" + ex.Message);
-                throw ex;
-            }
-        }
-        [Route("api/CustomerCompletedBookingList")]
-        public async Task<IHttpActionResult> CustomerCompletedBookingList()
-        {
-            try
-            {
-
-
-                log.Debug("CustomerCompletedBookingList");
-
-                var list = await db.CustomerBooking
-                    .Include(x => x.UserManagement)
-                    .Where(x => x.CustomerId == userDetails.Id
-                     && x.CustomerStatus == Constant.CUSTOMER_BOOKING_STATUS_COMPLETED).ToListAsync();
-
-
-
-                log.Debug($"CustomerCompletedBookingList" + JsonConvert.SerializeObject(list));
-
-                return Ok(list.Select(x =>
-               new BookingList
-               {
-                   Id = x.Id,
-                   Amount = x.TotalPrice.ToString(),
-                   BookingDate = x.DateTime,
-                   BookingTime = x.TimeSlot,
-                   Status = "Completed",
-                   Image = x.UserManagement.Image
-
-               }));
-            }
-            catch (Exception ex)
-            {
-                log.Error("CustomerCompletedBookingList" + ex.Message);
-                throw ex;
-            }
-        }
-        [Route("api/CustomerRejectedBookingList")]
-        public async Task<IHttpActionResult> CustomerRejectedBookingList()
-        {
-            try
-            {
-
-
-                log.Debug("CustomerRejectedBookingList");
-
-                var list = await db.CustomerBooking
-                    .Include(x => x.UserManagement)
-                    .Where(x => x.CustomerId == userDetails.Id
-                     && x.CustomerStatus == Constant.CUSTOMER_BOOKING_STATUS_REJECTED).ToListAsync();
-
-
-
-                log.Debug($"CustomerRejectedBookingList" + JsonConvert.SerializeObject(list));
-
-                return Ok(list.Select(x =>
-               new BookingList
-               {
-                   Id = x.Id,
-                   Amount = x.TotalPrice.ToString(),
-                   BookingDate = x.DateTime,
-                   BookingTime = x.TimeSlot,
-                   Status = "Rejected",
-                   Image = x.UserManagement.Image
-
-               }));
-            }
-            catch (Exception ex)
-            {
-                log.Error("CustomerRejectedBookingList" + ex.Message);
-                throw ex;
-            }
-        }
-
-        #endregion
-
-
-        #region Partner
-
-
-        [Route("api/PartnerOpenBookingList")]
-
-        public async Task<IHttpActionResult> PartnerOpenBookingList()
-        {
-            try
-            {
-
-
-                log.Debug("PartnerOpenBookingList");
-
-                var list = await db.CustomerBooking
-                    .Include(x => x.CustomerManagement)
-                    .Where(x => x.ProviderId == userDetails.Id
-                    && x.PartnerStatus == Constant.PARTNER_BOOKING_STATUS_OPENED).ToListAsync();
-
-
-
-                log.Debug($"PartnerOpenBookingList" + JsonConvert.SerializeObject(list));
-
-                return Ok(list.Select(x =>
-               new BookingList
-               {
-                   Id = x.Id,
-                   Amount = x.PartnerPrice.ToString(),
                    BookingDate = x.DateTime,
                    BookingTime = x.TimeSlot,
                    Status = "Opened",
-                   Image = x.CustomerManagement.Image,
-                   UserDetailId = x.CustomerId
+                   Image = x.UserManagement.Image,
+                   StausInt = x.Status
 
-               }));
+               }).ToList();
+
+                BoolingListViewModel boolingListViewModel = new BoolingListViewModel();
+
+                boolingListViewModel.OpenBookingList = list2.Where(x => x.StausInt == Constant.CUSTOMER_BOOKING_STATUS_OPENED).ToList();
+                boolingListViewModel.AcceptBookingList = list2.Where(x => x.StausInt == Constant.CUSTOMER_BOOKING_STATUS_ACCEPT).ToList();
+                boolingListViewModel.CompletedBookingList = list2.Where(x => x.StausInt == Constant.CUSTOMER_BOOKING_STATUS_COMPLETED).ToList();
+                boolingListViewModel.RejectedBookingList = list2.Where(x => x.StausInt == Constant.CUSTOMER_BOOKING_STATUS_REJECTED).ToList();
+                boolingListViewModel.CancelBookingList = list2.Where(x => x.StausInt == Constant.CUSTOMER_BOOKING_STATUS_CANCELED).ToList();
+
+                log.Debug($"CustomerOrPartnerBookingListDetails");
+
+
+                return Ok(boolingListViewModel);
             }
+
+
             catch (Exception ex)
             {
-                log.Error("PartnerOpenBookingList" + ex.Message);
+                log.Error("CustomerOrPartnerBookingListDetails" + ex.Message);
                 throw ex;
             }
         }
-        [Route("api/PartnerClosedBookingList")]
-        public async Task<IHttpActionResult> PartnerClosedBookingList()
+
+        [Route("api/CustomerOrPartnerPaymentHistory")]
+
+        public async Task<IHttpActionResult> CustomerOrPartnerPaymentHistory()
         {
             try
             {
+                log.Debug("CustomerOrPartnerPaymentHistory");
+                List<CustomerBooking> list = new List<CustomerBooking>();
+                List<BookingPaymentHistory> histories = new List<BookingPaymentHistory>();
 
+                if (userDetails.RoleId == 3)
+                {
+                    var list3 = await db.PartnerPayoutDetails.Include(x => x.customerBooking).OrderByDescending(x => x.CreatedAt).Where(x => x.PartnerId == userDetails.Id).ToListAsync();
+                    var list2 = list3.Select(x =>
+              new BookingPaymentHistory
+              {
+                  BookingNo = x.Id,
+                  BookingDate = Convert.ToDateTime(x.customerBooking.CreatedOn).ToString("yyyy-MM-dd"),
+                  ServiceDate = x.customerBooking.DateTime.ToString("yyyy-MM-dd"),
+                  ReferenceNo = x.ReferenceNo,
+                  Amount = x.Amount,
+                  Status = x.Status ? "Transfered" : "Pending"
 
-                log.Debug("PartnerClosedBookingList");
+              }).ToList();
+                    return Ok(list2);
 
-                var list = await db.CustomerBooking
-                   .Include(x => x.CustomerManagement)
-                    .Where(x => x.ProviderId == userDetails.Id
-                    && x.PartnerStatus == Constant.PARTNER_BOOKING_STATUS_CLOSED).ToListAsync();
+                }
+                else
+                {
+                    list = await db.CustomerBooking
+                 .Include(x => x.UserManagement)
+                 .Where(x => x.CustomerId == userDetails.Id).OrderByDescending(x => x.CreatedOn).ToListAsync();
 
-
-
-                log.Debug($"PartnerClosedBookingList" + JsonConvert.SerializeObject(list));
-
-                return Ok(list.Select(x =>
-               new BookingList
+                    var list2 = list.Select(x =>
+               new BookingPaymentHistory
                {
-                   Id = x.Id,
-                   Amount = x.PartnerPrice.ToString(),
-                   BookingDate = x.DateTime,
-                   BookingTime = x.TimeSlot,
-                   Status = "Closed",
-                   Image = x.CustomerManagement.Image
+                   BookingNo = x.Id,
+                   BookingDate = Convert.ToDateTime(x.CreatedOn).ToString("yyyy-MM-dd"),
+                   ServiceDate = x.DateTime.ToString("yyyy-MM-dd"),
+                   Amount = x.JsonReponse.CustomerTotal,
+                   ReferenceNo = "",
+                   Status = ""
 
-               }));
+               }).ToList();
+                    return Ok(list2);
+                }
             }
+
             catch (Exception ex)
             {
-                log.Error("PartnerClosedBookingList" + ex.Message);
+                log.Error("CustomerOrPartnerPaymentHistory" + ex.Message);
                 throw ex;
             }
         }
-        [Route("api/PartnerCompletedBookingList")]
-        public async Task<IHttpActionResult> PartnerCompletedBookingList()
+
+        [Route("api/PartnerOrCustomerStatusUpdate/bookigId/{bookingid}/status/{status}")]
+        public IHttpActionResult PartnerOrCustomerStatusUpdate(int bookingid, int status)
         {
             try
             {
-
-
-                log.Debug("PartnerCompletedBookingList");
-
-                var list = await db.CustomerBooking
-                   .Include(x => x.CustomerManagement)
-                    .Where(x => x.ProviderId == userDetails.Id
-                    && x.PartnerStatus == Constant.PARTNER_BOOKING_STATUS_COMPLETED).ToListAsync();
-
-
-
-                log.Debug($"PartnerCompletedBookingList" + JsonConvert.SerializeObject(list));
-
-                return Ok(list.Select(x =>
-               new BookingList
-               {
-                   Id = x.Id,
-                   Amount = x.PartnerPrice.ToString(),
-                   BookingDate = x.DateTime,
-                   BookingTime = x.TimeSlot,
-                   Status = "Completed",
-                   Image = x.CustomerManagement.Image
-
-               }));
+                log.Debug("PartnerOrCustomerStatusUpdate");
+                var customer = db.CustomerBooking.Find(bookingid);
+                customer.Status = status;
+                customer.UpdatedBy = userDetails.Id;
+                customer.UpdatedOn = DateTime.Now;
+                db.Entry(customer).State = EntityState.Modified;
+                db.SaveChanges();
+                return Ok();
             }
+
             catch (Exception ex)
             {
-                log.Error("PartnerCompletedBookingList" + ex.Message);
+                log.Error("CustomerOrPartnerPaymentHistory" + ex.Message);
                 throw ex;
             }
         }
-        [Route("api/PartnerRejectedBookingList")]
-        public async Task<IHttpActionResult> PartnerRejectedBookingList()
+        //        Booking No,
+        //        Booking Date, 
+        //Service Date,
+        //Service Amount , 130 % 7 + 25 = 155
+        //ReferenceNumber,
+        //Status, (Success)
+
+        public class BookingPaymentHistory
         {
-            try
-            {
-
-
-                log.Debug("PartnerRejectedBookingList");
-
-                var list = await db.CustomerBooking
-                    .Include(x => x.CustomerManagement)
-                    .Where(x => x.ProviderId == userDetails.Id
-                    && x.PartnerStatus == Constant.PARTNER_BOOKING_STATUS_REJECTED).ToListAsync();
-
-
-
-                log.Debug($"PartnerRejectedBookingList" + JsonConvert.SerializeObject(list));
-
-                return Ok(list.Select(x =>
-               new BookingList
-               {
-                   Id = x.Id,
-                   Amount = x.PartnerPrice.ToString(),
-                   BookingDate = x.DateTime,
-                   BookingTime = x.TimeSlot,
-                   Status = "Rejected",
-                   Image = x.CustomerManagement.Image
-
-               }));
-            }
-            catch (Exception ex)
-            {
-                log.Error("PartnerRejectedBookingList" + ex.Message);
-                throw ex;
-            }
+            public int BookingNo { get; set; }
+            public string BookingDate { get; set; }
+            public string ServiceDate { get; set; }
+            public string ReferenceNo { get; set; }
+            public decimal Amount { get; set; }
+            public string Status { get; set; }
         }
-
         #endregion
-
-        [Route("api/id/{id}/PartnerOrCustomerCancelBooking")]
-
-        public async Task<IHttpActionResult> PartnerRejectBooking(int id)
+        public class BoolingListViewModel
         {
-            CustomerBooking customerBooking = await db.CustomerBooking.FindAsync(id);
-
-            customerBooking.PartnerStatus = Constant.PARTNER_BOOKING_STATUS_REJECTED;
-            customerBooking.CustomerStatus = Constant.CUSTOMER_BOOKING_STATUS_REJECTED;
-            customerBooking.UpdatedBy = userDetails.Id;
-            customerBooking.UpdatedOn = DateTime.Now;
-            db.Entry(customerBooking).State = EntityState.Modified;
-            await db.SaveChangesAsync();
-
-            return StatusCode(HttpStatusCode.NoContent);
+            public List<BookingList> OpenBookingList { get; set; }
+            public List<BookingList> AcceptBookingList { get; set; }
+            public List<BookingList> CancelBookingList { get; set; }
+            public List<BookingList> RejectedBookingList { get; set; }
+            public List<BookingList> CompletedBookingList { get; set; }
         }
-
-
-        [Route("api/id/{id}/PartnerOrCustomerCompletedBooking")]
-
-        public async Task<IHttpActionResult> PartnerCompletedBooking(int id)
-        {
-            CustomerBooking customerBooking = await db.CustomerBooking.FindAsync(id);
-
-            customerBooking.PartnerStatus = Constant.PARTNER_BOOKING_STATUS_COMPLETED;
-            customerBooking.CustomerStatus = Constant.CUSTOMER_BOOKING_STATUS_COMPLETED;
-            customerBooking.UpdatedBy = userDetails.Id;
-            customerBooking.UpdatedOn = DateTime.Now;
-            db.Entry(customerBooking).State = EntityState.Modified;
-            await db.SaveChangesAsync();
-
-            return StatusCode(HttpStatusCode.NoContent);
-        }
-
 
         public class BookingList
         {
@@ -459,6 +280,7 @@ namespace GCBS_INTERNAL.Controllers.API
             public string Amount { get; set; }
             public string Location { get; set; }
             public string Status { get; set; }
+            public int StausInt { get; set; }
             public string Image { get; set; }
             public string ServiceType { get; set; }
             public int UserDetailId { get; set; }

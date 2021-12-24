@@ -34,7 +34,7 @@ namespace GCBS_INTERNAL.Models.Booking
 
         public decimal TotalPrice { get; set; }
 
-        public decimal PartnerPrice { get; set; }
+        public decimal PartnerPrice { get; set; } 
 
         public int CustomerId { get; set; }
 
