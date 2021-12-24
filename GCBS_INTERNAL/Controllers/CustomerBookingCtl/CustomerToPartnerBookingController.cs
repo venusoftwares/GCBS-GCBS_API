@@ -151,49 +151,60 @@ namespace GCBS_INTERNAL.Controllers.CustomerBookingCtl
                         Margin = partnermargin,
                         Tax = customerTax
                     };
-                    CustomerBooking customerBooking = new CustomerBooking()
+
+                    using(var db4 = new DatabaseContext())
                     {
-                         
-                        ProviderId = partnerId,
-                        AdditionalPrice = additionalPrice,
-                        BasePrice = basePrices,
-                        CreatedBy = userDetails.Id, 
-                        PartnerPrice = partnerPrice, 
-                        TimeSlot = bookingRequest.TimeSlot,
-                        TotalPrice = Total,
-                        Status = Constant.CUSTOMER_BOOKING_STATUS_OPENED, 
-                        CustomerId = userDetails.Id,
-                        CreatedOn = DateTime.Now,
-                        DateTime = bookingRequest.date,
-                        Durarion = duration,
-                        Json = JsonConvert.SerializeObject(jsonReponse) 
+                        bool check = db.CustomerBooking.Where(x => x.Durarion == duration 
+                        && x.TimeSlot == bookingRequest.TimeSlot 
+                        && x.DateTime == bookingRequest.date 
+                        && x.ProviderId == partnerId && !(x.Status == Constant.CUSTOMER_BOOKING_STATUS_CANCELED || x.Status == Constant.CUSTOMER_BOOKING_STATUS_REJECTED)).Any();
+
+                        if(!check)
+                        {
+                            CustomerBooking customerBooking = new CustomerBooking()
+                            {
+
+                                ProviderId = partnerId,
+                                AdditionalPrice = additionalPrice,
+                                BasePrice = basePrices,
+                                CreatedBy = userDetails.Id,
+                                PartnerPrice = partnerPrice,
+                                TimeSlot = bookingRequest.TimeSlot,
+                                TotalPrice = Total,
+                                Status = Constant.CUSTOMER_BOOKING_STATUS_OPENED,
+                                CustomerId = userDetails.Id,
+                                CreatedOn = DateTime.Now,
+                                DateTime = bookingRequest.date,
+                                Durarion = duration,
+                                Json = JsonConvert.SerializeObject(jsonReponse)
 
 
-                    };
+                            };
 
 
-                    db.CustomerBooking.Add(customerBooking);
+                            db4.CustomerBooking.Add(customerBooking);
 
-                    await db.SaveChangesAsync();
+                            await db4.SaveChangesAsync();
 
-                    PartnerPayoutDetails partnerPayoutDetails = new PartnerPayoutDetails()
-                    {
-                        BookingNo = customerBooking.Id,
-                        Amount = partnerPrice,
-                        Status = false,
-                        CreatedAt = DateTime.Now,
-                        CreatedBy = userDetails.Id,
-                        PartnerId = partnerId,
-                        ReferenceNo = "",
+                            PartnerPayoutDetails partnerPayoutDetails = new PartnerPayoutDetails()
+                            {
+                                BookingNo = customerBooking.Id,
+                                Amount = partnerPrice,
+                                Status = false,
+                                CreatedAt = DateTime.Now,
+                                CreatedBy = userDetails.Id,
+                                PartnerId = partnerId,
+                                ReferenceNo = "",
 
-                    };
+                            };
 
-                    db.PartnerPayoutDetails.Add(partnerPayoutDetails);
+                            db4.PartnerPayoutDetails.Add(partnerPayoutDetails);
 
-                    await db.SaveChangesAsync();
+                            await db4.SaveChangesAsync();
 
-                    log.Debug($"SubmitCustomerBooking" + JsonConvert.SerializeObject(customerBooking.Id));
-
+                            log.Debug($"SubmitCustomerBooking" + JsonConvert.SerializeObject(customerBooking.Id));
+                        }
+                    } 
 
                 }
             }
@@ -205,6 +216,32 @@ namespace GCBS_INTERNAL.Controllers.CustomerBookingCtl
             return Ok(bookingRequest);
         }
 
+
+        [Route("api/UpdatePayoutStatus/{id}")]
+        [HttpPost]
+        public IHttpActionResult UpdatePayoutStatus(int id)
+        {
+            try
+            {
+                var payoutDetails = db.PartnerPayoutDetails.Where(x => x.BookingNo == id).FirstOrDefault();
+
+                payoutDetails.Status = true;
+
+                payoutDetails.UpdatedBy = userDetails.Id;
+
+                payoutDetails.UpdateAt = DateTime.Now;
+
+                db.Entry(payoutDetails).State = EntityState.Modified;
+
+                db.SaveChanges();
+
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
         private BasePrice GetBasePrice(int timeDurationId)
         {
             var list = db.PartnerBasePrice.Include(x => x.DurationAndBasePrice).Where(x => x.id == timeDurationId).FirstOrDefault();

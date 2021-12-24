@@ -16,68 +16,70 @@ namespace GCBS_INTERNAL.Controllers.API.Transactions
     {
         //(Service Status completed or cancelled) and Partner status pending
         private DatabaseContext db = new DatabaseContext();
-        //[ResponseType(typeof(PastTransactionsViewModel))]
-        //public async Task<IHttpActionResult> PostOpenTransactions(PastTransactionsViewModel enquiryViewModel)
-        //{
-        //    var res = await db.CustomerBooking
-        //          .Include(x => x.CustomerManagement)
-        //          .Include(x => x.UserManagement)
-        //          .Select(x => new EnquiryViewModel
-        //          {
-        //              Id = x.Id,
-        //              Email = x.CustomerManagement.EmailId,
-                   
-        //              ServicePartner = x.UserManagement.Username + "_" + x.ProviderId,
-        //              ServicePartnerId = x.Id,
-        //              Username = x.CustomerManagement.Username + "_" + x.CustomerId,
-        //              UserId = x.CustomerId,
-        //              ServiceStatus = x.PartnerStatus,
-        //              ServiceStatusToString = x.PartnerStatus == 1 ? "Open" : x.PartnerStatus == 2 ? "Completed" : x.PartnerStatus == 3 ? "Closed" : x.PartnerStatus == 4 ? "Rejected" : "",
-        //              PaymentStatus = x.Status,
-        //              PaymentStatusToString = x.Status == 1 ? Constant.PAYMENT_STATUS_PENDING_STR : x.Status == 2 ? Constant.PAYMENT_STATUS_COMPLETED_STR : x.Status == 3 ? Constant.PAYMENT_STATUS_REJECTED_STR : "None",
-        //              Mobile = x.CustomerManagement.MobileNo,
-        //              ServiceDate = x.DateTime,
-        //              PartnerStatus = x.PartnerStatus
-        //          }).Where(x => (x.ServiceStatus == 2 || x.ServiceStatus == 3) && x.PaymentStatus == 1).ToListAsync();
+        [ResponseType(typeof(PastTransactionsViewModel))]
+        public async Task<IHttpActionResult> PostOpenTransactions(PastTransactionsViewModel enquiryViewModel)
+        {
+            var list = db.PartnerPayoutDetails.Include(x => x.customerBooking).Include(x => x.userManagement).Where(x => x.Status == true && x.customerBooking.Status == Constant.CUSTOMER_BOOKING_STATUS_COMPLETED)
+                  .ToList();
 
-        //    if (enquiryViewModel != null)
-        //    {
-        //        if (enquiryViewModel.UserId > 0)
-        //        {
-        //            res = res.Where(x => x.UserId == enquiryViewModel.UserId).ToList();
-        //        }
-        //        if (enquiryViewModel.ServicePartnerId > 0)
-        //        {
-        //            res = res.Where(x => x.ServicePartnerId == enquiryViewModel.ServicePartnerId).ToList();
-        //        }
-        //        if (enquiryViewModel.ServiceId > 0)
-        //        {
-        //            res = res.Where(x => x.ServiceId == enquiryViewModel.ServiceId).ToList();
-        //        }
-        //        if (!string.IsNullOrEmpty(enquiryViewModel.Username))
-        //        {
-        //            res = res.Where(x => x.Username.ToLower() == enquiryViewModel.Username.ToLower()).ToList();
-        //        }
-        //        if (!string.IsNullOrEmpty(enquiryViewModel.Email))
-        //        {
-        //            res = res.Where(x => x.Email.ToLower() == enquiryViewModel.Email.ToLower()).ToList();
-        //        }
-        //        if (!string.IsNullOrEmpty(enquiryViewModel.Mobile))
-        //        {
-        //            res = res.Where(x => x.Mobile.ToLower() == enquiryViewModel.Mobile.ToLower()).ToList();
-        //        }
-        //        if (enquiryViewModel.ServiceStatus > 0)
-        //        {
-        //            res = res.Where(x => x.ServiceStatus == enquiryViewModel.ServiceStatus).ToList();
-        //        }
-        //        if (enquiryViewModel.FromDate != null && enquiryViewModel.ToDate != null)
-        //        {
-        //            res = res.Where(x => x.ServiceDate >= Convert.ToDateTime(enquiryViewModel.FromDate)
-        //            && x.ServiceDate <= Convert.ToDateTime(enquiryViewModel.ToDate)).ToList();
-        //        }
-        //    }
-        //    return Ok(res);
-        //}
+
+            List<EnquiryViewModel> res = new List<EnquiryViewModel>();
+
+            foreach (var x in list)
+            {
+                res.Add(new EnquiryViewModel
+                {
+                    Id = x.customerBooking.Id,
+                    Email = x.userManagement.EmailId,
+                    ServicePartner = x.userManagement.FirstName + "_" + x.PartnerId,
+                    ServicePartnerId = x.Id,
+                    ServiceStatus = x.customerBooking.Status,
+                    ServiceStatusToString = x.customerBooking.Status == 1 ? "Opened"
+                    : x.customerBooking.Status == 2 ? "Canceled" : x.customerBooking.Status == 3 ? "Completed" : x.customerBooking.Status == 4 ? "Rejected" : x.customerBooking.Status == 5 ? "Accepted" : "",
+                    Mobile = x.userManagement.MobileNo,
+                    ServiceDate = x.customerBooking.DateTime
+                });
+            }
+
+
+            if (enquiryViewModel != null)
+            {
+                if (enquiryViewModel.UserId > 0)
+                {
+                    res = res.Where(x => x.UserId == enquiryViewModel.UserId).ToList();
+                }
+                if (enquiryViewModel.ServicePartnerId > 0)
+                {
+                    res = res.Where(x => x.ServicePartnerId == enquiryViewModel.ServicePartnerId).ToList();
+                }
+                if (enquiryViewModel.ServiceId > 0)
+                {
+                    res = res.Where(x => x.ServiceId == enquiryViewModel.ServiceId).ToList();
+                }
+                if (!string.IsNullOrEmpty(enquiryViewModel.Username))
+                {
+                    res = res.Where(x => x.Username.ToLower() == enquiryViewModel.Username.ToLower()).ToList();
+                }
+                if (!string.IsNullOrEmpty(enquiryViewModel.Email))
+                {
+                    res = res.Where(x => x.Email.ToLower() == enquiryViewModel.Email.ToLower()).ToList();
+                }
+                if (!string.IsNullOrEmpty(enquiryViewModel.Mobile))
+                {
+                    res = res.Where(x => x.Mobile.ToLower() == enquiryViewModel.Mobile.ToLower()).ToList();
+                }
+                if (enquiryViewModel.ServiceStatus > 0)
+                {
+                    res = res.Where(x => x.ServiceStatus == enquiryViewModel.ServiceStatus).ToList();
+                }
+                if (enquiryViewModel.FromDate != null && enquiryViewModel.ToDate != null)
+                {
+                    res = res.Where(x => x.ServiceDate >= Convert.ToDateTime(enquiryViewModel.FromDate)
+                    && x.ServiceDate <= Convert.ToDateTime(enquiryViewModel.ToDate)).ToList();
+                }
+            }
+            return Ok(res);
+        }
 
         protected override void Dispose(bool disposing)
         {

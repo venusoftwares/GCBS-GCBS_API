@@ -11,6 +11,7 @@ using System.Web.Http;
 using System.Web.Http.Description;
 using GCBS_INTERNAL.Models;
 using GCBS_INTERNAL.Provider;
+using GCBS_INTERNAL.Models.Booking;
 namespace GCBS_INTERNAL.Controllers.API
 {
     [CustomAuthorize]
@@ -22,25 +23,33 @@ namespace GCBS_INTERNAL.Controllers.API
         [ResponseType(typeof(EnquiryViewModel))]
         public async Task< IHttpActionResult> PostEnquiryDetails(EnquiryViewModel enquiryViewModel)
         {
-            var res = await db.CustomerBooking
+            var s = await db.CustomerBooking.ToListAsync();
+            var list =  db.CustomerBooking
                 .Include(x => x.CustomerManagement)
-                .Include(x => x.UserManagement) 
-                .Select(x => new EnquiryViewModel
+                .Include(x => x.UserManagement).OrderByDescending(x=>x.Id).ToList();
+
+
+            List<EnquiryViewModel> res = new List<EnquiryViewModel>();
+            
+            foreach(CustomerBooking x in list)
+            {
+                res.Add(new EnquiryViewModel
                 {
                     Id = x.Id,
-                    Email = x.CustomerManagement.EmailId,                   
-                    ServicePartner = x.UserManagement.Username+"_"+ x.ProviderId,
+                    Email = x.CustomerManagement.EmailId,
+                    ServicePartner = x.UserManagement.FirstName + "_" + x.ProviderId,
                     ServicePartnerId = x.Id,
-                    Username = x.CustomerManagement.Username+"_"+x.CustomerId,
+                    Username = x.CustomerManagement.FirstName + "_" + x.CustomerId,
                     UserId = x.CustomerId,
-                    ServiceStatus = x.PartnerStatus,
-                    ServiceStatusToString = x.Status == 1 ? "Open" : x.PartnerStatus == 2 ? "Completed" : x.PartnerStatus == 3 ? "Closed" : x.PartnerStatus ==4? "Rejected" : x.PartnerStatus == 5 ? "Accepted": "" ,
-                    PaymentStatus =x.Status,
-                    PaymentStatusToString = x.Status == 1 ? Constant.PAYOUT_PENDING_STATUS_STRING : x.Status == 2 ? Constant.PAYOUT_SUCCESS_STATUS_STRING : "None",                    
+                    ServiceStatus = x.Status,
+                    ServiceStatusToString = x.Status == 1 ? "Open" : x.Status == 2 ? "Completed" : x.Status == 3 ? "Closed" : x.Status == 4 ? "Rejected" : x.Status == 5 ? "Accepted" : "",
                     Mobile = x.CustomerManagement.MobileNo,
                     ServiceDate = x.DateTime,
+                    BookingDate = (DateTime)x.CreatedOn,
                     PartnerStatus = x.PartnerStatus
-                }).ToListAsync();
+                }); 
+            }
+           
 
             if (enquiryViewModel != null)
             {

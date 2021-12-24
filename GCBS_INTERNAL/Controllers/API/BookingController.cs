@@ -124,13 +124,20 @@ namespace GCBS_INTERNAL.Controllers.API
                 {
                     list = await db.CustomerBooking
                   .Include(x => x.UserManagement)
-                  .Where(x => x.ProviderId == userDetails.Id).ToListAsync();
+                  .Include(x => x.UserManagement.CountryMaster)
+                  .Include(x => x.UserManagement.StateMaster)
+                    .Include(x => x.UserManagement.CityMaster)
+                  .Where(x => x.ProviderId == userDetails.Id).OrderByDescending(x=> x.Id).ToListAsync();
                 }
                 else
                 {
                     list = await db.CustomerBooking
                  .Include(x => x.UserManagement)
-                 .Where(x => x.CustomerId == userDetails.Id).ToListAsync();
+                 .Include(x => x.UserManagement.CountryMaster)
+                  .Include(x => x.UserManagement.StateMaster)
+                    .Include(x => x.UserManagement.CityMaster)
+                 .Where(x => x.CustomerId == userDetails.Id).OrderByDescending(x => x.Id)
+                 .ToListAsync();
                 }
 
 
@@ -138,12 +145,15 @@ namespace GCBS_INTERNAL.Controllers.API
                new BookingList
                {
                    Id = x.Id,
-                   Amount = x.TotalPrice.ToString(),
-                   BookingDate = x.DateTime,
+                   Amount = userDetails.RoleId == 3 ? x.JsonReponse.PartnerTotal.ToString() : x.JsonReponse.CustomerTotal.ToString(),
+                   ServiceDate = x.DateTime,
+                   BookingDate = (DateTime)x.CreatedOn,
                    BookingTime = x.TimeSlot,
                    Status = "Opened",
                    Image = x.UserManagement.Image,
+                   Location = Location(x.UserManagement),
                    StausInt = x.Status
+
 
                }).ToList();
 
@@ -169,6 +179,28 @@ namespace GCBS_INTERNAL.Controllers.API
             }
         }
 
+        private string Location(UserManagement userManagement)
+        {
+            string location = "";
+            if (userManagement.CountryMaster != null)
+            {
+                location = location + " " + userManagement.CountryMaster.CountryName;
+            }
+            if (userManagement.StateMaster != null)
+            {
+                location = location + ", " + userManagement.StateMaster.StateName;
+            }
+            if (userManagement.CityMaster != null)
+            {
+                location = location + ", " + userManagement.CityMaster.CityName;
+            }
+            if (!string.IsNullOrEmpty(userManagement.Address))
+            {
+                location = location + ", " + userManagement.Address;
+            }
+            return location;
+        }
+
         [Route("api/CustomerOrPartnerPaymentHistory")]
 
         public async Task<IHttpActionResult> CustomerOrPartnerPaymentHistory()
@@ -185,11 +217,12 @@ namespace GCBS_INTERNAL.Controllers.API
                     var list2 = list3.Select(x =>
               new BookingPaymentHistory
               {
-                  BookingNo = x.Id,
+                  BookingNo = x.customerBooking.Id,
                   BookingDate = Convert.ToDateTime(x.customerBooking.CreatedOn).ToString("yyyy-MM-dd"),
                   ServiceDate = x.customerBooking.DateTime.ToString("yyyy-MM-dd"),
                   ReferenceNo = x.ReferenceNo,
-                  Amount = x.Amount,
+
+                  TotalAmount = x.Amount,
                   Status = x.Status ? "Transfered" : "Pending"
 
               }).ToList();
@@ -208,7 +241,9 @@ namespace GCBS_INTERNAL.Controllers.API
                    BookingNo = x.Id,
                    BookingDate = Convert.ToDateTime(x.CreatedOn).ToString("yyyy-MM-dd"),
                    ServiceDate = x.DateTime.ToString("yyyy-MM-dd"),
-                   Amount = x.JsonReponse.CustomerTotal,
+                   TotalAmount = x.JsonReponse.CustomerTotal, 
+                   Tax = x.JsonReponse.Tax,
+                   Total = x.JsonReponse.TotalPrices.Total,
                    ReferenceNo = "",
                    Status = ""
 
@@ -258,7 +293,10 @@ namespace GCBS_INTERNAL.Controllers.API
             public string BookingDate { get; set; }
             public string ServiceDate { get; set; }
             public string ReferenceNo { get; set; }
-            public decimal Amount { get; set; }
+
+            public decimal Total { get; set; }
+            public decimal Tax { get; set; }
+            public decimal TotalAmount { get; set; }
             public string Status { get; set; }
         }
         #endregion
@@ -274,6 +312,7 @@ namespace GCBS_INTERNAL.Controllers.API
         public class BookingList
         {
             public int Id { get; set; }
+            public DateTime ServiceDate { get; set; }
             public DateTime BookingDate { get; set; }
             public string DisplayBookingDate { get { return BookingDate.ToString("dd-MM-yyyy"); } }
             public string BookingTime { get; set; }

@@ -338,6 +338,7 @@
     <Compile Include="Areas\HelpPage\XmlDocumentationProvider.cs" />
     <Compile Include="Constant.cs" />
     <Compile Include="Controllers\API\Admin\AdminBookingDetailsController.cs" />
+    <Compile Include="Controllers\API\Admin\AdminDashboardDetailsController.cs" />
     <Compile Include="Controllers\API\AgenciesMastersController.cs" />
     <Compile Include="Controllers\API\Auth\AdminLoginController.cs" />
     <Compile Include="Controllers\API\Auth\ChangePasswordController.cs" />

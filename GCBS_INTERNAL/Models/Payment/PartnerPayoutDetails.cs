@@ -33,5 +33,8 @@ namespace GCBS_INTERNAL.Models.Payment
 
         [ForeignKey("BookingNo")]
         public CustomerBooking customerBooking { get; set; }
+
+        [ForeignKey("PartnerId")]
+        public UserManagement userManagement { get; set; }
     }
 }
