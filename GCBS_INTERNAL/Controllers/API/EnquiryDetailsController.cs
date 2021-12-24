@@ -42,7 +42,7 @@ namespace GCBS_INTERNAL.Controllers.API
                     Username = x.CustomerManagement.FirstName + "_" + x.CustomerId,
                     UserId = x.CustomerId,
                     ServiceStatus = x.Status,
-                    ServiceStatusToString = x.Status == 1 ? "Open" : x.Status == 2 ? "Completed" : x.Status == 3 ? "Closed" : x.Status == 4 ? "Rejected" : x.Status == 5 ? "Accepted" : "",
+                    ServiceStatusToString = x.Status == 1 ? "Open" : x.Status == 2 ? "Canceled" : x.Status == 3 ? "Completed" : x.Status == 4 ? "Rejected" : x.Status == 5 ? "Accepted" : "",
                     Mobile = x.CustomerManagement.MobileNo,
                     ServiceDate = x.DateTime,
                     BookingDate = (DateTime)x.CreatedOn,
