@@ -211,76 +211,26 @@ namespace GCBS_INTERNAL.Controllers.Chat
         }
 
         private List<ChatUserListViewModel> GetChatCustomerListViewModel()
-        {
-            SqlParameter userid = new SqlParameter("@id", userDetails.Id);
-            SqlParameter userRole = new SqlParameter("@userRole", userDetails.RoleId);
-
-            //var list = db.Database.SqlQuery<LocationFilter>("exec yourStoreProcedureName @startDate, @endDate", startDate, endDate).ToList();
-            var list = db.Database.SqlQuery<ChatUserListViewModel>("exec Sproc_ChatUserList_customer", userid, userRole).ToList();
+        { 
+            var list = db.Database.SqlQuery<ChatUserListViewModel>($"exec Sproc_ChatUserList_customer {userDetails.Id}, {userDetails.RoleId}").ToList();
             return list;
 
         }
         private List<ChatUserListViewModel> GetChatPartnerListViewModel()
         {
-            SqlParameter userid = new SqlParameter("@id", userDetails.Id);
-            SqlParameter userRole = new SqlParameter("@userRole", userDetails.RoleId);
-
-            //var list = db.Database.SqlQuery<LocationFilter>("exec yourStoreProcedureName @startDate, @endDate", startDate, endDate).ToList();
-            var list = db.Database.SqlQuery<ChatUserListViewModel>("exec Sproc_ChatUserList_partner", userid, userRole).ToList();
+            
+            var list = db.Database.SqlQuery<ChatUserListViewModel>($"exec Sproc_ChatUserList_partner {userDetails.Id}, {userDetails.RoleId}").ToList();
             return list;
 
         }
 
         private List<ChatList> GetChatLists(int toids, int limits = 50)
-        {
-            SqlParameter limit = new SqlParameter("@limit", limits);
-            SqlParameter fromid = new SqlParameter("@fromId", userDetails.Id);
-            SqlParameter toid = new SqlParameter("@toId", toids);
-            //var list = db.Database.SqlQuery<LocationFilter>("exec yourStoreProcedureName @startDate, @endDate", startDate, endDate).ToList();
+        { 
             var list = db.Database.SqlQuery<ChatList>($"exec GetChatList {limits},{userDetails.Id}, {toids}").ToList();
             return list;
 
         }
-        //public static List<T> ExecuteSP<T>(string SPName, List<SqlParameter> Params)
-        //{
-        //    try
-        //    {
-        //        DataTable dataTable = new DataTable();
-
-        //        using (SqlConnection Connection = db.Database.Connection())
-        //        {
-        //            // Open connection
-        //            Connection.Open();
-
-        //            // Create command from params / SP
-        //            SqlCommand cmd = new SqlCommand(SPName, Connection);
-
-        //            // Add parameters
-        //            cmd.Parameters.AddRange(Params.ToArray());
-        //            cmd.CommandType = CommandType.StoredProcedure;
-
-        //            // Make datatable for conversion
-        //            SqlDataAdapter da = new SqlDataAdapter(cmd);
-        //            da.Fill(dataTable);
-        //            da.Dispose();
-
-        //            // Close connection
-        //            Connection.Close();
-        //        }
-
-        //        // Convert to list of T
-        //        var retVal = ConvertToList<T>(dataTable);
-        //        return retVal;
-        //    }
-        //    catch (SqlException e)
-        //    {
-        //        Console.WriteLine("ConvertToList Exception: " + e.ToString());
-        //        return new List<T>();
-        //    }
-        //}
-        /// <summary>
-        /// Converts datatable to List<someType> if possible.
-        /// </summary>
+    
         public static List<T> ConvertToList<T>(DataTable dt)
         {
             try // Necesarry unfotunately.
