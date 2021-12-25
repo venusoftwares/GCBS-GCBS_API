@@ -103,11 +103,10 @@ namespace GCBS_INTERNAL.Models
         public virtual DbSet<DurationAndBasePrice> DurationAndBasePrice { get; set; }
         public virtual DbSet<PartnerAdditionalPrice> PartnerAdditionalPrice { get; set; }
         public virtual DbSet<PartnerBasePrice> PartnerBasePrice { get; set; }
-        public virtual DbSet<PartnerServiceType> PartnerServiceType { get; set; }
-         
-        public virtual DbSet<UserFilterDetails> UserFilterDetails { get; set; }
-
-        public virtual DbSet<PartnerPayoutDetails> PartnerPayoutDetails { get; set; }
+        public virtual DbSet<PartnerServiceType> PartnerServiceType { get; set; } 
+        public virtual DbSet<UserFilterDetails> UserFilterDetails { get; set; } 
+        public virtual DbSet<PartnerPayoutDetails> PartnerPayoutDetails { get; set; } 
+        public virtual DbSet<ChatNotification> ChatNotifications { get; set; }
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
            

@@ -425,6 +425,7 @@
     <Compile Include="Controllers\Available\UnAvailableController.cs" />
     <Compile Include="Controllers\Calender\CalenderViewController.cs" />
     <Compile Include="Controllers\Calender\CalenderViewDashboardController.cs" />
+    <Compile Include="Controllers\Chat\GcbsChatController.cs" />
     <Compile Include="Controllers\CustomerBookingCtl\CustomerToPartnerBookingController.cs" />
     <Compile Include="Controllers\DurarionAndService\DurationAndBasePricesController.cs" />
     <Compile Include="Controllers\DurarionAndService\PartnerAdditionalPricesController.cs" />
@@ -454,6 +455,7 @@
     <Compile Include="Models\BookingTerms.cs" />
     <Compile Include="Models\Booking\CustomerBooking.cs" />
     <Compile Include="Models\CalenderDetails.cs" />
+    <Compile Include="Models\ChatNotification.cs" />
     <Compile Include="Models\CityMaster.cs" />
     <Compile Include="Models\ContactEnquiryType.cs" />
     <Compile Include="Models\ContactEnquiryView.cs" />
@@ -482,7 +484,6 @@
     <Compile Include="Models\LocationMasters.cs" />
     <Compile Include="Models\MarginMaster.cs" />
     <Compile Include="Models\Meeting.cs" />
-    <Compile Include="Models\Model1.cs" />
     <Compile Include="Models\NationalityMaster.cs" />
     <Compile Include="Models\Orientation.cs" />
     <Compile Include="Models\PartnerRating.cs" />
@@ -594,7 +595,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Controllers\API\NewFolder1\" />
     <Folder Include="Views\EmailVerification\" />
     <Folder Include="Views\Support\" />
   </ItemGroup>
