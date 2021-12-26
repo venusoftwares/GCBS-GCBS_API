@@ -39,3 +39,19 @@
     @RenderSection("scripts", required: false)
 </body>
 </html>
+<script src="~/Scripts/jquery-3.4.1.min.js"></script>
+<script src="~/Scripts/jquery.signalR-2.2.0.js"></script>
+<script src="/signalr/hubs"></script>
+
+<script type="text/javascript">
+    $(function () {
+
+        var chat = $.connection.requestlog;
+        $.connection.hub.start().done(function () {
+
+        });
+        chat.client.postToClient = function (data) {
+            $('#discussion').append('Message' + data + '<br />');
+        };
+    });
+</script>
