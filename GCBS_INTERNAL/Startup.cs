@@ -4,8 +4,6 @@ using Microsoft.Owin.Security.OAuth;
 using Owin;
 using System;
 using System.Threading.Tasks;
-using Microsoft.Owin.Cors;
-using Microsoft.AspNet.SignalR;
 
 [assembly: OwinStartup(typeof(GCBS_INTERNAL.Startup))]
 
@@ -29,14 +27,6 @@ namespace GCBS_INTERNAL
             // Token Generation
             app.UseOAuthAuthorizationServer(OAuthServerOptions);
             app.UseOAuthBearerAuthentication(new OAuthBearerAuthenticationOptions());
-            app.MapSignalR();
-            app.Map("/Requestlog", map =>
-            {
-                map.UseCors(CorsOptions.AllowAll);
-                var hubConfiguration = new HubConfiguration { };
-                hubConfiguration.EnableDetailedErrors = true;
-                map.RunSignalR(hubConfiguration);
-            });
         }
     }
 }
