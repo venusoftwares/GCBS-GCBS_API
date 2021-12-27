@@ -43,6 +43,8 @@ namespace GCBS_INTERNAL.Models
         public DateTime?  FromDate {get;set;}
         public DateTime? ToDate { get; set; }
         public DateTime ServiceDate { get; set; }
+
+        public DateTime BookingDate { get; set; }
         public string ServicePartner { get; set; }
         public int ServicePartnerId { get; set; }
         public int ServiceId { get; set; }
@@ -51,6 +53,8 @@ namespace GCBS_INTERNAL.Models
         public string ServiceStatusToString { get; set; }
         public int PaymentStatus { get; set; }
         public string PaymentStatusToString { get; set; }
+
+        public int PartnerStatus { get; set; }
     }
     public class OpenTransactionsViewModel
     {

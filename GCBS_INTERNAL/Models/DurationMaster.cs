@@ -14,6 +14,7 @@ namespace GCBS_INTERNAL.Models
         [Required]
         [StringLength(50)]
         public string Duration { get; set; }
+        public decimal BasePrice { get; set; }
         public bool Status { get; set; }
         public DateTime CreatedOn { get; set; }
 

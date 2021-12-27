@@ -1,3 +1,9 @@
+using GCBS_INTERNAL.Models.Available;
+using GCBS_INTERNAL.Models.Booking;
+using GCBS_INTERNAL.Models.DurartionAndServiceType;
+using GCBS_INTERNAL.Models.Filter;
+using GCBS_INTERNAL.Models.Payment;
+using GCBS_INTERNAL.Models.Support;
 using System;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Data.Entity;
@@ -29,7 +35,7 @@ namespace GCBS_INTERNAL.Models
         public virtual DbSet<RolePermissionMaster> RolePermissionMaster { get; set; }
         public virtual DbSet<SiteSettings> SiteSettings { get; set; }
         public virtual DbSet<SmsSettings> SmsSettings { get; set; }
-        public virtual DbSet<SupportEnquiryView> SupportEnquiryView { get; set; }
+      
         public virtual DbSet<UserManagement> UserManagement { get; set; }
         public virtual DbSet<EmailSettings> EmailSettings { get; set; }     
         public virtual DbSet<PermissionKeyValue> PermissionKeyValue { get; set; }
@@ -75,6 +81,32 @@ namespace GCBS_INTERNAL.Models
         public virtual DbSet<BankAccountDetails> BankAccountDetails { get; set; }       
         public virtual DbSet<Availability> Availability { get; set; }
         public virtual DbSet<ServiceDurartionPrice> ServiceDurartionPrice { get; set; }
+
+        public virtual DbSet<CalenderDetails> CalenderDetails { get; set; }
+        public virtual DbSet<Reports> Reports { get; set; }
+
+
+        public virtual DbSet<ContactEnquiryType> ContactEnquiryTypes { get; set; }
+   
+
+        //2021-07-30 - 3 Tables
+        public virtual DbSet<ReportType> ReportType { get; set; }        
+        public virtual DbSet<BookingTerms> BookingTerms { get; set; }   
+        public virtual DbSet<RefundTerm> RefundTerms { get; set; }
+
+        public virtual DbSet<SupportTable> Support { get; set; }
+        public virtual DbSet<SupportType> SupportType { get; set; }
+        public virtual DbSet<CustomerBooking> CustomerBooking { get; set; }
+        public virtual DbSet<UnAvailableDates> UnAvailableDates { get; set; }
+
+
+        public virtual DbSet<DurationAndBasePrice> DurationAndBasePrice { get; set; }
+        public virtual DbSet<PartnerAdditionalPrice> PartnerAdditionalPrice { get; set; }
+        public virtual DbSet<PartnerBasePrice> PartnerBasePrice { get; set; }
+        public virtual DbSet<PartnerServiceType> PartnerServiceType { get; set; } 
+        public virtual DbSet<UserFilterDetails> UserFilterDetails { get; set; } 
+        public virtual DbSet<PartnerPayoutDetails> PartnerPayoutDetails { get; set; } 
+        public virtual DbSet<ChatNotification> ChatNotifications { get; set; }
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
            

@@ -23,7 +23,8 @@
                 </tr>
             </table>
             <input type="button" id="btnupload" value="Upload" style="float:right" />
-
+            <input type="range" min="3" max="300" id="valuerange" value="100"/>
+            <div id="na"></div>
         </div>
     </div>
 </form>
@@ -31,6 +32,12 @@
 
         var formdata = new FormData(); //FormData object
         $(document).ready(function () {
+
+            $("#valuerange").on("change", function () {
+                alert();
+                $("#na").html($(".valuerange").val());
+                
+            });
 
             $("#fileInput").on("change", function () {
                 var fileInput = document.getElementById('fileInput');

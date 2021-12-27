@@ -23,13 +23,16 @@ namespace GCBS_INTERNAL.Models
     public class Time
     {
         public string StartTime { get; set; }
-        public string EndTime { get; set; }
+        public string EndTime { get; set; } 
+        public int Minutes { get; set; }
     }
 
     public class Root
     {
         public string Day { get; set; }
         public List<Time> Time { get; set; }
+
+        public bool Available { get; set; }
     }
     public class RootAvailability
     {

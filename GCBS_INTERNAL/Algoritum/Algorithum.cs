@@ -7,7 +7,7 @@ namespace IERP.Algorithum
 {
     public class Algorithum
     {
-        public string Encrypt(string clearText, string EncryptionKey = "venusoftwares@GCBS1234567890")
+        public string Encrypt(string clearText, string EncryptionKey = "venusoftwares")
         {
             byte[] clearBytes = Encoding.Unicode.GetBytes(clearText);
             using (Aes encryptor = Aes.Create())
@@ -27,7 +27,7 @@ namespace IERP.Algorithum
             }
             return clearText;
         }
-        public string Decrypt(string cipherText, string EncryptionKey = "venusoftwares@GCBS1234567890")
+        public string Decrypt(string cipherText, string EncryptionKey = "venusoftwares")
         {
             byte[] cipherBytes = Convert.FromBase64String(cipherText);
             using (Aes encryptor = Aes.Create())

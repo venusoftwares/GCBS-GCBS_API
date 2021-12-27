@@ -9,6 +9,8 @@ using System.Web.Http;
 using System.Web.Http.Description;
 using System.Data.Entity;
 using GCBS_INTERNAL.Provider;
+using GCBS_INTERNAL.Models.Booking;
+
 namespace GCBS_INTERNAL.Controllers.API.Transactions
 {
      [CustomAuthorize]
@@ -21,29 +23,29 @@ namespace GCBS_INTERNAL.Controllers.API.Transactions
         [ResponseType(typeof(OpenTransactionsViewModel))]
         public async Task<IHttpActionResult> PostOpenTransactions(OpenTransactionsViewModel enquiryViewModel)
         {
-            var res = await db.EnquiryDetails
-                .Include(x => x.UserManagements)
-                .Include(x => x.PartnerManagements)
-                .Include(x => x.servicesMasters)
-                .Select(x => new OpenTransactionsViewModel
+           
+            var list = db.PartnerPayoutDetails.Include(x=>x.customerBooking).Include(x=>x.userManagement).Where(x=>x.Status==false && x.customerBooking.Status == Constant.CUSTOMER_BOOKING_STATUS_COMPLETED) 
+                 .ToList();
+
+
+            List<EnquiryViewModel> res = new List<EnquiryViewModel>();
+
+            foreach (var x in list)
+            {
+                res.Add(new EnquiryViewModel
                 {
-                    BookingId = x.Id,
-                    TransactionDate = x.TransactionDate,
-                    TransactionId = x.TransactionId,
-                    Email = x.UserManagements.EmailId,
-                    Service = x.servicesMasters.Service,
-                    ServicePartner = x.PartnerManagements.Username + "_" + x.PartnerId,
-                    ServicePartnerId = x.PartnerId,
-                    Username = x.UserManagements.Username + "_" + x.UserId,
-                    UserId = x.UserId,
-                    ServiceStatus = x.ServiceStatus,
-                    ServiceStatusToString = x.ServiceStatus == 1 ? "Active" : x.ServiceStatus == 2 ? "Completed" : x.ServiceStatus == 3 ? "Cancel" : "None",
-                    PaymentStatus = x.PaymentStatus,
-                    PaymentStatusToString = x.PaymentStatus == 1 ? "Active" : x.PaymentStatus == 2 ? "Completed" : x.PaymentStatus == 3 ? "Cancel" : "None",
-                    ServiceId = x.ServiceId,
-                    Mobile = x.UserManagements.MobileNo,
-                    ServiceDate = x.ServiceDate
-                }).Where(x=>x.ServiceStatus == 2 && x.PaymentStatus == 1).ToListAsync();
+                    Id = x.customerBooking.Id,
+                    Email = x.userManagement.EmailId,
+                    ServicePartner = x.userManagement.FirstName + "_" + x.PartnerId,
+                    ServicePartnerId = x.Id,  
+                    ServiceStatus = x.customerBooking.Status,
+                    ServiceStatusToString = x.customerBooking.Status == 1 ? "Opened" 
+                    : x.customerBooking.Status == 2 ? "Canceled" : x.customerBooking.Status == 3 ? "Completed" : x.customerBooking.Status == 4 ? "Rejected" : x.customerBooking.Status == 5 ? "Accepted" : "",
+                    Mobile = x.userManagement.MobileNo,
+                    ServiceDate = x.customerBooking.DateTime 
+                });
+            }
+
 
             if (enquiryViewModel != null)
             {

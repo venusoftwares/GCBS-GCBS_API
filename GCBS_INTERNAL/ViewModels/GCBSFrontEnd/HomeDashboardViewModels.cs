@@ -13,6 +13,9 @@ namespace GCBS_INTERNAL.ViewModels.GCBSFrontEnd
         public PrivacyPolicy PrivacyPolicy { get; set; }
         public Disclaimer Disclaimer { get; set; }
         public WarningEighteenPlus WarningEighteenPlus { get; set; }
+        public BookingTermss BookingTerm { get; set; }
+        public RefundTerms RefundTerm { get; set; }
+        
     }
     public class HomePageContents
     {
@@ -52,7 +55,18 @@ namespace GCBS_INTERNAL.ViewModels.GCBSFrontEnd
         public string Body { get; set; }
 
     }
+    public class BookingTermss
+    {
+        public string Title { get; set; }
+        public string Body { get; set; }
 
+    }
+    public class RefundTerms
+    {
+        public string Title { get; set; }
+        public string Body { get; set; }
+
+    }
     public class HomeAgenciesViewModel
     {
 

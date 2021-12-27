@@ -13,25 +13,23 @@ using GCBS_INTERNAL.Models;
 using GCBS_INTERNAL.Provider;
 namespace GCBS_INTERNAL.Controllers.API
 {
-     [CustomAuthorize]
+   
     public class ContactEnquiryViewsController : ApiController
     {
         private DatabaseContext db = new DatabaseContext();
-
+        [CustomAuthorize]
         // GET: api/ContactEnquiryViews
         [Route("api/ContactEnquiryViews/{startDate}/{endDate}")]
         public List<ContactEnquiryView> GetContactEnquiryView(string startDate, string endDate)
         {
-            var list = db.ContactEnquiryView
-                .Include(x => x.PartnerManagements)
-               .Include(x => x.UserManagements).ToList();
+            var list = db.ContactEnquiryView.ToList();
             if(!string.IsNullOrEmpty(startDate) && !string.IsNullOrEmpty(endDate) && startDate!="empty" && endDate != "empty")
             {
                 list = list.Where(x => x.Date >= Convert.ToDateTime(startDate) && x.Date <= Convert.ToDateTime(endDate)).ToList();
             }
             return list.ToList();
         }
-
+        [CustomAuthorize]
         // GET: api/ContactEnquiryViews/5
         [ResponseType(typeof(ContactEnquiryView))]
         public async Task<IHttpActionResult> GetContactEnquiryView(int id)
@@ -44,7 +42,7 @@ namespace GCBS_INTERNAL.Controllers.API
 
             return Ok(contactEnquiryView);
         }
-
+        [CustomAuthorize]
         // PUT: api/ContactEnquiryViews/5
         [ResponseType(typeof(void))]
         public async Task<IHttpActionResult> PutContactEnquiryView(int id, ContactEnquiryView contactEnquiryView)
@@ -88,13 +86,15 @@ namespace GCBS_INTERNAL.Controllers.API
             {
                 return BadRequest(ModelState);
             }
-
+            contactEnquiryView.CreatedOn = DateTime.Now;
+            contactEnquiryView.CreatedBy = 1;
+            contactEnquiryView.Date = DateTime.Now;
             db.ContactEnquiryView.Add(contactEnquiryView);
             await db.SaveChangesAsync();
 
             return CreatedAtRoute("DefaultApi", new { id = contactEnquiryView.Id }, contactEnquiryView);
         }
-
+        [CustomAuthorize]
         // DELETE: api/ContactEnquiryViews/5
         [ResponseType(typeof(ContactEnquiryView))]
         public async Task<IHttpActionResult> DeleteContactEnquiryView(int id)

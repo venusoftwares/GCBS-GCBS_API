@@ -11,9 +11,10 @@ using System.Web.Http;
 using System.Web.Http.Description;
 using GCBS_INTERNAL.Models;
 using GCBS_INTERNAL.Provider;
+using GCBS_INTERNAL.Models.Booking;
 namespace GCBS_INTERNAL.Controllers.API
 {
-     [CustomAuthorize]
+    [CustomAuthorize]
     public class EnquiryDetailsController : BaseApiController
     {
         private DatabaseContext db = new DatabaseContext();
@@ -22,27 +23,33 @@ namespace GCBS_INTERNAL.Controllers.API
         [ResponseType(typeof(EnquiryViewModel))]
         public async Task< IHttpActionResult> PostEnquiryDetails(EnquiryViewModel enquiryViewModel)
         {
-            var res = await db.EnquiryDetails
-                .Include(x => x.UserManagements)
-                .Include(x => x.PartnerManagements)
-                .Include(x => x.servicesMasters)
-                .Select(x => new EnquiryViewModel
+            var s = await db.CustomerBooking.ToListAsync();
+            var list =  db.CustomerBooking
+                .Include(x => x.CustomerManagement)
+                .Include(x => x.UserManagement).OrderByDescending(x=>x.Id).ToList();
+
+
+            List<EnquiryViewModel> res = new List<EnquiryViewModel>();
+            
+            foreach(CustomerBooking x in list)
+            {
+                res.Add(new EnquiryViewModel
                 {
                     Id = x.Id,
-                    Email = x.UserManagements.EmailId,
-                    Service = x.servicesMasters.Service,
-                    ServicePartner = x.PartnerManagements.Username+"_"+ x.PartnerId,
-                    ServicePartnerId = x.PartnerId,
-                    Username = x.UserManagements.Username+"_"+x.UserId,
-                    UserId = x.UserId,
-                    ServiceStatus = x.ServiceStatus,
-                    ServiceStatusToString = x.ServiceStatus == 1 ? "Active" : x.ServiceStatus == 2 ? "Completed" : x.ServiceStatus == 3 ? "Cancel" : "None",
-                    PaymentStatus = x.PaymentStatus,
-                    PaymentStatusToString = x.PaymentStatus == 1 ? "Active" : x.PaymentStatus == 2 ? "Completed" : x.PaymentStatus == 3 ? "Cancel" : "None",
-                    ServiceId = x.ServiceId,
-                    Mobile = x.UserManagements.MobileNo,
-                    ServiceDate = x.ServiceDate
-                }).ToListAsync();
+                    Email = x.CustomerManagement.EmailId,
+                    ServicePartner = x.UserManagement.FirstName + "_" + x.ProviderId,
+                    ServicePartnerId = x.Id,
+                    Username = x.CustomerManagement.FirstName + "_" + x.CustomerId,
+                    UserId = x.CustomerId,
+                    ServiceStatus = x.Status,
+                    ServiceStatusToString = x.Status == 1 ? "Open" : x.Status == 2 ? "Canceled" : x.Status == 3 ? "Completed" : x.Status == 4 ? "Rejected" : x.Status == 5 ? "Accepted" : "",
+                    Mobile = x.CustomerManagement.MobileNo,
+                    ServiceDate = x.DateTime,
+                    BookingDate = (DateTime)x.CreatedOn,
+                    PartnerStatus = x.PartnerStatus
+                }); 
+            }
+           
 
             if (enquiryViewModel != null)
             {
