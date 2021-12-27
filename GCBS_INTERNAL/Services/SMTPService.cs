@@ -33,12 +33,12 @@ namespace GCBS_INTERNAL.Services
                 smtp.Credentials = new NetworkCredential(result.Username, result.Password);
                 smtp.DeliveryMethod = SmtpDeliveryMethod.Network;
                 smtp.Send(message);
-                log.Info("sending mail end : ");
+                log.Info("sending mail end : "+ htmlString);
                 return true;
             }
             catch (Exception ex) 
             {
-                log.Error("sending failed", ex);
+                log.Error("sending failed"+ ex.Message);
                 return false;
             }
         }

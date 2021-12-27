@@ -35,39 +35,44 @@ namespace GCBS_INTERNAL.Controllers.API.Auth
                 {
                     return BadRequest();
                 }
-                UserManagement userManagement = new UserManagement();
-                userManagement.FirstName = partnerSignUp.FirstName;
-                userManagement.SecondName = partnerSignUp.SecondName;
-                userManagement.Name = partnerSignUp.NickName;
-                userManagement.Username = partnerSignUp.NickName;
-                userManagement.EmailId = partnerSignUp.Email;
-                userManagement.MobileCountryCode = partnerSignUp.MobileCountryCode;
-                userManagement.MobileNo = partnerSignUp.MobileNumber;
-                userManagement.Password = partnerSignUp.Password;
-                userManagement.DateOfBirth = partnerSignUp.Dob;
-                userManagement.DateOfSignUp = DateTime.Now;
-                userManagement.Gender = partnerSignUp.Gender;
-                userManagement.RoleId = Constant.PARTNER_ROLE_ID;
-                userManagement.Status = false;
-                userManagement.Image = Constant.image;
-                userManagement.CreatedOn = DateTime.Now;
-                userManagement.CreatedBy = 1;
-                db.UserManagement.Add(userManagement);
-                await db.SaveChangesAsync();
+                if (!db.UserManagement.Where(x => x.EmailId == partnerSignUp.Email).Any())
+                {
+                    using (var db2 = new DatabaseContext())
+                    {
+                        UserManagement userManagement = new UserManagement();
+                        userManagement.FirstName = partnerSignUp.FirstName;
+                        userManagement.SecondName = partnerSignUp.SecondName;
+                        userManagement.Name = partnerSignUp.NickName;
+                        userManagement.Username = partnerSignUp.NickName;
+                        userManagement.EmailId = partnerSignUp.Email;
+                        userManagement.MobileCountryCode = partnerSignUp.MobileCountryCode;
+                        userManagement.MobileNo = partnerSignUp.MobileNumber;
+                        userManagement.Password = partnerSignUp.Password;
+                        userManagement.DateOfBirth = partnerSignUp.Dob;
+                        userManagement.DateOfSignUp = DateTime.Now;
+                        userManagement.Gender = partnerSignUp.Gender;
+                        userManagement.RoleId = Constant.PARTNER_ROLE_ID;
+                        userManagement.Status = false;
+                        userManagement.Image = Constant.image;
+                        userManagement.CreatedOn = DateTime.Now;
+                        userManagement.CreatedBy = 1;
+                        db.UserManagement.Add(userManagement);
+                        await db.SaveChangesAsync();
 
-                string path = HttpContext.Current.Server.MapPath("~/Template/EmailVerification.html");
+                        string path = HttpContext.Current.Server.MapPath("~/Template/EmailVerification.html");
 
-                string text = File.ReadAllText(path);
+                        string text = File.ReadAllText(path);
 
-                string userid = algorithum.Encrypt(userManagement.Id.ToString());
+                        string userid = algorithum.Encrypt(userManagement.Id.ToString());
 
-                string htmlString = text
+                        string htmlString = text
 
-                    .Replace("{Email}", userManagement.EmailId)
-                    .Replace("{url}", $"{urlLink}EmailVerification/token?code={userid}");
+                            .Replace("{Email}", userManagement.EmailId)
+                            .Replace("{url}", $"{urlLink}EmailVerification/token?code={userid}");
 
-                var res = sMTPService.Email(userManagement.EmailId, "Welcome to Golden Circle", htmlString);
-
+                        var res = sMTPService.Email(userManagement.EmailId, "Welcome to Golden Circle", htmlString);
+                    }
+                }
                 return Content(HttpStatusCode.Created,"created successfully");
             }
             catch (Exception ex)

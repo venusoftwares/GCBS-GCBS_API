@@ -12,7 +12,9 @@ namespace GCBS_INTERNAL.ViewModels
         public string PartnerName { get; set; }
         public string Location { get; set; }
         public string Image { get; set; }
-        public bool Status { get; set; }
+        public bool Status { get; set; }  
+        public int? AccessStatus { get; set; } 
+        public bool KycVerfication { get; set; }
     }
     public class CustomerDetailsViewModel
     {
@@ -22,5 +24,6 @@ namespace GCBS_INTERNAL.ViewModels
         public string Location { get; set; }
         public string Image { get; set; }
         public bool Status { get; set; }
+        public int? AccessStatus { get; set; }
     }
 }

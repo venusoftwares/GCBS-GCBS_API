@@ -65,7 +65,10 @@ namespace GCBS_INTERNAL.Models
         public bool? ServiceTypeInCall { get; set; }
         public bool? ServiceTypeOutCall { get; set; }   
         public bool? Party { get; set; }
-        public string Agencies { get; set; }
+        public string Agencies { get; set; } 
+        public int? AccessStatus { get; set; }
+        public bool? KycVerification { get; set; }
+        
         public DateTime CreatedOn { get; set; }
 
         public DateTime? UpdatedOn { get; set; }
