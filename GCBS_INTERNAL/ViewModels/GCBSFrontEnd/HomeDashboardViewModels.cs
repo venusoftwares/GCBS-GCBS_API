@@ -15,7 +15,9 @@ namespace GCBS_INTERNAL.ViewModels.GCBSFrontEnd
         public WarningEighteenPlus WarningEighteenPlus { get; set; }
         public BookingTermss BookingTerm { get; set; }
         public RefundTerms RefundTerm { get; set; }
-        
+
+        public ContactUs ContactUs { get; set; }
+
     }
     public class HomePageContents
     {
@@ -70,6 +72,14 @@ namespace GCBS_INTERNAL.ViewModels.GCBSFrontEnd
     public class HomeAgenciesViewModel
     {
 
+    }
+
+
+    public class ContactUs
+    {
+        public string Address { get; set; }
+        public string PhoneNo { get; set; }
+        public string Email { get; set; }
     }
          
     

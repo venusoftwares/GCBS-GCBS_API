@@ -53,6 +53,13 @@ namespace GCBS_INTERNAL.Controllers.DurarionAndService
             {
                 return BadRequest();
             }
+            using (var d = new DatabaseContext())
+            {
+                var re = await d.PartnerServiceType.FindAsync(id);
+                partnerServiceType.CreatedBy = re.CreatedBy;
+                partnerServiceType.CreatedAt = re.CreatedAt;
+                d.Dispose();
+            } 
 
             db.Entry(partnerServiceType).State = EntityState.Modified;
 
@@ -83,7 +90,8 @@ namespace GCBS_INTERNAL.Controllers.DurarionAndService
             {
                 return BadRequest(ModelState);
             }
-
+            partnerServiceType.CreatedAt = DateTime.Now;
+            partnerServiceType.CreatedBy = userDetails.Id;
             db.PartnerServiceType.Add(partnerServiceType);
             await db.SaveChangesAsync();
 

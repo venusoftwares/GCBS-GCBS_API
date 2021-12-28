@@ -120,23 +120,23 @@ namespace GCBS_INTERNAL.Controllers.API.Partner
                     }
                     else
                     {
-                        userId =  userDetails.Id;
+                        userId = userDetails.Id;
                     }
-                    
+
                     var us = await db.UserManagement
                         .Include(x => x.CountryMaster)
                         .Include(x => x.StateMaster)
                         .Include(x => x.CityMaster)
                         .Where(x => x.Id == userId)
                         .FirstOrDefaultAsync();
-                    if(us!=null)
+                    if (us != null)
                     {
-                        if(us.Nationality !=null)
+                        if (us.Nationality != null)
                         {
                             nationality = Convert.ToInt32(us.Nationality);
                         }
                     }
-                    if(us.RoleId == 9)
+                    if (us.RoleId == 9)
                     {
                         prefix = "GC-C00";
                     }
@@ -148,7 +148,7 @@ namespace GCBS_INTERNAL.Controllers.API.Partner
                     {
                         Address = us.Address,
                         City = us.CityMaster == null ? "" : us.CityMaster.CityName,
-                        country = us.CountryMaster == null ? "" :  us.CountryMaster.CountryName,
+                        country = us.CountryMaster == null ? "" : us.CountryMaster.CountryName,
                         Email = us.EmailId,
                         State = us.StateMaster == null ? "" : us.StateMaster.StateName,
                         SexualOrientation = us.SexualOrientation == null ? "" : db.Orientation.Where(x => x.Id == us.SexualOrientation).Select(x => x.Orientation1).FirstOrDefault(),
@@ -161,7 +161,7 @@ namespace GCBS_INTERNAL.Controllers.API.Partner
                         Party = us.Party == null ? "No" : us.Party == true ? "Yes" : "No",
                         Nationality = us.Nationality == null ? "" : db.NationalityMaster.Where(x => x.Id == nationality).Select(x => x.Nationality).FirstOrDefault(),
                         Images = us.Image,
-                         Id = $"{us.FirstName} {prefix}{us.Id}"
+                        Id = $"{us.FirstName} {prefix}{us.Id}"
 
                     };
 
@@ -223,6 +223,126 @@ namespace GCBS_INTERNAL.Controllers.API.Partner
                 {
                     return Content(HttpStatusCode.NotAcceptable, "Error: Invalid Access");
                 }
+
+            }
+            catch (Exception ex)
+            {
+                log.Error("[GetPartnerMyProfile]", ex);
+                return Content(HttpStatusCode.InternalServerError, "Something went wrong try again");
+            }
+        }
+
+
+        [Route("api/getCustomerOrProviderFullProfileView/{id}")]
+        public async Task<IHttpActionResult> GetCustomerOrProviderFullProfileView(int? id)
+        {
+             
+            try
+            {
+                log.Info("[getCustomerOrProviderFullProfileView] Called"); 
+                var us = await db.UserManagement
+                    .Include(x => x.CountryMaster)
+                    .Include(x => x.StateMaster)
+                    .Include(x => x.CityMaster)
+                    .Where(x => x.Id == id)
+                    .FirstOrDefaultAsync();
+
+                int nationality = 0;
+                string prefix = "";
+                UserManagementProfileView userManagementProfileView = new UserManagementProfileView();
+                List<Languages> languages = new List<Languages>();
+                //List<Languages> meetings = new List<Languages>();
+                List<Agencies> agencies = new List<Agencies>(); 
+                if (us != null)
+                {
+                    if (us.Nationality != null)
+                    {
+                        nationality = Convert.ToInt32(us.Nationality);
+                    }
+                }
+                if (us.RoleId == 9)
+                {
+                    prefix = "GC-C00";
+                }
+                else if(us.RoleId == 3)
+                {
+                    prefix = "GC-P00";
+                }
+                userManagementProfileView = new UserManagementProfileView
+                {
+                    Address = us.Address,
+                    City = us.CityMaster == null ? "" : us.CityMaster.CityName,
+                    country = us.CountryMaster == null ? "" : us.CountryMaster.CountryName,
+                    Email = us.EmailId,
+                    State = us.StateMaster == null ? "" : us.StateMaster.StateName,
+                    SexualOrientation = us.SexualOrientation == null ? "" : db.Orientation.Where(x => x.Id == us.SexualOrientation).Select(x => x.Orientation1).FirstOrDefault(),
+                    DateOfBirth = Convert.ToDateTime(us.DateOfBirth).ToString("dd-MM-yyyy"),
+                    NickName = us.Name,
+                    FullName = $"{ us.FirstName }  {us.SecondName}",
+                    MobileNumber = us.MobileNo,
+                    PostalCode = us.PostalCode.ToString(),
+                    Gender = us.Gender,
+                    Party = us.Party == null ? "No" : us.Party == true ? "Yes" : "No",
+                    Nationality = us.Nationality == null ? "" : db.NationalityMaster.Where(x => x.Id == nationality).Select(x => x.Nationality).FirstOrDefault(),
+                    Images = us.Image,
+                    Id = $"{us.FirstName} {prefix}{us.Id}"
+
+                };
+
+                const char Separator = '|';
+                if (!string.IsNullOrEmpty(us.Languages))
+                {
+                    foreach (var language in us.Languages.Split(Separator))
+                    {
+                        var lan = await db.LanguageMaster.FindAsync(Convert.ToInt32(language));
+                        if (lan != null)
+                        {
+                            if (lan.Status)
+                            {
+                                if (lan != null)
+                                {
+                                    languages.Add(new Languages { ItemId = lan.Id, ItemLanguage = lan.Language });
+                                }
+                            }
+                        }
+                    }
+                }
+                //if (us.Meeting != null)
+                //{
+                //    foreach (var meeting in us.Meeting.Split(Separator))
+                //    {
+                //        var lan = await db.Meeting.FindAsync(Convert.ToInt32(meeting));
+                //        if(lan!=null)
+                //        {
+                //            if (lan.Status)
+                //            {
+                //                meetings.Add(new Languages { ItemId = lan.Id, ItemLanguage = lan.Meeting1 });
+                //            }
+                //        }
+
+                //    }
+                //}
+                if (!string.IsNullOrEmpty(us.Agencies))
+                {
+                    foreach (var agencis in us.Agencies.Split(Separator))
+                    {
+                        var age = await db.AgenciesMaster.FindAsync(Convert.ToInt32(agencis));
+                        if (age != null)
+                        {
+                            if (age.Status)
+                            {
+                                agencies.Add(new Agencies { ItemId = age.Id, ItemAgencies = age.HotelName });
+                            }
+                        }
+
+                    }
+                }
+                userManagementProfileView.Languages = string.Join(",", languages.Select(x => x.ItemLanguage));
+                userManagementProfileView.Agencies = string.Join(",", agencies.Select(x => x.ItemAgencies));
+                userManagementProfileView.Age = (DateTime.Now.Year - Convert.ToDateTime(us.DateOfBirth).Year);
+                log.Info("[GetPartnerMyProfileView] End");
+                return Ok(userManagementProfileView);
+
 
             }
             catch (Exception ex)

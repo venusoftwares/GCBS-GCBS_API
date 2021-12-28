@@ -53,6 +53,15 @@ namespace GCBS_INTERNAL.Controllers.DurarionAndService
             {
                 return BadRequest();
             }
+            using (var d = new DatabaseContext())
+            {
+                var re = await d.DurationAndBasePrice.FindAsync(id);
+                durationAndBasePrice.CreatedBy = re.CreatedBy;
+                durationAndBasePrice.CreatedDate = re.CreatedDate;
+                d.Dispose();
+            }
+            durationAndBasePrice.UpdatedBy = userDetails.Id;
+            durationAndBasePrice.UpdatedDate = DateTime.Now;
 
             db.Entry(durationAndBasePrice).State = EntityState.Modified;
 
@@ -83,7 +92,8 @@ namespace GCBS_INTERNAL.Controllers.DurarionAndService
             {
                 return BadRequest(ModelState);
             }
-
+            durationAndBasePrice.CreatedDate = DateTime.Now;
+            durationAndBasePrice.CreatedBy = userDetails.Id;
             db.DurationAndBasePrice.Add(durationAndBasePrice);
             await db.SaveChangesAsync();
 
@@ -115,6 +125,14 @@ namespace GCBS_INTERNAL.Controllers.DurarionAndService
             base.Dispose(disposing);
         }
 
+        private int convertMinutes(DurationAndBasePrice durationAndBasePrice)
+        {
+            if (durationAndBasePrice.Hour > 0)
+            {
+                return (durationAndBasePrice.Hour * 60) + durationAndBasePrice.Minutes;
+            }
+            return durationAndBasePrice.Minutes;
+        }
         private bool DurationAndBasePriceExists(int id)
         {
             return db.DurationAndBasePrice.Count(e => e.Id == id) > 0;

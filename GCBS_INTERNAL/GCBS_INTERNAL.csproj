@@ -358,6 +358,7 @@
     <Compile Include="Controllers\API\CityMastersController.cs" />
     <Compile Include="Controllers\API\CommonLogoController.cs" />
     <Compile Include="Controllers\API\Commons\CommonDropController.cs" />
+    <Compile Include="Controllers\API\Commons\CustomerDetailsController.cs" />
     <Compile Include="Controllers\API\ContactEnquiryViewsController.cs" />
     <Compile Include="Controllers\API\ContentManagement\AboutUsContentsController.cs" />
     <Compile Include="Controllers\API\ContentManagement\BookingTermsController.cs" />

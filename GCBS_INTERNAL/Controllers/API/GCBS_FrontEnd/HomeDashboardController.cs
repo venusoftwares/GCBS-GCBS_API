@@ -73,12 +73,19 @@ namespace GCBS_INTERNAL.Controllers.API.GCBS_FrontEnd
                        Title = x.Title,
                        Body = x.Body
                    }).FirstOrDefault();
+
+                homeDashboardViewModels.ContactUs = db.SiteSettings.Select(x => new ContactUs
+                {
+                    Address = x.Address1 + " " + x.Address2,
+                    Email = x.Email,
+                    PhoneNo = x.Phone
+                }).FirstOrDefault();
                 log.Info("End");
                 return Ok(homeDashboardViewModels);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
-                log.Error("Sending failed",ex);
+                log.Error("Sending failed", ex);
                 return Content(HttpStatusCode.InternalServerError, "Something went wrong try again");
             }
         }
