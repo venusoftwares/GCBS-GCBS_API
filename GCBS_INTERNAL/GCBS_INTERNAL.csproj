@@ -377,6 +377,7 @@
     <Compile Include="Controllers\API\EnquiryDetailsController.cs" />
     <Compile Include="Controllers\API\EnquiryType\ContactEnquiryTypesController.cs" />
     <Compile Include="Controllers\API\ExportController.cs" />
+    <Compile Include="Controllers\API\GCBS_FrontEnd\AgenciesPartnerDetailsController.cs" />
     <Compile Include="Controllers\API\GCBS_FrontEnd\HomeAgenciesController.cs" />
     <Compile Include="Controllers\API\GCBS_FrontEnd\HomeDashboardController.cs" />
     <Compile Include="Controllers\API\GCBS_FrontEnd\HomeHotelController.cs" />
