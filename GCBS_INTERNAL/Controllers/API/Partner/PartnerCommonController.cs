@@ -53,8 +53,10 @@ namespace GCBS_INTERNAL.Controllers.API.Partner
             if (user == null)
             {
                 return NotFound();
-            }   
-            var path = imgser.EditGetFiles(userDetails.Id, Constant.SERVICE_PROVIDER_FOLDER_TYPE);
+            }
+            string stringPath = userDetails.RoleId == 3 ? Constant.SERVICE_PROVIDER_FOLDER_TYPE
+                : userDetails.RoleId == 9 ? Constant.CUSTOMER_FOLDER_TYPE : Constant.SERVICE_PROVIDER_FOLDER_TYPE;
+            var path = imgser.EditGetFiles(userDetails.Id, stringPath);
             partnerPhotoGallery.SecondaryImage = path;
             partnerPhotoGallery.PrimaryImage = user.Image;
             return Ok(partnerPhotoGallery);   
@@ -68,19 +70,22 @@ namespace GCBS_INTERNAL.Controllers.API.Partner
             {
                 return NotFound();
             }
+
+            string stringPath = userDetails.RoleId == 3 ? Constant.SERVICE_PROVIDER_FOLDER_TYPE
+                : userDetails.RoleId == 9 ? Constant.CUSTOMER_FOLDER_TYPE : Constant.SERVICE_PROVIDER_FOLDER_TYPE;
             user.Image = partnerPhotoGallery.PrimaryImage;
             db.Entry(user).State = EntityState.Modified;
             await db.SaveChangesAsync();
             if (user.Id > 0 && partnerPhotoGallery.SecondaryImage.Count() > 0)
             {
-                imgser.DeleteFiles(user.Id, Constant.SERVICE_PROVIDER_FOLDER_TYPE);
+                imgser.DeleteFiles(user.Id, stringPath);
                 foreach (var imgbase64 in partnerPhotoGallery.SecondaryImage)
                 {
-                    imgser.SaveImage(imgbase64, Constant.SERVICE_PROVIDER_FOLDER_TYPE, user.Id, userDetails.Id);
+                    imgser.SaveImage(imgbase64, stringPath, user.Id, userDetails.Id);
                 }
             }
             return Ok(partnerPhotoGallery);
-        }
+        } 
         protected override void Dispose(bool disposing)
         {
             if (disposing)

@@ -92,9 +92,22 @@ namespace GCBS_INTERNAL.Controllers.Support
         {
             try
             {
-                return Ok(await db.Support.Where(x => x.UserId == userDetails.Id && x.Status == 1).OrderBy(x=>x.CreatedDate).ToListAsync());
+                return Ok(await db.Support.Where(x => x.UserId == userDetails.Id && x.Status == 1).OrderByDescending(x=>x.CreatedDate).ToListAsync());
             }
             catch(Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        [System.Web.Http.Route("api/GetOpenReportDetails")]
+        public async Task<IHttpActionResult> GetOpenReportDetails()
+        {
+            try
+            {
+                return Ok(await db.Reports.Where(x => x.ReportFrom == userDetails.Id && x.Status == 1).OrderByDescending(x => x.CreatedOn).ToListAsync());
+            }
+            catch (Exception ex)
             {
                 throw ex;
             }
@@ -104,7 +117,20 @@ namespace GCBS_INTERNAL.Controllers.Support
         {
             try
             {
-                return Ok(await db.Support.Where(x => x.UserId == userDetails.Id && x.Status == 2).OrderBy(x => x.CreatedDate).ToListAsync());
+                return Ok(await db.Support.Where(x => x.UserId == userDetails.Id && x.Status == 2).OrderByDescending(x => x.CreatedDate).ToListAsync());
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        [System.Web.Http.Route("api/GetClosedReportDetails")]
+        public async Task<IHttpActionResult> GetClosedReportDetails()
+        {
+            try
+            {
+                return Ok(await db.Reports.Where(x => x.ReportFrom == userDetails.Id && x.Status == 2).OrderByDescending(x => x.CreatedOn).ToListAsync());
             }
             catch (Exception ex)
             {

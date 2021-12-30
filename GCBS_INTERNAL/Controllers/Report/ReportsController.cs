@@ -36,21 +36,35 @@ namespace GCBS_INTERNAL.Controllers.Report
         public async Task<IHttpActionResult> GetUserDetails()
         {
             try
-            { 
-                int passUserRole = 0; 
+            {
+                List<UserManagement> userManagements = new List<UserManagement>(); 
+               
+
+               
+                string str = "";
 
                 if(userDetails.RoleId == 9)
                 {
-                    passUserRole = 3;
+                    userManagements.AddRange(db.CustomerBooking.Include(x => x.UserManagement)
+                        .Where(x => x.CustomerId == userDetails.Id).Select(x => x.UserManagement).Distinct().ToList()); 
+                   
+                    str = "GP00";
                 }
                 else if (userDetails.RoleId == 3)
                 {
-                    passUserRole = 9;
+                    userManagements.AddRange(db.CustomerBooking.Include(x => x.CustomerManagement)
+                      .Where(x => x.ProviderId == userDetails.Id).Select(x => x.CustomerManagement).Distinct().ToList());
+                   
+                    str = "GC00";
                 }
 
-                var list = await db.UserManagement.Where(x=>x.RoleId == passUserRole).ToListAsync();
+               
 
-                return Ok(list.Select(x=> new UserDetails {  Id = x.Id , Username = x.Username}));
+                return Ok(userManagements.Select(x=> new UserDetails
+                {
+                    Id = x.Id,
+                    Username = $"{x.FirstName} ({str}{x.Id})"
+                }));
             }
             catch (Exception ex)
             {

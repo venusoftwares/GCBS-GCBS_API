@@ -120,23 +120,23 @@ namespace GCBS_INTERNAL.Controllers.API
                 log.Debug("CustomerOrPartnerBookingListDetails");
                 List<CustomerBooking> list = new List<CustomerBooking>();
 
-                if (userDetails.RoleId == 3)
+                if (userDetails.RoleId == 9)
                 {
                     list = await db.CustomerBooking
                   .Include(x => x.UserManagement)
                   .Include(x => x.UserManagement.CountryMaster)
                   .Include(x => x.UserManagement.StateMaster)
                     .Include(x => x.UserManagement.CityMaster)
-                  .Where(x => x.ProviderId == userDetails.Id).OrderByDescending(x=> x.Id).ToListAsync();
+                  .Where(x => x.CustomerId == userDetails.Id).OrderByDescending(x => x.Id).ToListAsync();
                 }
                 else
                 {
                     list = await db.CustomerBooking
-                 .Include(x => x.UserManagement)
-                 .Include(x => x.UserManagement.CountryMaster)
-                  .Include(x => x.UserManagement.StateMaster)
-                    .Include(x => x.UserManagement.CityMaster)
-                 .Where(x => x.CustomerId == userDetails.Id).OrderByDescending(x => x.Id)
+                 .Include(x => x.CustomerManagement)
+                 .Include(x => x.CustomerManagement.CountryMaster)
+                  .Include(x => x.CustomerManagement.StateMaster)
+                    .Include(x => x.CustomerManagement.CityMaster)
+                 .Where(x => x.ProviderId == userDetails.Id).OrderByDescending(x => x.Id)
                  .ToListAsync();
                 }
 
@@ -150,9 +150,10 @@ namespace GCBS_INTERNAL.Controllers.API
                    BookingDate = (DateTime)x.CreatedOn,
                    BookingTime = x.TimeSlot,
                    Status = "Opened",
-                   Image = x.UserManagement.Image,
-                   Location = Location(x.UserManagement),
-                   StausInt = x.Status
+                   Image = userDetails.RoleId == 9 ? x.UserManagement.Image : x.CustomerManagement.Image,
+                   Location = userDetails.RoleId == 9 ? Location(x.UserManagement) : Location(x.CustomerManagement),
+                   StausInt = x.Status,
+                   UserDetailId = userDetails.RoleId == 9 ? x.ProviderId : x.CustomerId,
 
 
                }).ToList();
@@ -241,7 +242,7 @@ namespace GCBS_INTERNAL.Controllers.API
                    BookingNo = x.Id,
                    BookingDate = Convert.ToDateTime(x.CreatedOn).ToString("yyyy-MM-dd"),
                    ServiceDate = x.DateTime.ToString("yyyy-MM-dd"),
-                   TotalAmount = x.JsonReponse.CustomerTotal, 
+                   TotalAmount = x.JsonReponse.CustomerTotal,
                    Tax = x.JsonReponse.Tax,
                    Total = x.JsonReponse.TotalPrices.Total,
                    ReferenceNo = "",
