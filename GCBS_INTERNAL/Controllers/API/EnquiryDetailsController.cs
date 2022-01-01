@@ -26,7 +26,9 @@ namespace GCBS_INTERNAL.Controllers.API
             var s = await db.CustomerBooking.ToListAsync();
             var list =  db.CustomerBooking
                 .Include(x => x.CustomerManagement)
-                .Include(x => x.UserManagement).OrderByDescending(x=>x.Id).ToList();
+                .Include(x => x.UserManagement)
+                .OrderByDescending(x=>x.Id)
+                .ToList();
 
 
             List<EnquiryViewModel> res = new List<EnquiryViewModel>();
@@ -46,7 +48,8 @@ namespace GCBS_INTERNAL.Controllers.API
                     Mobile = x.CustomerManagement.MobileNo,
                     ServiceDate = x.DateTime,
                     BookingDate = (DateTime)x.CreatedOn,
-                    PartnerStatus = x.PartnerStatus
+                    PartnerStatus = x.PartnerStatus,
+                    TimeSlot = x.TimeSlot
                 }); 
             }
            

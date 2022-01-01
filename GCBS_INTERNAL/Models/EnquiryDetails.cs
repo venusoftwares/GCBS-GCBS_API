@@ -55,6 +55,8 @@ namespace GCBS_INTERNAL.Models
         public string PaymentStatusToString { get; set; }
 
         public int PartnerStatus { get; set; }
+
+        public string TimeSlot { get; set; }
     }
     public class OpenTransactionsViewModel
     {
@@ -76,6 +78,7 @@ namespace GCBS_INTERNAL.Models
         public string ServiceStatusToString { get; set; }
         public int PaymentStatus { get; set; }
         public string PaymentStatusToString { get; set; }
+        public string TimeSlot { get; set; }
     }
     public class PastTransactionsViewModel
     {
@@ -97,5 +100,6 @@ namespace GCBS_INTERNAL.Models
         public string ServiceStatusToString { get; set; }
         public int PaymentStatus { get; set; }
         public string PaymentStatusToString { get; set; }
+        public string TimeSlot { get; set; }
     }
 }

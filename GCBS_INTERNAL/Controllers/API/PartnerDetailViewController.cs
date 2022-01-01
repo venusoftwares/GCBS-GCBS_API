@@ -38,7 +38,7 @@ namespace GCBS_INTERNAL.Controllers.API
                     PartnerName= a.FirstName + " "+a.SecondName,
                     RegisterDate = Convert.ToDateTime(a.DateOfSignUp).ToString("dd-MM-yyyy"),                    
                     Status = a.Status,
-                    AccessStatus =  a.AccessStatus == null ? a.Status ? 1 : 0 : a.AccessStatus,
+                    AccessStatus =  a.AccessStatus,
                     KycVerfication = a.KycVerification == null ? false : (bool)a.KycVerification 
                 });                                   
             }

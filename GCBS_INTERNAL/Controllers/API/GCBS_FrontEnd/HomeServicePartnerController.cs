@@ -29,7 +29,7 @@ namespace GCBS_INTERNAL.Controllers.API.GCBS_FrontEnd
                     .Include(x=>x.CountryMaster)
                        .Include(x => x.StateMaster)
                           .Include(x => x.CityMaster)
-                    .Where(x=>x.Status && x.RoleId==3)
+                    .Where(x=>x.RoleId==3 && x.AccessStatus == Constant.ACCESS_STATUS_ACTIVE)
                     .ToArrayAsync();
                 foreach (var a in res)
                 {
@@ -62,7 +62,7 @@ namespace GCBS_INTERNAL.Controllers.API.GCBS_FrontEnd
                       .Include(x => x.CountryMaster)
                        .Include(x => x.StateMaster)
                           .Include(x => x.CityMaster)
-                    .Where(x => x.Status && x.RoleId == 3 && x.Id == id)   
+                    .Where(x=> x.RoleId == 3 && x.Id == id && x.AccessStatus == Constant.ACCESS_STATUS_ACTIVE)   
                     .ToArrayAsync();
                 foreach (var a in res)
                 {
@@ -97,7 +97,7 @@ namespace GCBS_INTERNAL.Controllers.API.GCBS_FrontEnd
                     .Include(x => x.CountryMaster)
                        .Include(x => x.StateMaster)
                           .Include(x => x.CityMaster)
-                    .Where(x => x.Status && x.RoleId == 3)    
+                    .Where(x => x.RoleId == 3 && x.AccessStatus == Constant.ACCESS_STATUS_ACTIVE)    
                     .OrderBy(x=>x.Id)
                     .Skip(skip)
                     .Take(limit)

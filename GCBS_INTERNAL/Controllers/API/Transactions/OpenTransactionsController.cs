@@ -24,7 +24,9 @@ namespace GCBS_INTERNAL.Controllers.API.Transactions
         public async Task<IHttpActionResult> PostOpenTransactions(OpenTransactionsViewModel enquiryViewModel)
         {
            
-            var list = db.PartnerPayoutDetails.Include(x=>x.customerBooking).Include(x=>x.userManagement).Where(x=>x.Status==false && x.customerBooking.Status == Constant.CUSTOMER_BOOKING_STATUS_COMPLETED) 
+            var list = db.PartnerPayoutDetails.Include(x=>x.customerBooking).Include(x=>x.userManagement)
+                .OrderByDescending(x=>x.customerBooking.Id)
+                .Where(x=>x.Status==false && x.customerBooking.Status == Constant.CUSTOMER_BOOKING_STATUS_COMPLETED) 
                  .ToList();
 
 
@@ -42,7 +44,8 @@ namespace GCBS_INTERNAL.Controllers.API.Transactions
                     ServiceStatusToString = x.customerBooking.Status == 1 ? "Opened" 
                     : x.customerBooking.Status == 2 ? "Canceled" : x.customerBooking.Status == 3 ? "Completed" : x.customerBooking.Status == 4 ? "Rejected" : x.customerBooking.Status == 5 ? "Accepted" : "",
                     Mobile = x.userManagement.MobileNo,
-                    ServiceDate = x.customerBooking.DateTime 
+                    ServiceDate = x.customerBooking.DateTime ,
+                    TimeSlot = x.customerBooking.TimeSlot
                 });
             }
 

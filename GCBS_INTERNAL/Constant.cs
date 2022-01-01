@@ -59,5 +59,8 @@ namespace GCBS_INTERNAL
 
         public const int MARGIN = 10;
 
+        public const int ACCESS_STATUS_ACTIVE = 1;
+        public const int ACCESS_STATUS_DEACTIVE = 0;
+        public const int ACCESS_STATUS_BLOCK = 2; 
     }
 }
