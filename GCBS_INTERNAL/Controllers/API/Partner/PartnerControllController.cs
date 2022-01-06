@@ -105,7 +105,7 @@ namespace GCBS_INTERNAL.Controllers.API.Partner
             try
             {
                 log.Info("[GetPartnerMyProfileView] Called");
-                if (userDetails.RoleId == 3 || userDetails.RoleId == 9)
+                if (true)
                 {
                     int nationality = 0;
                     string prefix = "";
@@ -131,6 +131,16 @@ namespace GCBS_INTERNAL.Controllers.API.Partner
                         .FirstOrDefaultAsync();
                     if (us != null)
                     {
+                        var bank = await db.BankAccountDetails.Where(x => x.UserId == us.Id).FirstOrDefaultAsync();
+
+                        if(bank!=null)
+                        {
+                            userManagementProfileView.BankAccountDetails = bank;
+                        }
+                        else
+                        {
+                            userManagementProfileView.BankAccountDetails = new BankAccountDetails();
+                        }
                         if (us.Nationality != null)
                         {
                             nationality = Convert.ToInt32(us.Nationality);
@@ -216,6 +226,8 @@ namespace GCBS_INTERNAL.Controllers.API.Partner
                     userManagementProfileView.Languages = string.Join(",", languages.Select(x => x.ItemLanguage));
                     userManagementProfileView.Agencies = string.Join(",", agencies.Select(x => x.ItemAgencies));
                     userManagementProfileView.Age = (DateTime.Now.Year - Convert.ToDateTime(us.DateOfBirth).Year);
+
+
                     log.Info("[GetPartnerMyProfileView] End");
                     return Ok(userManagementProfileView);
                 }

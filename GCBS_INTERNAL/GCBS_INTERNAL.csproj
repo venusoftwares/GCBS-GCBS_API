@@ -537,6 +537,7 @@
     <Compile Include="ViewModels\GCBSFrontEnd\ServiceProvider.cs" />
     <Compile Include="ViewModels\MenuItems.cs" />
     <Compile Include="ViewModels\PartnerDetailsViewModel.cs" />
+    <Compile Include="ViewModels\ReportAndSupportViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Areas\HelpPage\HelpPage.css" />

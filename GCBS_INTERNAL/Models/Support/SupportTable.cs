@@ -17,9 +17,8 @@ namespace GCBS_INTERNAL.Models.Support
         public int UserId { get; set; }
 
         [StringLength(50)]
-        public string UserName { get; set; }
-
-        [StringLength(50)]
+        public string UserName { get; set; } 
+      
         public string Description { get; set; }
 
         public int Status { get; set; }

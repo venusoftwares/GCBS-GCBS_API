@@ -2,6 +2,8 @@
 using GCBS_INTERNAL.Models;
 using GCBS_INTERNAL.Models.Support;
 using GCBS_INTERNAL.Provider;
+using GCBS_INTERNAL.ViewModels;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
@@ -37,30 +39,30 @@ namespace GCBS_INTERNAL.Controllers.Report
         {
             try
             {
-                List<UserManagement> userManagements = new List<UserManagement>(); 
-               
+                List<UserManagement> userManagements = new List<UserManagement>();
 
-               
+
+
                 string str = "";
 
-                if(userDetails.RoleId == 9)
+                if (userDetails.RoleId == 9)
                 {
                     userManagements.AddRange(db.CustomerBooking.Include(x => x.UserManagement)
-                        .Where(x => x.CustomerId == userDetails.Id).Select(x => x.UserManagement).Distinct().ToList()); 
-                   
+                        .Where(x => x.CustomerId == userDetails.Id).Select(x => x.UserManagement).Distinct().ToList());
+
                     str = "GP00";
                 }
                 else if (userDetails.RoleId == 3)
                 {
                     userManagements.AddRange(db.CustomerBooking.Include(x => x.CustomerManagement)
                       .Where(x => x.ProviderId == userDetails.Id).Select(x => x.CustomerManagement).Distinct().ToList());
-                   
+
                     str = "GC00";
                 }
 
-               
 
-                return Ok(userManagements.Select(x=> new UserDetails
+
+                return Ok(userManagements.Select(x => new UserDetails
                 {
                     Id = x.Id,
                     Username = $"{x.FirstName} ({str}{x.Id})"
@@ -95,17 +97,27 @@ namespace GCBS_INTERNAL.Controllers.Report
         {
             try
             {
+                List<ReportAndSupportViewModel> reportAndSupportViewModels = new List<ReportAndSupportViewModel>()
+                {
+                       new ReportAndSupportViewModel
+                       {
+                           CreatedDate = DateTime.Now,
+                           Message = reportDetails.Description,
+                           Name = userDetails.FirstName,
+                           UserId = userDetails.Id
+                       }
+                };
+                ;
                 Reports reports = new Reports
                 {
                     CreatedBy = userDetails.Id,
                     ReportFrom = userDetails.Id,
                     ReportTo = reportDetails.ReportTo,
                     Status = 1,
-                    Description = reportDetails.Description,
+                    Description = JsonConvert.SerializeObject(reportAndSupportViewModels),
                     CreatedOn = DateTime.Now,
-                    Date = DateTime.Now ,
-                    ReportType =reportDetails.Type
-
+                    Date = DateTime.Now,
+                    ReportType = reportDetails.Type
                 };
                 db.Reports.Add(reports);
                 await db.SaveChangesAsync();
@@ -120,12 +132,12 @@ namespace GCBS_INTERNAL.Controllers.Report
         public class ReportDetails
         {
             public string Type { get; set; }
-            public string Description { get; set; } 
+            public string Description { get; set; }
             public int ReportTo { get; set; }
         }
         public class UserDetails
         {
-            public string Username { get; set; } 
+            public string Username { get; set; }
             public int Id { get; set; }
         }
     }

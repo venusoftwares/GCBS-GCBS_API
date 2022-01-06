@@ -4,7 +4,10 @@ using GCBS_INTERNAL.Controllers.API;
 using GCBS_INTERNAL.Models;
 using GCBS_INTERNAL.Models.Support;
 using GCBS_INTERNAL.Provider;
+using GCBS_INTERNAL.ViewModels;
+using Newtonsoft.Json;
 using System;
+using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 using System.Threading.Tasks;
@@ -37,7 +40,7 @@ namespace GCBS_INTERNAL.Controllers.Support
         {
             try
             {
-               
+
                 db.SupportType.Add(supportType);
                 await db.SaveChangesAsync();
                 return Ok();
@@ -64,15 +67,110 @@ namespace GCBS_INTERNAL.Controllers.Support
             }
         }
 
+        public class SupportReplyDTO
+        {
+            public int Id { get; set; }
+            public int StatusId { get; set; }
+            public string Message { get; set; }
+        }
+
+        [System.Web.Http.Route("api/AdminSupportReply")]
+        public async Task<IHttpActionResult> AdminSubmitReply(SupportReplyDTO supportReplyDTO)
+        {
+            try
+            {
+                var support = await db.Support.FindAsync(supportReplyDTO.Id);
+
+                List<ReportAndSupportViewModel> reportAndSupportViewModels = new List<ReportAndSupportViewModel>();
+
+                reportAndSupportViewModels.AddRange(JsonConvert.DeserializeObject<List<ReportAndSupportViewModel>>(support.Description));
+
+                reportAndSupportViewModels.Add(new ReportAndSupportViewModel()
+                {
+                    CreatedDate = DateTime.Now,
+                    Message = supportReplyDTO.Message,
+                    Name = userDetails.FirstName,
+                    UserId = userDetails.Id
+                });
+
+                support.Description = JsonConvert.SerializeObject(reportAndSupportViewModels);
+
+                support.Status = supportReplyDTO.StatusId;
+
+                support.UpdatedDate = DateTime.Now;
+
+                db.Entry(support).State = EntityState.Modified;
+
+                await db.SaveChangesAsync();
+
+                return Ok(supportReplyDTO);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+
+        [System.Web.Http.Route("api/AdminReportReply")]
+        public async Task<IHttpActionResult> AdminReportReply(SupportReplyDTO supportReplyDTO)
+        {
+            try
+            {
+                var reports = await db.Reports.FindAsync(supportReplyDTO.Id);
+
+                List<ReportAndSupportViewModel> reportAndSupportViewModels = new List<ReportAndSupportViewModel>();
+
+                reportAndSupportViewModels.AddRange(JsonConvert.DeserializeObject<List<ReportAndSupportViewModel>>(reports.Description));
+
+                reportAndSupportViewModels.Add(new ReportAndSupportViewModel()
+                {
+                    CreatedDate = DateTime.Now,
+                    Message = supportReplyDTO.Message,
+                    Name = userDetails.FirstName,
+                    UserId = userDetails.Id
+                });
+
+                reports.Description = JsonConvert.SerializeObject(reportAndSupportViewModels);
+
+                reports.Status = supportReplyDTO.StatusId;
+
+                reports.UpdatedOn = DateTime.Now;
+
+                reports.UpdatedBy = userDetails.Id;
+
+                db.Entry(reports).State = EntityState.Modified;
+
+                await db.SaveChangesAsync();
+
+                return Ok(supportReplyDTO);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
         [System.Web.Http.Route("api/SubmitSupportDetails")]
         public async Task<IHttpActionResult> SubmitSupportDetails(SupportDetails supportDetails)
         {
             try
             {
+                List<ReportAndSupportViewModel> reportAndSupportViewModels = new List<ReportAndSupportViewModel>()
+                {
+                     new ReportAndSupportViewModel()
+                     {
+                         CreatedDate = DateTime.Now,
+                         Message = supportDetails.Description,
+                         Name = userDetails.FirstName,
+                         UserId = userDetails.Id
+                     }
+                };
+                
                 SupportTable supportTable = new SupportTable
                 {
                     CreatedDate = DateTime.Now,
-                    Description = supportDetails.Description,
+                    Description = JsonConvert.SerializeObject(reportAndSupportViewModels),
                     Status = 1,
                     SupportType = supportDetails.Type,
                     UserId = userDetails.Id,
@@ -92,9 +190,26 @@ namespace GCBS_INTERNAL.Controllers.Support
         {
             try
             {
-                return Ok(await db.Support.Where(x => x.UserId == userDetails.Id && x.Status == 1).OrderByDescending(x=>x.CreatedDate).ToListAsync());
+                List<SupportViewDetails> supportViewDetails = new List<SupportViewDetails>();
+                var list = await db.Support.Where(x => x.UserId == userDetails.Id && x.Status == 1).OrderByDescending(x => x.CreatedDate).ToListAsync();
+
+                foreach (var a in list)
+                {
+                    supportViewDetails.Add(new SupportViewDetails
+                    {
+                        CreatedDate = a.CreatedDate,
+                        id = a.id,
+                        SupportType = a.SupportType,
+                        UpdatedDate = a.UpdatedDate,
+                        UserId = a.UserId,
+                        UserName = a.UserName, 
+                        reportAndSupportViewModels = ConvertJsonSupport(userDetails.Id, a.Description), 
+                        Status = a.Status, 
+                    });
+                }
+                return Ok(supportViewDetails);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 throw ex;
             }
@@ -105,13 +220,57 @@ namespace GCBS_INTERNAL.Controllers.Support
         {
             try
             {
-                return Ok(await db.Reports.Where(x => x.ReportFrom == userDetails.Id && x.Status == 1).OrderByDescending(x => x.CreatedOn).ToListAsync());
+                List<ReportViewDetails> reportViewDetails = new List<ReportViewDetails>();
+                var list = await db.Reports.Where(x => x.ReportFrom == userDetails.Id && x.Status == 1).OrderByDescending(x => x.CreatedOn).ToListAsync();
+
+                foreach (var a in list)
+                {
+                    reportViewDetails.Add(new ReportViewDetails
+                    {
+                        CreatedBy = a.CreatedBy,
+                        CreatedOn = a.CreatedOn,
+                        Date = a.Date,
+                        Description = "",
+                        Id = a.Id,
+                        reportAndSupportViewModels = ConvertJsonSupport(userDetails.Id, a.Description),
+                        ReportFrom = a.ReportFrom,
+                        ReportTo = a.ReportTo,
+                        ReportType = a.ReportType,
+                        Status = a.Status,
+                        UpdatedBy = a.UpdatedBy,
+                        UpdatedOn = a.UpdatedOn,
+                        userManagementFrom = a.userManagementFrom,
+                        userManagementTo = a.userManagementTo
+
+                    });
+                }
+
+
+                return Ok(reportViewDetails);
             }
             catch (Exception ex)
             {
                 throw ex;
             }
         }
+
+        private List<ReportAndSupportViewModel> ConvertJsonSupport(int id, string description)
+        {
+            var list = JsonConvert.DeserializeObject<List<ReportAndSupportViewModel>>(description);
+            List<ReportAndSupportViewModel> reportAndSupportViewModels = new List<ReportAndSupportViewModel>();
+            foreach (var a in list)
+            {
+                string side = "left";
+                if (id == a.UserId)
+                {
+                    side = "right";
+                }
+                a.Side = side;
+                reportAndSupportViewModels.Add(a);
+            }
+            return reportAndSupportViewModels;
+        }
+
         [System.Web.Http.Route("api/GetClosedSupportDetails")]
         public async Task<IHttpActionResult> GetClosedSupportDetails()
         {
@@ -152,5 +311,5 @@ namespace GCBS_INTERNAL.Controllers.Support
             public string Description { get; set; }
         }
     }
-  
+
 }

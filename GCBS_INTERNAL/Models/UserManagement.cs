@@ -131,6 +131,7 @@ namespace GCBS_INTERNAL.Models
         public int Age { get; set; }
         public string Languages { get; set; }
 
+        public BankAccountDetails BankAccountDetails { get; set; }
     }
     public class Languages
     {
