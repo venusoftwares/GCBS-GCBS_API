@@ -129,9 +129,7 @@ namespace GCBS_INTERNAL.Models
         public string PostalCode { get; set; } 
 
         public int Age { get; set; }
-        public string Languages { get; set; }
-
-        public BankAccountDetails BankAccountDetails { get; set; }
+        public string Languages { get; set; } 
     }
     public class Languages
     {

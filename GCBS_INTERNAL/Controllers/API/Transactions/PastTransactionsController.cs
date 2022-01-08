@@ -36,7 +36,7 @@ namespace GCBS_INTERNAL.Controllers.API.Transactions
                     Id = x.customerBooking.Id,
                     Email = x.userManagement.EmailId,
                     ServicePartner = x.userManagement.FirstName + "_" + x.PartnerId,
-                    ServicePartnerId = x.Id,
+                    ServicePartnerId = x.PartnerId,
                     ServiceStatus = x.customerBooking.Status,
                     ServiceStatusToString = x.customerBooking.Status == 1 ? "Opened"
                     : x.customerBooking.Status == 2 ? "Canceled" : x.customerBooking.Status == 3 ? "Completed" : x.customerBooking.Status == 4 ? "Rejected" : x.customerBooking.Status == 5 ? "Accepted" : "",

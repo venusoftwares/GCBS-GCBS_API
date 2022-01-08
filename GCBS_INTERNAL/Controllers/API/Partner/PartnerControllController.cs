@@ -105,8 +105,7 @@ namespace GCBS_INTERNAL.Controllers.API.Partner
             try
             {
                 log.Info("[GetPartnerMyProfileView] Called");
-                if (true)
-                {
+               
                     int nationality = 0;
                     string prefix = "";
                     UserManagementProfileView userManagementProfileView = new UserManagementProfileView();
@@ -129,18 +128,10 @@ namespace GCBS_INTERNAL.Controllers.API.Partner
                         .Include(x => x.CityMaster)
                         .Where(x => x.Id == userId)
                         .FirstOrDefaultAsync();
+                     
                     if (us != null)
                     {
-                        var bank = await db.BankAccountDetails.Where(x => x.UserId == us.Id).FirstOrDefaultAsync();
 
-                        if(bank!=null)
-                        {
-                            userManagementProfileView.BankAccountDetails = bank;
-                        }
-                        else
-                        {
-                            userManagementProfileView.BankAccountDetails = new BankAccountDetails();
-                        }
                         if (us.Nationality != null)
                         {
                             nationality = Convert.ToInt32(us.Nationality);
@@ -171,8 +162,7 @@ namespace GCBS_INTERNAL.Controllers.API.Partner
                         Party = us.Party == null ? "No" : us.Party == true ? "Yes" : "No",
                         Nationality = us.Nationality == null ? "" : db.NationalityMaster.Where(x => x.Id == nationality).Select(x => x.Nationality).FirstOrDefault(),
                         Images = us.Image,
-                        Id = $"{us.FirstName} {prefix}{us.Id}"
-
+                        Id = $"{us.FirstName} {prefix}{us.Id}", 
                     };
 
                     const char Separator = '|';
@@ -230,12 +220,7 @@ namespace GCBS_INTERNAL.Controllers.API.Partner
 
                     log.Info("[GetPartnerMyProfileView] End");
                     return Ok(userManagementProfileView);
-                }
-                else
-                {
-                    return Content(HttpStatusCode.NotAcceptable, "Error: Invalid Access");
-                }
-
+               
             }
             catch (Exception ex)
             {
@@ -248,10 +233,10 @@ namespace GCBS_INTERNAL.Controllers.API.Partner
         [Route("api/getCustomerOrProviderFullProfileView/{id}")]
         public async Task<IHttpActionResult> GetCustomerOrProviderFullProfileView(int? id)
         {
-             
+
             try
             {
-                log.Info("[getCustomerOrProviderFullProfileView] Called"); 
+                log.Info("[getCustomerOrProviderFullProfileView] Called");
                 var us = await db.UserManagement
                     .Include(x => x.CountryMaster)
                     .Include(x => x.StateMaster)
@@ -264,7 +249,7 @@ namespace GCBS_INTERNAL.Controllers.API.Partner
                 UserManagementProfileView userManagementProfileView = new UserManagementProfileView();
                 List<Languages> languages = new List<Languages>();
                 //List<Languages> meetings = new List<Languages>();
-                List<Agencies> agencies = new List<Agencies>(); 
+                List<Agencies> agencies = new List<Agencies>();
                 if (us != null)
                 {
                     if (us.Nationality != null)
@@ -276,7 +261,7 @@ namespace GCBS_INTERNAL.Controllers.API.Partner
                 {
                     prefix = "GC-C00";
                 }
-                else if(us.RoleId == 3)
+                else if (us.RoleId == 3)
                 {
                     prefix = "GC-P00";
                 }
